@@ -1,0 +1,65 @@
+/* Pístov design tokens – palette drawn from the TAM architekti catalogue:
+   paper of the sheets, graphite linework, salmon walls of the plans, red ink of the annotations,
+   olive of the site-plan greenery, sand & clay of the materials. */
+:root {
+  /* colour */
+  --paper: #f4efe3;
+  --paper-2: #ebe4d3;
+  --paper-3: #e1d8c3;
+  --ink: #23231f;
+  --ink-2: #45443e;
+  --pencil: #77746a;
+  --line: rgba(35, 35, 31, 0.14);
+  --line-strong: rgba(35, 35, 31, 0.32);
+  --red: #c4372b;          /* annotation ink – accents only */
+  --red-ink: #a52a20;
+  --clay: #e08a76;         /* plan walls */
+  --olive: #5f6b3f;
+  --olive-2: #a3ab82;
+  --sand: #c7b38a;
+  --amber: #a5752f;        /* reserved */
+  --stone: #9b9484;
+  --night: #1b1b18;
+
+  --st-available: #6e7d45;
+  --st-reserved: #a5752f;
+  --st-sold: #3b3a35;
+
+  /* type */
+  --font: "Montserrat", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+  --fs-xl: clamp(1.4rem, 1.15rem + 1vw, 2rem);
+  --fs-2xl: clamp(2rem, 1.4rem + 2.6vw, 3.6rem);
+  --fs-hero: clamp(2.6rem, 1.4rem + 5.4vw, 6.6rem);
+  --track-caps: 0.16em;
+
+  /* space */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px; --s9: 112px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --wrap: 1280px;
+  --topbar-h: 64px;
+
+  /* shape */
+  --r-xs: 2px; --r-sm: 4px; --r-md: 8px; --r-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(27, 27, 24, 0.08), 0 4px 16px rgba(27, 27, 24, 0.08);
+  --shadow-2: 0 2px 6px rgba(27, 27, 24, 0.1), 0 18px 48px rgba(27, 27, 24, 0.18);
+  --glass: rgba(244, 239, 227, 0.88);
+
+  /* layers */
+  --z-scene: 0; --z-plots: 1; --z-hero: 5; --z-ui: 10; --z-stage: 15; --z-panel: 20; --z-tooltip: 30; --z-topbar: 40; --z-popover: 50; --z-toast: 60; --z-dialog: 100;
+
+  /* motion */
+  --dur-fast: 180ms; --dur-ui: 240ms; --dur-panel: 340ms; --dur-image: 560ms; --dur-scene: 1000ms;
+  --ease-out: cubic-bezier(0.22, 0.7, 0.2, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* focus */
+  --focus: 0 0 0 2px var(--paper), 0 0 0 4px var(--red);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 1ms; --dur-ui: 1ms; --dur-panel: 1ms; --dur-image: 1ms; --dur-scene: 1ms; }
+}

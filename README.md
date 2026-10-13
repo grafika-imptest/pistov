@@ -1,0 +1,115 @@
+# Pístov — interaktivní prezentace pozemků a rodinných domů
+
+Funkční prototyp: letecká vizualizace lokality s klikatelnými parcelami,
+provázání parcel s typovými domy A–D, výběr dispozice a materiálu, „stavba“ domu přímo na vybrané parcele,
+detail domu a předvyplněná poptávka.
+
+```
+Úvod (výkres → vizualizace) → lokalita → parcela → typový dům → dispozice / materiál
+→ PARCELA + DŮM (timelapse) → detail domu → poptávka
+```
+
+## Spuštění
+
+Bez buildu, bez závislostí v prohlížeči (čisté ES moduly). Potřeba je jen Node ≥ 20.
+
+```bash
+npm run dev        # http://localhost:5291
+npm test           # testy dat a logiky (node --test)
+```
+
+Statický web — složku lze nasadit 1 : 1 na GitHub Pages / jakýkoli hosting (kromě `podklady/` a `tools/node_modules`).
+
+Užitečné URL parametry: `?parcela=12&dum=A&dispozice=A1&material=A-m2&rezim=navrh&stav=dum` (sdílitelná konfigurace),
+`?pohled=plan`, `?detail=B`, `?demo=stavy` (ukázka prodaných parcel, s viditelným štítkem), `?fixture=timelapse`
+(technický test přehrávače sekvence snímků).
+
+## Struktura
+
+```
+index.html                     sémantická kostra stránky
+css/tokens.css                 design tokeny (barvy z katalogu, typografie, motion, z-index)
+css/app.css                    komponenty
+js/core/                       obecný engine – znovupoužitelný pro další developery
+  store.js                     jediný stav výběru + synchronizace s URL a historií
+  viewer.js                    pan/zoom nad obrázkem; parcely sdílí souřadnice obrázku → vždy sedí
+  plotLayer.js                 SVG vrstva parcel (stavy, hover, fokus, výběr)
+  compat.js                    pravidla parcela ↔ typ domu
+  pricing.js                   souhrn cen (nikdy nevymýšlí chybějící hodnoty)
+  timelapse.js                 PARCELA ↔ PARCELA + DŮM, přehrávače video / sekvence / schéma
+  schematic.js                 výkres parcely + 2.5D hmota domu z rozměrů katalogu
+js/projects/pistov/            vše specifické pro Pístov (data)
+  plots.generated.js           parcely – generováno z plánu (tools/build-data.mjs)
+  houseTypes.js                typy A–D, dispozice, fakta z katalogu
+  houseVariants.js             materiálové varianty + sloty pro animace výstavby
+  plotHouseCompatibility.js    pravidla přiřazení (UKÁZKOVÁ)
+  statusOverrides.demo.js      ukázkové stavy jen pro ?demo=stavy
+  project.js                   konfigurace projektu (pohledy, texty cen, zdroje)
+js/ui/                         komponenty rozhraní (explorer, hero, panel, stage, catalog, detail, enquiry)
+tools/                         pipeline: extrakce z PDF, trasování parcel, homografie, optimalizace obrázků
+tests/                         node testy + testovací fixture
+podklady/                      zdrojové PDF a mezivýstupy (nenasazovat)
+```
+
+Nový projekt = nová složka `js/projects/<nazev>/` se stejnou strukturou a import v `js/main.js`.
+
+## Odkud pochází data
+
+| Údaj | Zdroj | Spolehlivost |
+|---|---|---|
+| Čísla parcel 1–73 (bez 59), výměry | situační plán, katalog str. 3 | přepsáno z plánu, ověřeno testem proti trasované ploše |
+| Stav volná / rezervovaná | šrafování + legenda plánu (duben 2026) | rezervované 64–72, ostatní k prodeji |
+| Hranice parcel v plánu | automatické trasování rastru plánu (`tools/trace-plots.mjs`) | 54 parcel přesně; 27/28, 34/35, 41/42, 47/48, 71/72 rozděleny podle poměru výměr (spojnice v rastru chybí) a 73 ručně – v UI označeno jako orientační |
+| Rezervovaný blok 64–70 | obrys bloku ručně z plánu | jednotlivé hranice uvnitř bloku nejsou čitelné → parcely jen jako body |
+| Hranice v letecké vizualizaci | promítnutí plánu homografií spárovanou na 36 domů (průměrná odchylka ≈ 15 px z 3 419 px) | orientační, popisek pohledu to uvádí |
+| Umístění domu na parcele | footprint domu, který architekt zakreslil do plánu (osa + těžiště) | schéma |
+| Typy A–D, obestavěné plochy, dispozice, texty | katalog str. 7–34 | doslova dle katalogu; chybějící hodnoty = `null` |
+| Materiálové varianty | vizualizace v katalogu | názvy popisují, co je na renderu vidět |
+| Obrázky, půdorysy, řezy | extrahováno z PDF (`tools/extract.mjs`, `build-assets.mjs`) | originální podklady TAM architekti |
+
+**Ceny** nejsou v podkladech → všude „Cena na vyžádání“ / „bude doplněna“, souhrn je výslovně neúplný.
+**Pravidla přiřazení domů** jsou ukázková (A od 560 m², D od 540 m²) a v UI tak označená.
+**Poptávkový formulář** nemá backend — validuje a zobrazí ukázkové potvrzení, výslovně uvádí, že nic nebylo odesláno.
+
+## Animace výstavby — jak napojit
+
+Každá materiálová varianta má v `houseVariants.js` slot `timelapse`. Stačí doplnit:
+
+```js
+timelapse: { kind: "video", src: "assets/timelapse/A-m1.mp4", srcWebm: "assets/timelapse/A-m1.webm",
+             poster: "assets/timelapse/A-m1-empty.webp" }
+// nebo sekvence snímků:
+timelapse: { kind: "frames", fps: 24, frames: ["assets/timelapse/A-m1/0001.webp", …], poster: "…/0001.webp" }
+```
+
+Očekávání: první snímek = prázdná parcela (slouží i jako stav POUZE PARCELA), poslední = hotový dům ze stejné kamery,
+bez smyčky, ideálně 3–5 s, 1600 px na šířku, H.264 MP4 (+ WebM). Přehrávač: start vždy od 0 při každém zapnutí
+PARCELA + DŮM, drží poslední snímek, ruší rozběhnuté přehrávání při změně výběru, přednačítá ve stavu POUZE PARCELA,
+při `prefers-reduced-motion` ukáže rovnou konečný stav, při chybě souboru spadne na statickou vizualizaci.
+Dokud animace nejsou, použije se schematická stavba (obrys → hmota z rozměrů katalogu → render architektů);
+vizualizace jiného domu se nikdy nepoužije.
+
+Ověřeno v prohlížeči (schéma i sekvence snímků přes `?fixture=timelapse`): 1) parcela se otevře bez domu,
+2) přepnutí spustí stavbu správného domu, 3) poslední stav zůstává, 4) návrat na prázdnou parcelu,
+5) opětovné zapnutí přehraje vše od začátku, 6) jiný dům / dispozice / materiál = nová animace,
+7) rychlé přepínání neskončí na zastaralém snímku.
+
+## Ověřeno
+
+- `npm test` – 12 testů (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace).
+- Prohlížeč 1440×900 a 375×812: úvod + přeskočení, výběr parcely myší / dotykem / klávesnicí (Tab, Enter, Esc),
+  popup, filtry, pohledy (letecký, plán, řezy, nedostupné pohledy zašedlé), zoom/reset/kompas/nápověda/celá obrazovka,
+  režimy Pozemky / Typové domy / Můj návrh, timelapse, detail domu (záložky půdorysy/situace/pohledy), Zpět v prohlížeči
+  (výběr se neztrácí), poptávka a validace. Konzole bez chyb.
+
+## Podklady, které ještě chybí
+
+1. Potvrzený seznam parcel a jejich aktuální stavy (katalog je z dubna 2026); jak se budou stavy aktualizovat (CMS, tabulka, API?).
+2. Ceny pozemků a orientační ceny domů + kdo je spravuje a právní disclaimer.
+3. Tabulka povolených typů domů pro každou parcelu.
+4. Hranice jednotlivých parcel v rezervovaném bloku 64–70 a vektorový (DWG/DXF) situační plán – nahradí trasování z rastru.
+5. Animace výstavby a/nebo stavy 1–4 pro každý typ × variantu; případně 3D modely.
+6. Pro skutečný „průlet“ a přesné parcely v perspektivě: kamera/render s parcelami nebo letecké panorama 360°.
+7. Obestavěná plocha přízemních variant D2/D3, dispozice domů C a D (katalog je neuvádí), vizualizace podvariant A2, B2, C2, D2, D3.
+8. Kontaktní údaje, zpracovatel poptávek (e-mail / CRM), GDPR text.
+9. Ověřené informace o lokalitě (doprava, vybavenost, sítě, termíny) – záměrně nejsou uvedeny.
