@@ -6,8 +6,8 @@ const NS = "http://www.w3.org/2000/svg";
 const el = (tag, attrs = {}) => { const n = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v); return n; };
 
 export class PlotLayer {
-  constructor(scene, { onEnter, onLeave, onSelect }) {
-    this.scene = scene; this.cb = { onEnter, onLeave, onSelect };
+  constructor(scene, { onEnter, onLeave, onSelect, onStation }) {
+    this.scene = scene; this.cb = { onEnter, onLeave, onSelect, onStation };
     this.nodes = new Map();
   }
 
@@ -48,6 +48,23 @@ export class PlotLayer {
       shapes.append(g);
     }
     svg.append(shapes, el("g", { class: "plots__selection", "aria-hidden": "true" }), labels);
+
+    // 360° panorama stations (one marker per position; the 60 m shot is the default at a shared spot)
+    if (project.panoramas?.length) {
+      const g = el("g", { class: "plots__stations" });
+      const seen = [];
+      for (const s of [...project.panoramas].sort((a, b) => b.altitude - a.altitude)) {
+        const p = s[key]; if (!p) continue;
+        if (seen.some((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 60) || p[0] < 30 || p[1] < 30 || p[0] > W - 30 || p[1] > H - 30) continue;
+        seen.push(p);
+        const m = el("g", { class: "station", transform: `translate(${p[0]} ${p[1]})`, tabindex: "0", role: "button", "data-station": s.id, "aria-label": `Panorama 360° – ${s.label}, ${s.short}` });
+        const inner = el("g", { class: "station__body" });
+        inner.append(el("circle", { class: "station__halo", r: 26 }), el("circle", { class: "station__dot", r: 17 }));
+        const t = el("text", { class: "station__txt", y: 1 }); t.textContent = "360°";
+        inner.append(t); m.append(inner); g.append(m);
+      }
+      svg.append(g);
+    }
     this.scene.append(svg);
     this.svg = svg;
     this._wire(svg);
@@ -63,6 +80,7 @@ export class PlotLayer {
       this.cb.onLeave?.(this.nodes.get(g.dataset.plot).plot);
     });
     svg.addEventListener("click", (e) => {
+      const s = e.target.closest("[data-station]"); if (s) { this.cb.onStation?.(s.dataset.station); return; }
       const g = e.target.closest("[data-plot]"); if (!g) return;
       this.cb.onSelect?.(this.nodes.get(g.dataset.plot).plot, e.pointerType || "mouse");
     });
@@ -73,6 +91,8 @@ export class PlotLayer {
       const g = e.target.closest("[data-plot]"); if (g) this.cb.onLeave?.(this.nodes.get(g.dataset.plot).plot);
     });
     svg.addEventListener("keydown", (e) => {
+      const s = e.target.closest("[data-station]");
+      if (s && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); this.cb.onStation?.(s.dataset.station); return; }
       const g = e.target.closest("[data-plot]"); if (!g) return;
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.cb.onSelect?.(this.nodes.get(g.dataset.plot).plot, "keyboard"); }
     });
@@ -82,6 +102,7 @@ export class PlotLayer {
   setScale(s) { this.svg?.style.setProperty("--inv", (1 / s).toFixed(4)); }
 
   update({ selectedId, hoverId, isDim, statusOf }) {
+    if (!this.svg) return;
     for (const [id, n] of this.nodes) {
       const st = statusOf ? statusOf(n.plot) : n.plot.status;
       n.g.dataset.status = st;

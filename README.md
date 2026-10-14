@@ -94,13 +94,37 @@ Ověřeno v prohlížeči (schéma i sekvence snímků přes `?fixture=timelapse
 5) opětovné zapnutí přehraje vše od začátku, 6) jiný dům / dispozice / materiál = nová animace,
 7) rychlé přepínání neskončí na zastaralém snímku.
 
+## Panorama 360° — dnešní stav lokality
+
+Šest dronových 360° panoramat (DJI, equirektangulární 14400×7200, 13. 10. 2026) z pěti míst: střed lokality ve 30 a 60 m,
+východ za rybníky, jih v polích, západ a sever nad obcí. Na webu ve třech velikostech (`assets/pano/*-{1024,4096,8192}.webp`,
+mobil dostává 4096 px), generuje `tools/build-pano.mjs`.
+
+- **Kde v aplikaci:** pohled „Panorama 360° · dnes“ v menu oka (A), kroužky „360°“ v mapě na místech pořízení (B),
+  „Výhled na parcelu dnes“ v detailu parcely – vybere stanoviště s nejlepším šikmým pohledem a natočí se na parcelu (C),
+  ukázka s pomalou rotací v sekci Lokalita (D).
+- **Parcely v panoramatu:** situační plán je zaměřený podle rybníků z OpenStreetMap (`tools/georef.mjs`, odchylka 2–4 m,
+  plán je proti severu pootočený o ≈ 7°). Hranice parcel se z plánu přepočítají na metry a promítnou z polohy dronu
+  (GPS + výška nad místem vzletu). Terén se bere jako rovina, proto je překryv orientační – v UI tak označený.
+- **Natočení snímků** (sever ve sloupci obrazu) DJI neukládá; každé stanoviště je zkalibrované vizuálně proti obrysům
+  rybníků a ploše parcel (`tools/pano-calib-sheet.mjs`, `tools/pano-calib-plots.mjs`, přesnost ≈ ±2°). Doladění
+  přímo v prohlížeči: lokální server + `?pohled=pano&kalibrace=1`, klávesy `[` a `]` (±0,5°), výsledek v konzoli
+  `__pistov.calibration()`.
+- **Nebe:** pohled vzhůru je omezený (zenit dronových panoramat je rozmazaná výplň). Dodaná verze s upravenými mraky
+  není použita – úprava není sférická a při pohledu nahoru vytváří vír.
+- **Po dostavbě:** přepínač je připravený. Až budou panoramata s vizualizací zástavby (stejné stanoviště, stejná projekce
+  a natočení), stačí v `tools/build-pano.mjs` doplnit `future` se stejnou strukturou jako `sources`.
+
+Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibraci, na webu se nezobrazují.
+
 ## Ověřeno
 
-- `npm test` – 12 testů (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace).
+- `npm test` – 13 testů (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
 - Prohlížeč 1440×900 a 375×812: úvod + přeskočení, výběr parcely myší / dotykem / klávesnicí (Tab, Enter, Esc),
   popup, filtry, pohledy (letecký, plán, řezy, nedostupné pohledy zašedlé), zoom/reset/kompas/nápověda/celá obrazovka,
   režimy Pozemky / Typové domy / Můj návrh, timelapse, detail domu (záložky půdorysy/situace/pohledy), Zpět v prohlížeči
-  (výběr se neztrácí), poptávka a validace. Konzole bez chyb.
+  (výběr se neztrácí), poptávka a validace, panorama 360° (stanoviště z mapy, výhled na parcelu, lišta stanovišť,
+  Zpět v prohlížeči, mobil, ukázka v sekci Lokalita). Konzole bez chyb.
 
 ## Podklady, které ještě chybí
 
@@ -109,7 +133,7 @@ Ověřeno v prohlížeči (schéma i sekvence snímků přes `?fixture=timelapse
 3. Tabulka povolených typů domů pro každou parcelu.
 4. Hranice jednotlivých parcel v rezervovaném bloku 64–70 a vektorový (DWG/DXF) situační plán – nahradí trasování z rastru.
 5. Animace výstavby a/nebo stavy 1–4 pro každý typ × variantu; případně 3D modely.
-6. Pro skutečný „průlet“ a přesné parcely v perspektivě: kamera/render s parcelami nebo letecké panorama 360°.
+6. Panoramata s vizualizací zástavby („po dostavbě“) ze stejných stanovišť; případně výškový model terénu pro přesnější překryv parcel.
 7. Obestavěná plocha přízemních variant D2/D3, dispozice domů C a D (katalog je neuvádí), vizualizace podvariant A2, B2, C2, D2, D3.
 8. Kontaktní údaje, zpracovatel poptávek (e-mail / CRM), GDPR text.
 9. Ověřené informace o lokalitě (doprava, vybavenost, sítě, termíny) – záměrně nejsou uvedeny.

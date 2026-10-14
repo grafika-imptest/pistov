@@ -105,6 +105,7 @@ export class Panel {
         ${plot.geometry?.approx ? `<p class="hint">Hranice této parcely je v podkladu jen částečně čitelná – zobrazení je orientační.</p>` : ""}
         ${!plot.geometry ? `<p class="hint">${esc(plot.geometryNote)}</p>` : ""}
       </header>
+      <button type="button" class="pano-link" data-action="pano-plot"><span class="pano-link__icon" aria-hidden="true">360°</span><span><b>Výhled na parcelu dnes</b><small>dronové panorama, stav před výstavbou</small></span><span aria-hidden="true">→</span></button>
       <dl class="facts facts--panel">
         <div><dt>Výměra</dt><dd>${m2(plot.area)}</dd></div>
         <div><dt>Cena pozemku</dt><dd>${price}<small>${plot.price ? "" : "bude doplněna developerem"}</small></dd></div>
@@ -262,6 +263,7 @@ export class Panel {
     else if (act === "enquire") a.goEnquiry();
     else if (act === "detail") a.openDetail(t.dataset.typeId);
     else if (act === "try") a.tryType(t.dataset.typeId);
+    else if (act === "pano-plot") a.openPanoForPlot(a.selection().plot);
     else if (act === "filter-free") { a.clearPlot(); a.store.set({ filters: { status: "available", area: null, type: null } }); }
   }
   _change() {}

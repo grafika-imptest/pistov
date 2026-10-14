@@ -53,6 +53,8 @@
       <div class="viewer" data-viewer tabindex="-1">
         <div class="viewer__scene" data-scene></div>
       </div>
+      <div class="pano-host" data-pano tabindex="0" aria-label="Panorama 360°: táhnutím se rozhlédnete"></div>
+      <div class="pano-ui" data-pano-ui></div>
       <div class="viewer__tooltip" data-tooltip role="status" aria-live="polite" hidden></div>
       <div class="viewer__hint" data-zoom-hint aria-hidden="true">Přiblížení: <kbd>Ctrl</kbd> + kolečko, nebo tlačítka +/−</div>
 
@@ -110,7 +112,8 @@
           <li><b>Posun</b> — táhněte myší nebo prstem.</li>
           <li><b>Přiblížení</b> — tlačítka +/−, dvojklik, <kbd>Ctrl</kbd> + kolečko nebo dva prsty.</li>
           <li><b>Klávesnice</b> — <kbd>Tab</kbd> mezi parcelami, <kbd>Enter</kbd> výběr, šipky posun, <kbd>+</kbd>/<kbd>−</kbd> zoom, <kbd>0</kbd> celá lokalita, <kbd>Esc</kbd> zrušení výběru.</li>
-          <li><b>Oko</b> — přepíná pohledy: letecká vizualizace, situační plán, řezy terénem.</li>
+          <li><b>Oko</b> — přepíná pohledy: letecká vizualizace, situační plán, řezy terénem a panorama 360° dnešní lokality.</li>
+          <li><b>Panorama 360°</b> — táhnutím se rozhlédnete, kroužky „360°“ v mapě otevřou výhled z daného místa.</li>
         </ul>
         <button class="btn btn--ink btn--sm" type="button" data-help-close>Rozumím</button>
       </div>
@@ -182,6 +185,14 @@
         <p class="eyebrow reveal">04 — Lokalita</p>
         <h2 class="h2 reveal" id="lokalita-title">Terén, voda a zeleň <em>v řezu</em></h2>
         <p class="lead reveal">Lokalita navazuje na stávající zástavbu obce. Podle situačního plánu ji z východu lemuje soustava vodních ploch a pás veřejné zeleně; domy jsou osazeny do mírně svažitého terénu.</p>
+        <figure class="pano-teaser reveal" data-pano-teaser>
+          <div class="pano-teaser__gl" data-teaser-gl tabindex="0" aria-label="Panorama 360° lokality, táhnutím se rozhlédnete"></div>
+          <figcaption class="pano-teaser__cap">
+            <span class="note">takhle to tu vypadá dnes – rozhlédněte se</span>
+            <span class="pano-teaser__meta">Dronové panorama 60 m nad středem lokality · 13. 10. 2026 · stav před výstavbou</span>
+            <button type="button" class="btn btn--paper btn--sm" data-teaser-open>Otevřít 360° v lokalitě <span aria-hidden="true">→</span></button>
+          </figcaption>
+        </figure>
         <div class="sections-gallery">
           <figure class="reveal"><img src="assets/img/section-1-1400.webp" srcset="assets/img/section-1-1400.webp 1400w, assets/img/section-1-2400.webp 2400w" sizes="(min-width: 1000px) 80vw, 100vw" width="4616" height="3278" alt="Řez terénem 1 s domy osazenými do svahu, M 1:200" loading="lazy" decoding="async"><figcaption><span class="note">řez terénem 1 · M 1 : 200</span></figcaption></figure>
           <figure class="reveal"><img src="assets/img/section-2-1400.webp" srcset="assets/img/section-2-1400.webp 1400w, assets/img/section-2-2400.webp 2400w" sizes="(min-width: 1000px) 80vw, 100vw" width="4615" height="3273" alt="Řez terénem 2 s domy osazenými do svahu, M 1:200" loading="lazy" decoding="async"><figcaption><span class="note">řez terénem 2 · M 1 : 200</span></figcaption></figure>

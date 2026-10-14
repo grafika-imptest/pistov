@@ -12,6 +12,8 @@ import { Detail } from "./ui/detail.js";
 import { Enquiry } from "./ui/enquiry.js";
 import { m2, plural } from "./ui/format.js";
 import { applyFixtures } from "./fixtures.js";
+import { planToMetres } from "./core/panorama.js";
+import { PanoTeaser } from "./ui/panoTeaser.js";
 
 const $ = (s) => document.querySelector(s);
 const url = readUrl();
@@ -29,6 +31,7 @@ const store = createStore({
   layout: url.layout || null,
   material: url.material || null,
   vis: url.vis || "plot",
+  station: project.panoramas.some((s) => s.id === url.station) ? url.station : project.defaultStation,
   detail: project.houseTypes.some((t) => t.id === url.detail) ? url.detail : null,
   filters: { status: "all", area: null, type: null },
   markers: true,
@@ -119,6 +122,22 @@ const app = {
   },
   scrollToExplorer,
   onSheetChange: () => updateInsets(),
+  /** open the 360° view at a station, optionally turned towards a plot */
+  openPano(stationId, plot) {
+    if (explorerRoot.dataset.phase !== "explore") intro.enter({ instant: true });
+    const st = store.get();
+    store.set({ view: "pano", station: stationId, ...(st.mode === "design" ? { mode: "plots" } : {}) }, { history: "push" });
+    explorer.showStation(stationId, { lookAtPlot: plot || null });
+  },
+  /** best station to look at a plot: an oblique view (≈ 22° down), not straight down from above */
+  openPanoForPlot(plot) {
+    if (!plot) return;
+    const pts = plot.geometry ? plot.geometry.plan : [plot.label.plan];
+    const c = planToMetres(project.planGeoref, pts.reduce((a, p) => [a[0] + p[0] / pts.length, a[1] + p[1] / pts.length], [0, 0]));
+    const score = (s) => { const d = Math.hypot(c[0] - s.enu[0], c[1] - s.enu[1]); const pitch = Math.atan2(s.altitude, d) * 180 / Math.PI; return Math.abs(pitch - 22) + (d > 450 ? 40 : 0); };
+    const best = [...project.panoramas].sort((a, b) => score(a) - score(b))[0];
+    app.openPano(best.id, plot);
+  },
 };
 let detailPushed = false;
 function scrollToExplorer() { $("#explorer").scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" }); }
@@ -128,6 +147,7 @@ const explorerRoot = $("#explorer");
 const explorer = new Explorer(explorerRoot, {
   project, store, statusOf,
   onSelectPlot: (plot, how) => app.selectPlot(plot.no, how),
+  onStation: (id) => app.openPano(id),
 });
 const intro = new Intro(explorerRoot, explorer);
 const panel = new Panel($("[data-panel]"), app);
@@ -156,7 +176,8 @@ function render(st, prev, changed) {
   for (const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-selected", String(b.dataset.mode === st.mode));
   document.querySelector("[data-modes]").dataset.on = st.mode;
 
-  if (!changed || changed.has("view")) { explorer.setView(st.view, { keepCamera: false }); if (sel.plot) explorer.framePlot(sel.plot.id, false); }
+  if (!changed || changed.has("view")) { explorer.setView(st.view, { keepCamera: false }); if (sel.plot && st.view !== "pano") explorer.framePlot(sel.plot.id, false); }
+  else if (changed.has("station") && st.view === "pano") explorer.showStation(st.station);
   // which plots are emphasised on the map
   const f = st.filters, filtering = f.status !== "all" || f.area || f.type;
   explorer.dimFn = st.mode === "plots" ? (filtering ? (p) => !matchesFilters(project, p, f, statusOf) : null)
@@ -196,6 +217,7 @@ window.addEventListener("popstate", () => {
   store.set({
     plotNo: u.plotNo ?? null, type: u.type ?? null, layout: u.layout ?? null, material: u.material ?? null,
     mode: u.mode || "plots", view: u.view || project.defaultView, detail: u.detail ?? null, vis: u.vis || "plot",
+    station: u.station || project.defaultStation,
   }, { silentUrl: true });
   const sel = selection();
   if (sel.plot) explorer.framePlot(sel.plot.id); else explorer.frameAll(true);
@@ -244,9 +266,11 @@ if (!location.hash) window.scrollTo(0, 0);
 render(store.get(), null, null);
 updateInsets();
 revealOnScroll();
-const deepLink = url.plotNo || url.mode || url.detail || url.type;
-if (deepLink) { intro.enter({ instant: true }); requestAnimationFrame(() => { updateInsets(); const sel = selection(); if (sel.plot) explorer.framePlot(sel.plot.id, false); else explorer.frameAll(false); }); }
+new PanoTeaser(document.querySelector("[data-pano-teaser]"), app);
+const deepLink = url.plotNo || url.mode || url.detail || url.type || (url.view && url.view !== project.defaultView);
+if (deepLink) { intro.enter({ instant: true }); updateInsets(); requestAnimationFrame(() => { updateInsets(); const sel = selection(); if (sel.plot) explorer.framePlot(sel.plot.id, false); else explorer.frameAll(false); }); }
 else intro.play();
 
 // exposed for automated checks in the browser console
 window.__pistov = { app, store, explorer, stage, intro };
+if (new URLSearchParams(location.search).has("kalibrace")) import("./dev/calibrate.js").then((m) => m.startCalibration(app, explorer));

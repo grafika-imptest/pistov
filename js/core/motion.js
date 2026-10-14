@@ -1,5 +1,6 @@
 // Motion tokens + helpers shared by all components (durations mirror css/tokens.css).
-const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+// guarded so pure modules can be imported in Node tests
+const mq = typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false, addEventListener() {} };
 export const reducedMotion = () => mq.matches;
 export const onReducedMotionChange = (fn) => mq.addEventListener("change", fn);
 

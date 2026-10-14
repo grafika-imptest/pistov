@@ -6,6 +6,7 @@ import { houseTypes, siteRules } from "./houseTypes.js";
 import { houseVariants } from "./houseVariants.js";
 import { plotHouseCompatibility } from "./plotHouseCompatibility.js";
 import { demoStatusOverrides } from "./statusOverrides.demo.js";
+import { panoramas, PLAN_GEOREF } from "./panoramas.generated.js";
 
 const IMG = "assets/img/";
 
@@ -32,6 +33,9 @@ export const project = {
   compatibility: plotHouseCompatibility,
   demoStatusOverrides,
   planMetersPerPx: PLAN_M_PER_PX,
+  panoramas,
+  planGeoref: PLAN_GEOREF,
+  defaultStation: "stred-60",
   pricing: {
     plotPriceNote: "Cena pozemku bude doplněna",
     housePriceNote: "Orientační cena domu bude doplněna",
@@ -56,7 +60,7 @@ export const project = {
     },
     { id: "section-1", label: "Řez terénem 1", kind: "image", interactive: false, size: [4616, 3278], sources: [[1400, IMG + "section-1-1400.webp"], [2400, IMG + "section-1-2400.webp"]], caption: "Řez terénem 1 · M 1 : 200 · bez výběru parcel" },
     { id: "section-2", label: "Řez terénem 2", kind: "image", interactive: false, size: [4615, 3273], sources: [[1400, IMG + "section-2-1400.webp"], [2400, IMG + "section-2-2400.webp"]], caption: "Řez terénem 2 · M 1 : 200 · bez výběru parcel" },
-    { id: "pano", label: "Panorama 360°", kind: "panorama", interactive: true, pending: "Čeká na panoramatické snímky" },
+    { id: "pano", label: "Panorama 360° · dnes", kind: "panorama", interactive: true, caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
     { id: "street", label: "Pohled z ulice", kind: "image", interactive: true, pending: "Čeká na podklady" },
   ],
   defaultView: "aerial",

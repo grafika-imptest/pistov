@@ -74,7 +74,7 @@ test("assets: every referenced image exists", () => {
     for (const l of t.layouts) assert.ok(exists(project.img(l.sheet, 1100)), l.sheet);
     assert.ok(exists(project.img(t.sheets.site, 1100)));
   }
-  for (const v of project.views.filter((x) => !x.pending)) for (const [, src] of v.sources) assert.ok(exists(src), src);
+  for (const v of project.views.filter((x) => !x.pending && x.sources)) for (const [, src] of v.sources) assert.ok(exists(src), src);
 });
 
 test("compatibility: rules exclude types and explain why", () => {
@@ -125,4 +125,26 @@ test("timelapse slots: every variant declares an animation slot (null until deli
     assert.ok("timelapse" in v, v.id);
     if (v.timelapse) assert.ok(["video", "frames"].includes(v.timelapse.kind));
   }
+});
+
+test("panoramas: six calibrated stations with existing images", async () => {
+  const { planToMetres, bearingTo } = await import("../js/core/panorama.js");
+  assert.equal(project.panoramas.length, 6);
+  for (const s of project.panoramas) {
+    assert.ok(s.heading >= 0 && s.heading < 360, s.id);
+    assert.ok(s.altitude > 20 && s.altitude < 120, s.id);
+    for (const src of Object.values(s.sources)) assert.ok(exists(src), src);
+    assert.equal(s.future, null, "no visualisation in panoramas yet");
+  }
+  // the centre station really is above the development: inside the bounding box of the traced plots
+  const pts = project.plots.filter((p) => p.geometry).flatMap((p) => p.geometry.plan);
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const c = project.panoramas.find((s) => s.id === "stred-60").plan;
+  assert.ok(c[0] > Math.min(...xs) && c[0] < Math.max(...xs) && c[1] > Math.min(...ys) && c[1] < Math.max(...ys));
+  // georeference round trip: station metres → plan px (generated) → metres
+  const s = project.panoramas.find((x) => x.id === "vychod");
+  const m = planToMetres(project.planGeoref, s.plan);
+  assert.ok(Math.hypot(m[0] - s.enu[0], m[1] - s.enu[1]) < 0.5);
+  // plan is roughly north-up: the northern station is north of the centre
+  assert.ok(Math.abs(bearingTo(project.panoramas.find((x) => x.id === "stred-60").enu, project.panoramas.find((x) => x.id === "sever").enu) - 355) < 10);
 });

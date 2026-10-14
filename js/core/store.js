@@ -10,6 +10,7 @@ const URL_KEYS = {
   view: "pohled",
   detail: "detail",
   vis: "stav",
+  station: "stanoviste",
 };
 const MODE_SLUG = { plots: "pozemky", houses: "domy", design: "navrh" };
 const SLUG_MODE = Object.fromEntries(Object.entries(MODE_SLUG).map(([k, v]) => [v, k]));
@@ -36,7 +37,7 @@ export function readUrl() {
   const out = {};
   const plot = q.get(URL_KEYS.plot);
   if (plot && /^\d+$/.test(plot)) out.plotNo = Number(plot);
-  for (const k of ["type", "layout", "material", "view", "detail"]) if (q.get(URL_KEYS[k])) out[k] = q.get(URL_KEYS[k]);
+  for (const k of ["type", "layout", "material", "view", "detail", "station"]) if (q.get(URL_KEYS[k])) out[k] = q.get(URL_KEYS[k]);
   if (q.get(URL_KEYS.mode)) out.mode = SLUG_MODE[q.get(URL_KEYS.mode)];
   if (q.get(URL_KEYS.vis) === "dum") out.vis = "house";
   out.demo = q.get("demo");
@@ -54,6 +55,7 @@ function writeUrl(s, history) {
   put("mode", s.mode && s.mode !== "plots" ? MODE_SLUG[s.mode] : null);
   put("view", s.view && s.view !== s.defaultView ? s.view : null);
   put("detail", s.detail);
+  put("station", s.view === "pano" ? s.station : null);
   put("vis", s.mode === "design" && s.vis === "house" ? "dum" : null);
   const url = `${location.pathname}${q.toString() ? "?" + q : ""}${location.hash}`;
   if (url === location.pathname + location.search + location.hash) return;
