@@ -594,10 +594,6 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 }
 
 
-.sections-gallery { display: grid; gap: var(--s7); margin-top: var(--s6); }
-.sections-gallery figure { margin: 0; position: relative; }
-.sections-gallery img { width: 100%; height: auto; border-radius: var(--r-xs); }
-.sections-gallery figcaption { position: absolute; right: 12px; bottom: -28px; }
 
 .poptavka__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
 @media (max-width: 899px) { .poptavka__grid { grid-template-columns: 1fr; } }
