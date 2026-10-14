@@ -4,6 +4,7 @@ import { esc, plural } from "./format.js";
 import { plotsForType } from "../core/compat.js";
 import { reducedMotion } from "../core/motion.js";
 import { saveButtons } from "../site/collections.js";
+import { smoothTo } from "../site/smooth.js";
 
 // tag colours of the cards (catalogue palette: clay, olive, amber, graphite)
 const TONES = ["#b5533c", "#5f6b3f", "#a5752f", "#45443e"];
@@ -156,7 +157,7 @@ export class Catalog {
       const prev = card.style.position; card.style.position = "static";
       const y = card.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(card).top) || 0);
       card.style.position = prev;
-      scrollTo({ top: y + 1, behavior: reducedMotion() ? "auto" : "smooth" });
+      smoothTo(y + 1);
     });
     update();
   }

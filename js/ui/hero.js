@@ -6,6 +6,7 @@
 import { reducedMotion, wait } from "../core/motion.js";
 import { draw } from "./sketch.js";
 import { HeroNotes } from "./heroNotes.js";
+import { smoothTo } from "../site/smooth.js";
 
 // once per browser session: a new visit starts with the film, coming back from a subpage does not
 const KEY = "pistov:intro-seen";
@@ -79,7 +80,7 @@ export class Intro {
   replay() {
     this.ctrl?.abort();
     this._removeVideo();
-    window.scrollTo({ top: 0, behavior: "auto" });
+    smoothTo(0, { immediate: true });
     this.root.classList.remove("hero-in");
     this.notes.stop();
     return this.play({ force: true });

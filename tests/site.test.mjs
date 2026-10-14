@@ -150,3 +150,9 @@ test("edition switch: pages map to their counterpart, configuration survives the
   assert.equal(toAtelier("domy.html#dum-b"), "index.html#domy");
   assert.equal(toAtelier("kontakty.html#formular"), "kontakty.html#formular");
 });
+
+test("ateliér smooth scroll: Lenis vendored and started from the shared chrome", () => {
+  assert.ok(exists("assets/vendor/lenis/lenis.min.js") && exists("assets/vendor/lenis/lenis.css"));
+  assert.match(read("js/site/chrome.js"), /initSmoothScroll\(\)/);
+  assert.match(read("js/site/smooth.js"), /EDITION !== "atelier"/);
+});

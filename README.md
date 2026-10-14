@@ -72,6 +72,7 @@ Nový projekt = nová složka `js/projects/<nazev>/` se stejnou strukturou a imp
   stejnou stránku ve druhé verzi včetně konfigurace v URL (`js/site/edition.js`).
 - Studio stránky mají `<base href="../">`; odkazy se píšou v „ateliérových“ cestách a převádí je `edition.js`.
 - Po změně `index.html` (konfigurátor) nebo `tools/studio/home.html` / `tools/site-pages.mjs`: `cd tools && node build-pages.mjs && node build-studio.mjs`.
+- Ateliér má plynulé scrollování **Lenis 1.1.18** (`assets/vendor/lenis`, `js/site/smooth.js`, nastavení jako IKO Plzeň): jen desktop, ne při omezeném pohybu; vnořené scrollery a Ctrl+kolečko na mapě zůstávají nativní.
 - Styl Studia: `css/studio.css` (přemapované tokeny + vlastní layout), pohyb `js/studio/motion.js`.
 - Koncept, UX audit, specifikace a sebekritika: [docs/studio-koncept.md](docs/studio-koncept.md).
 
@@ -172,7 +173,7 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
 
 ## Ověřeno
 
-- `npm test` – 26 testů (vč. podstránek, odkazů, obsahu, oblíbených/porovnání) (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
+- `npm test` – 27 testů (vč. podstránek, odkazů, obsahu, oblíbených/porovnání) (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
 - Prohlížeč 1440×900 a 375×812: úvod + přeskočení, výběr parcely myší / dotykem / klávesnicí (Tab, Enter, Esc),
   popup, filtry, pohledy (letecký, plán, řezy, nedostupné pohledy zašedlé), zoom/reset/kompas/nápověda/celá obrazovka,
   režimy Pozemky / Typové domy / Můj návrh, timelapse, detail domu (záložky půdorysy/situace/pohledy), Zpět v prohlížeči

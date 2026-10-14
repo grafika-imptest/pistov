@@ -19,6 +19,7 @@ import { renderHomeTeasers } from "./site/teasers.js";
 import { collections, bindSaveButtons, syncSaveButtons, COMPARE_MAX } from "./site/collections.js";
 import { toast } from "./site/ui.js";
 import { EDITION } from "./site/edition.js";
+import { smoothTo } from "./site/smooth.js";
 
 // shared header (navigation, favourites / comparison counters, menu), footer and cookie consent
 // The same app runs the ateliér home page and the studio offer page (studio/nabidka.html, no intro film there).
@@ -127,7 +128,7 @@ const app = {
   closeDetail() { if (detailPushed) { detailPushed = false; history.back(); } else store.set({ detail: null }); },
   goEnquiry() {
     const el = $("#poptavka");
-    el.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" });
+    smoothTo(el);
     setTimeout(() => $("#f-name").focus({ preventScroll: true }), reducedMotion() ? 0 : 700);
   },
   scrollToExplorer,
@@ -162,7 +163,7 @@ const app = {
   },
 };
 let detailPushed = false;
-function scrollToExplorer() { $("#explorer").scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" }); }
+function scrollToExplorer() { smoothTo($("#explorer")); }
 
 // ---------------- components ----------------
 const explorerRoot = $("#explorer");

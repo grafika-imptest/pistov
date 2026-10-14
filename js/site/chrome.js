@@ -2,6 +2,7 @@
 import { site } from "../projects/pistov/content.js";
 import { collections } from "./collections.js";
 import { EDITION, EDITIONS, otherEditionHref, keepLinksInEdition } from "./edition.js";
+import { initSmoothScroll } from "./smooth.js";
 
 export const NAV = [
   { href: "index.html#explorer", label: "Lokalita", id: "lokalita" },
@@ -96,6 +97,7 @@ export function renderChrome({ page = "", solid = false } = {}) {
   if (!home) header?.querySelector(".brand")?.addEventListener("click", () => { try { sessionStorage.removeItem("pistov:intro-seen"); } catch { /* private mode */ } });
   renderFooter();
   updateCounts();
+  initSmoothScroll(); // Lenis – ateliér edition, desktop only
   if (EDITION === "studio") { keepLinksInEdition(); studioHeader(header, solid); }
   // the configuration lives in the URL and changes while browsing → resolve the switch target at click time
   if (!document._edSwitch) {
