@@ -64,6 +64,8 @@ export function renderChrome({ page = "", solid = false } = {}) {
     });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !m.hidden) open(false); });
   }
+  // logo on a subpage = open the site again from the start, including the intro film
+  if (!home) header?.querySelector(".brand")?.addEventListener("click", () => { try { sessionStorage.removeItem("pistov:intro-seen"); } catch { /* private mode */ } });
   renderFooter();
   updateCounts();
   collections.subscribe(updateCounts);

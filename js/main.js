@@ -128,6 +128,18 @@ const app = {
     setTimeout(() => $("#f-name").focus({ preventScroll: true }), reducedMotion() ? 0 : 700);
   },
   scrollToExplorer,
+  /** logo: back to the very beginning, as if the site was opened again – clean selection, top of the page, intro film */
+  restart() {
+    detailPushed = false;
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    store.set({
+      plotNo: null, type: null, layout: null, material: null, mode: "plots", view: project.defaultView, detail: null,
+      vis: "plot", station: project.defaultStation, filters: { status: "all", area: null, type: null },
+    }, { history: "push" });
+    if (!desktop()) panel.setSheet("peek");
+    intro.replay();
+    updateInsets();
+  },
   onSheetChange: () => updateInsets(),
   /** open the 360° view at a station, optionally turned towards a plot */
   openPano(stationId, plot) {
@@ -226,7 +238,9 @@ window.addEventListener("popstate", () => {
     mode: u.mode || "plots", view: u.view || project.defaultView, detail: u.detail ?? null, vis: u.vis || "plot",
     station: u.station || project.defaultStation,
   }, { silentUrl: true });
+  if ((u.plotNo || u.mode || u.type || u.detail || (u.view && u.view !== project.defaultView)) && explorerRoot.dataset.phase !== "explore") { intro.enter({ instant: true }); updateInsets(); }
   const sel = selection();
+  if (explorerRoot.dataset.phase !== "explore") return;
   if (sel.plot) explorer.framePlot(sel.plot.id); else explorer.frameAll(true);
 });
 
@@ -243,6 +257,7 @@ document.querySelector("[data-modes]").addEventListener("keydown", (e) => {
 });
 $("[data-enter]").addEventListener("click", () => { intro.enter(); updateInsets(); explorer.frameAll(true, 900); });
 $("[data-skip]").addEventListener("click", () => { intro.enter({ instant: true }); updateInsets(); explorer.frameAll(true, 600); });
+$(".topbar .brand")?.addEventListener("click", (e) => { e.preventDefault(); app.restart(); });
 const replayBtn = $("[data-replay]");
 if (project.introVideo && replayBtn) { replayBtn.hidden = false; replayBtn.addEventListener("click", () => intro.replay()); }
 $("[data-cta-global]").addEventListener("click", (e) => { e.preventDefault(); app.goEnquiry(); });
