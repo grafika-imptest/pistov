@@ -200,19 +200,20 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 /* hand-written notes over the map: arrow draws in → note writes itself → note goes → arrow retracts */
 .hero-notes { position: absolute; inset: 0; z-index: var(--z-hero); pointer-events: none; }
 .explorer:not([data-phase="ready"]) .hero-notes { visibility: hidden; }
+.hnote { position: absolute; inset: 0; }
 .hnote__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .hnote__svg path { fill: none; stroke: #fffaf0; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; filter: drop-shadow(0 1px 2px rgba(20, 20, 18, 0.55)); }
 .hnote__label { position: absolute; left: 0; top: 0; margin: 0; padding: 6px 14px 8px; display: grid; justify-items: start; background: rgba(251, 248, 241, 0.95); color: var(--red); font-family: var(--hand); font-size: 1.55rem; line-height: 1.05; white-space: nowrap; border-radius: 3px; box-shadow: 0 6px 22px rgba(20, 20, 18, 0.28); opacity: 0; transform: rotate(var(--tilt, -2deg)) scale(0.94); transform-origin: 50% 60%; }
 .hnote__ln { display: block; }
 .hnote__ln > span { display: inline-block; clip-path: inset(-10% 100% -10% 0); }
-.hero-notes[data-state="arrow"] .hnote__line { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ease-inout); }
-.hero-notes[data-state="arrow"] .hnote__head { stroke-dashoffset: 0; transition: stroke-dashoffset 260ms ease-out 760ms; }
-.hero-notes:is([data-state="text"], [data-state="text-out"]) path { stroke-dashoffset: 0; }
-.hero-notes:is([data-state="text"], [data-state="text-out"]) .hnote__ln > span { clip-path: inset(-10% -4% -10% 0); transition: clip-path var(--w, 600ms) linear var(--d, 0ms); }
-.hero-notes[data-state="text"] .hnote__label { opacity: 1; transform: rotate(var(--tilt, -2deg)); transition: opacity 220ms ease-out, transform 320ms var(--ease-out); }
-.hero-notes[data-state="text-out"] .hnote__label { opacity: 0; transform: rotate(var(--tilt, -2deg)) translateY(-4px); transition: opacity 420ms ease-in, transform 420ms ease-in; }
-.hero-notes[data-state="out"] .hnote__line { stroke-dashoffset: -1; transition: stroke-dashoffset 750ms var(--ease-inout); }
-.hero-notes[data-state="out"] .hnote__head { stroke-dashoffset: 0; opacity: 0; transition: opacity 250ms ease-in 520ms; }
+.hnote[data-state="arrow"] .hnote__line { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ease-inout); }
+.hnote[data-state="arrow"] .hnote__head { stroke-dashoffset: 0; transition: stroke-dashoffset 260ms ease-out 760ms; }
+.hnote:is([data-state="text"], [data-state="text-out"]) path { stroke-dashoffset: 0; }
+.hnote:is([data-state="text"], [data-state="text-out"]) .hnote__ln > span { clip-path: inset(-10% -4% -10% 0); transition: clip-path var(--w, 600ms) linear var(--d, 0ms); }
+.hnote[data-state="text"] .hnote__label { opacity: 1; transform: rotate(var(--tilt, -2deg)); transition: opacity 220ms ease-out, transform 320ms var(--ease-out); }
+.hnote[data-state="text-out"] .hnote__label { opacity: 0; transform: rotate(var(--tilt, -2deg)) translateY(-4px); transition: opacity 420ms ease-in, transform 420ms ease-in; }
+.hnote[data-state="out"] .hnote__line { stroke-dashoffset: -1; transition: stroke-dashoffset 750ms var(--ease-inout); }
+.hnote[data-state="out"] .hnote__head { stroke-dashoffset: 0; opacity: 0; transition: opacity 250ms ease-in 520ms; }
 @media (max-width: 1099px) { .hero-notes { display: none; } }
 @media (max-height: 760px) and (min-width: 700px) { .hero__lead { font-size: var(--fs-md); margin-bottom: var(--s5); } .hero__kicker { margin-bottom: var(--s3); } .hero__actions .btn--lg { min-height: 48px; } }
 
