@@ -5,6 +5,7 @@
 // Scene 3 – exploration: camera settles on the overview; boundaries trace in, controls appear.
 import { reducedMotion, wait } from "../core/motion.js";
 import { draw } from "./sketch.js";
+import { HeroNotes } from "./heroNotes.js";
 
 // once per browser session: a new visit starts with the film, coming back from a subpage does not
 const KEY = "pistov:intro-seen";
@@ -13,12 +14,11 @@ export class Intro {
   constructor(root, explorer) {
     this.root = root; this.explorer = explorer;
     this.caption = root.querySelector("[data-intro-caption]");
-    this.arrow = root.querySelector("[data-hero-arrow]");
-    this.note = root.querySelector("[data-hero-note]");
+    this.notes = new HeroNotes(root, explorer, explorer.project.heroNotes);
     // the arrow follows the camera, so it always points at the development
-    explorer.onViewChange = () => { if (root.dataset.phase !== "explore") this.placeArrow(); };
+    explorer.onViewChange = () => { if (root.dataset.phase !== "explore") this.notes.update(); };
     window.addEventListener("resize", () => {
-      this.placeArrow();
+      this.notes.update();
       // the hero framing is recomputed on resize → restart the drift from the new framing
       if (root.dataset.phase !== "ready" || reducedMotion()) return;
       this._stopDrift();
@@ -72,34 +72,6 @@ export class Intro {
     this._driftOff?.abort(); this._driftOff = null;
   }
 
-  _drawArrow() {
-    const a = this.arrow; if (!a) return;
-    this.placeArrow();
-    a.classList.remove("is-drawn"); void a.getBoundingClientRect(); a.classList.add("is-drawn");
-  }
-
-  /** hand-drawn arrow from below the note to the middle of the planned houses (never across the text) */
-  placeArrow() {
-    const a = this.arrow, note = this.note; if (!a || !note) return;
-    if (getComputedStyle(note).display === "none" || !this.explorer.layer.nodes.size) { a.style.display = "none"; return; }
-    a.style.display = "";
-    const er = this.root.getBoundingClientRect(), nr = note.getBoundingClientRect();
-    const box = this.explorer.layer.allBox();
-    const [tx, ty] = this.explorer.viewer.toScreen([box.x + box.w * 0.5, box.y + box.h * 0.55]);
-    const sx = nr.left - er.left + nr.width * 0.3, sy = nr.bottom - er.top + 14;
-    // stop short of the target, bend like a pen stroke
-    const dx = tx - sx, dy = ty - sy, len = Math.hypot(dx, dy);
-    if (len < 80) { a.style.display = "none"; return; }
-    const ex = tx - (dx / len) * 22, ey = ty - (dy / len) * 22;
-    const side = dx < 0 ? -1 : 1;
-    const cx = sx + dx * 0.2 - side * Math.min(140, len * 0.28), cy = sy + dy * 0.75;
-    const f = (n) => n.toFixed(1);
-    const tl = Math.hypot(ex - cx, ey - cy), ux = (ex - cx) / tl, uy = (ey - cy) / tl, h = 13;
-    const h1 = [ex - ux * h - uy * h * 0.55, ey - uy * h + ux * h * 0.55], h2 = [ex - ux * h + uy * h * 0.55, ey - uy * h - ux * h * 0.55];
-    const [p1, p2] = a.querySelectorAll("path");
-    p1.setAttribute("d", `M${f(sx)} ${f(sy)} Q ${f(cx)} ${f(cy)} ${f(ex)} ${f(ey)}`);
-    p2.setAttribute("d", `M${f(h1[0])} ${f(h1[1])} L${f(ex)} ${f(ey)} L${f(h2[0])} ${f(h2[1])}`);
-  }
   get seen() { try { return sessionStorage.getItem(KEY) === "1"; } catch { return false; } }
   markSeen() { try { sessionStorage.setItem(KEY, "1"); } catch { /* private mode */ } }
 
@@ -109,13 +81,14 @@ export class Intro {
     this._removeVideo();
     window.scrollTo({ top: 0, behavior: "auto" });
     this.root.classList.remove("hero-in");
-    this.arrow?.classList.remove("is-drawn");
+    this.notes.stop();
     return this.play({ force: true });
   }
 
   async play({ force = false } = {}) {
     const ex = this.explorer, v = ex.viewer, root = this.root;
     this._stopDrift();
+    this.notes.stop();
     this.ctrl = new AbortController(); const { signal } = this.ctrl;
     root.dataset.phase = "intro";
     v.interactive = false;
@@ -130,12 +103,12 @@ export class Intro {
         if (played) {
           ex.heroFrame(true, 1900);
           await wait(1950, signal);
-          this._drawArrow();
           this._caption("");
           this.markSeen();
           root.dataset.phase = "ready";
           v.interactive = true;
           this._startDrift();
+          this.notes.start();
           return;
         }
       } catch (e) { if (e.name === "AbortError") return; throw e; }
@@ -151,7 +124,6 @@ export class Intro {
       await wait(350, signal);
       root.classList.add("hero-in");
       draw(root.querySelector(".hero"));
-      this._drawArrow();
       await wait(900, signal);
       // Scene 2: the drawing becomes the place
       root.classList.add("is-transforming");
@@ -170,6 +142,7 @@ export class Intro {
       root.dataset.phase = "ready";
       v.interactive = true;
       this._startDrift();
+      this.notes.start();
     } catch (e) {
       if (e.name !== "AbortError") throw e;
     }
@@ -219,18 +192,19 @@ export class Intro {
     root.classList.add("hero-in");
     draw(root.querySelector(".hero"));
     ex.heroFrame(!reducedMotion(), 700);
-    this._drawArrow();
     this._caption("");
     this.markSeen();
     root.dataset.phase = "ready";
     ex.viewer.interactive = true;
     this._startDrift(reducedMotion() ? 0 : 760); // after the 700 ms settle animation
+    this.notes.start();
   }
 
   /** Scene 3: from presentation to exploration */
   enter({ instant = false } = {}) {
     this.ctrl?.abort();
     this._stopDrift();
+    this.notes.stop();
     const root = this.root, ex = this.explorer;
     this._removeVideo();
     root.querySelector(".viewer__overlay")?.remove();

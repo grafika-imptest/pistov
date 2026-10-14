@@ -17,6 +17,22 @@ const plots = plotsSource.map((p) => ({
   statusSource: "Situační plán, katalog duben 2026",
 }));
 
+// Hand-written notes that take turns over the aerial view in the hero. Only facts from the plan / plot data;
+// anchors in aerial-view pixels, by plot number(s) or by panorama station.
+const nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
+const reserved = plots.filter((p) => p.status === "reserved").map((p) => p.no).sort((a, b) => a - b);
+const biggestFree = plots.filter((p) => p.status === "available").reduce((a, p) => (p.area > a.area ? p : a));
+const heroNotes = [
+  { lines: ["z výkresu architekta", "až k budoucí ulici"], at: "centre" },
+  { lines: ["rybníky a pás", "veřejné zeleně"], at: [2520, 470] },
+  { lines: ["rezervované parcely", `${reserved[0]}–${reserved[reserved.length - 1]}`], at: { plots: reserved } },
+  { lines: ["největší volná parcela", `č. ${biggestFree.no} · ${nf(biggestFree.area)} m²`], at: { plot: biggestFree.no } },
+  { lines: ["odsud jsme fotili", "panorama 360°"], at: { station: "stred-60" } },
+  { lines: ["stávající", "zástavba obce"], at: [1480, 228] },
+  { lines: ["čtyři typy domů", "od TAM architekti"], at: { plot: 14 } },
+  { lines: ["pole a krajina", "kolem lokality"], at: [2900, 1760] },
+];
+
 export const project = {
   id: "pistov",
   name: "Pístov",
@@ -36,6 +52,7 @@ export const project = {
   panoramas,
   planGeoref: PLAN_GEOREF,
   defaultStation: "stred-60",
+  heroNotes,
   pricing: {
     plotPriceNote: "Cena pozemku bude doplněna",
     housePriceNote: "Orientační cena domu bude doplněna",
