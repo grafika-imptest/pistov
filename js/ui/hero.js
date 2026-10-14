@@ -6,6 +6,7 @@
 import { reducedMotion, wait } from "../core/motion.js";
 import { draw } from "./sketch.js";
 
+// once per browser session: a new visit starts with the film, coming back from a subpage does not
 const KEY = "pistov:intro-seen";
 
 export class Intro {
@@ -47,16 +48,26 @@ export class Intro {
     p1.setAttribute("d", `M${f(sx)} ${f(sy)} Q ${f(cx)} ${f(cy)} ${f(ex)} ${f(ey)}`);
     p2.setAttribute("d", `M${f(h1[0])} ${f(h1[1])} L${f(ex)} ${f(ey)} L${f(h2[0])} ${f(h2[1])}`);
   }
-  get seen() { try { return localStorage.getItem(KEY) === "1"; } catch { return false; } }
-  markSeen() { try { localStorage.setItem(KEY, "1"); } catch { /* private mode */ } }
+  get seen() { try { return sessionStorage.getItem(KEY) === "1"; } catch { return false; } }
+  markSeen() { try { sessionStorage.setItem(KEY, "1"); } catch { /* private mode */ } }
 
-  async play() {
+  /** play the intro film again on request (button in the hero) */
+  replay() {
+    this.ctrl?.abort();
+    this._removeVideo();
+    window.scrollTo({ top: 0, behavior: "auto" });
+    this.root.classList.remove("hero-in");
+    this.arrow?.classList.remove("is-drawn");
+    return this.play({ force: true });
+  }
+
+  async play({ force = false } = {}) {
     const ex = this.explorer, v = ex.viewer, root = this.root;
     this.ctrl = new AbortController(); const { signal } = this.ctrl;
     root.dataset.phase = "intro";
     v.interactive = false;
     const all = ex.layer.allBox();
-    const short = this.seen || reducedMotion() || window.innerWidth < 700;
+    const short = !force && (this.seen || reducedMotion() || window.innerWidth < 700);
     if (short) { this._settle(); return; }
 
     // preferred: the intro film (drone over the plots → houses rise → fly-through → back to the overview)

@@ -243,6 +243,8 @@ document.querySelector("[data-modes]").addEventListener("keydown", (e) => {
 });
 $("[data-enter]").addEventListener("click", () => { intro.enter(); updateInsets(); explorer.frameAll(true, 900); });
 $("[data-skip]").addEventListener("click", () => { intro.enter({ instant: true }); updateInsets(); explorer.frameAll(true, 600); });
+const replayBtn = $("[data-replay]");
+if (project.introVideo && replayBtn) { replayBtn.hidden = false; replayBtn.addEventListener("click", () => intro.replay()); }
 $("[data-cta-global]").addEventListener("click", (e) => { e.preventDefault(); app.goEnquiry(); });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape" || document.querySelector("dialog[open]") || document.querySelector(".popover:not([hidden])")) return;
