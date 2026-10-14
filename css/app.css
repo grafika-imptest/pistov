@@ -610,7 +610,8 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 .pano__no.is-selected { stroke: var(--red); }
 .pano__station { cursor: pointer; outline: none; }
 .pano__station circle { fill: rgba(244, 239, 227, 0.92); stroke: var(--ink); stroke-width: 1.2; transition: transform var(--dur-fast); }
-.pano__station-arrow { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pano__station .pano__station-eye { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+.pano__station .pano__station-pupil, .pano__station:hover .pano__station-pupil, .pano__station:focus-visible .pano__station-pupil { fill: var(--ink); stroke: none; }
 .pano__station text { fill: #fff; font: 600 11px var(--font); letter-spacing: 0.06em; text-anchor: middle; paint-order: stroke; stroke: rgba(20, 20, 18, 0.8); stroke-width: 3px; text-transform: uppercase; }
 .pano__station:hover circle, .pano__station:focus-visible circle { fill: #fff; transform: scale(1.12); }
 .pano__loading { position: absolute; right: 16px; bottom: 16px; width: 26px; height: 26px; opacity: 0; transition: opacity var(--dur-ui); pointer-events: none; }

@@ -175,7 +175,8 @@ export class PanoramaViewer {
       if (placed.some((p) => Math.hypot(p[0] - s.enu[0], p[1] - s.enu[1]) < 15)) continue;
       placed.push(s.enu);
       const g = mk("g", { class: "pano__station", "data-station": s.id, tabindex: "0", role: "button", "aria-label": `Přesunout se: ${s.label}, ${s.short}` });
-      g.append(mk("circle", { r: "17" }), mk("path", { d: "M-7 3 0-6 7 3M0-6V8", class: "pano__station-arrow" }));
+      // eye icon = "look from here" (same symbol as the views control)
+      g.append(mk("circle", { r: "17" }), mk("path", { d: "M-9.5 0C-7 -4.6 -3.8 -6 0 -6S7 -4.6 9.5 0C7 4.6 3.8 6 0 6S-7 4.6 -9.5 0Z", class: "pano__station-eye" }), mk("circle", { r: "2.6", class: "pano__station-pupil" }));
       const t = mk("text", { y: "34" }); t.textContent = s.short; g.append(t);
       gS.append(g); this.stationNodes.set(s.id, { s, g });
     }
