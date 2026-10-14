@@ -39,7 +39,7 @@
 
   /* space */
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px; --s9: 112px;
-  --gutter: clamp(16px, 4vw, 56px);
+  --gutter: clamp(16px, 2.2vw, 40px);
   --wrap: 1280px;
   --topbar-h: 64px;
 
