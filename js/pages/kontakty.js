@@ -7,13 +7,13 @@ import { planToMetres } from "../core/panorama.js";
 
 renderChrome({ page: "kontakty", solid: true });
 const { lat, lon } = site.location;
-const card = (title, c, extra = "") => `<div class="contact"><p class="eyebrow">${title}</p><p class="contact__name">${esc(c.brand || c.name)}</p><p>${esc(c.address)}</p><p class="muted">${esc(c.role)}</p>${extra}</div>`;
+const card = (title, c, extra = "") => `<div class="contact"><p class="eyebrow">${title}</p>${c.logo ? `<img class="contact__logo" src="${c.logo}" alt="${esc(c.brand)}" width="900" height="529">` : ""}<p class="contact__name">${esc(c.brand || c.name)}</p><p>${esc(c.address)}</p><p class="muted">${esc(c.role)}</p>${extra}</div>`;
 const dev = site.developer, tel = (p) => `<a href="tel:${p.replace(/s/g, "")}">${p}</a>`;
 
 document.querySelector("[data-contacts]").innerHTML = `
   <div class="wrap contacts">
     <div class="contacts__cards">
-      ${card("Developer a prodej", dev, `
+      ${card("Developer a prodej", { ...dev, logo: "assets/img/hv-logo-dark.png" }, `
         <p class="contact__lines">${tel(dev.phone)}<br><a href="mailto:${dev.email}">${dev.email}</a><br><a href="${dev.web}" target="_blank" rel="noopener">hvreality.cz</a></p>
         <p class="muted contact__small">${esc(dev.name)} · IČO ${dev.ico} · ${esc(site.salesContact.note)}</p>
         <p class="contact__actions"><a class="btn btn--red btn--sm" href="#formular">Napsat poptávku</a> <a class="link" href="developer.html">O developerovi</a></p>`)}
