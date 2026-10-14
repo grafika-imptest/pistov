@@ -30,6 +30,10 @@ export function reveal(root = document) {
     for (const en of list) if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
   }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
   els.forEach((e) => io.observe(e));
+  // failsafe: whatever is already on (or above) the screen after load is shown, even if an observer never fires
+  const sweep = () => els.forEach((e) => { if (!e.classList.contains("is-in") && e.getBoundingClientRect().top < innerHeight) e.classList.add("is-in"); });
+  addEventListener("load", () => setTimeout(sweep, 1200));
+  let t; addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(sweep, 700); }, { passive: true });
 }
 
 /** [data-s-parallax] media drift (max ±6 % of its height), only while on screen */

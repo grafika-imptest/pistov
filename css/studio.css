@@ -121,8 +121,9 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-motion [data-s-in] { opacity: 0; transform: translateY(28px); transition: opacity var(--s-dur) var(--s-ease), transform var(--s-dur) var(--s-ease); }
 .s-motion [data-s-in].is-in { opacity: 1; transform: none; }
 /* the wipe clips the image, never the observed frame: a fully clipped element never "intersects" (Chrome IO) */
-.s-motion [data-s-reveal] img { clip-path: inset(100% 0 0 0); transform: scale(1.12); transition: clip-path 1200ms var(--s-ease), transform 1600ms var(--s-ease); }
-.s-motion [data-s-reveal].is-in img { clip-path: inset(0 0 0 0); transform: none; }
+/* images are never hidden: only a gentle settle from 106 % when they come into view */
+.s-motion [data-s-reveal] img { transform: scale(1.06); transition: transform 1600ms var(--s-ease); }
+.s-motion [data-s-reveal].is-in img { transform: none; }
 .s-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .s-w > span { display: inline-block; }
 .s-motion [data-s-lines] .s-w > span { transform: translateY(105%); transition: transform 1000ms var(--s-ease); transition-delay: calc(var(--i) * 40ms); }
