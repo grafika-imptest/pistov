@@ -2,9 +2,11 @@ import { renderChrome } from "../site/chrome.js";
 import { site } from "../projects/pistov/content.js";
 import { validate } from "../ui/enquiry.js";
 import { esc } from "../site/ui.js";
+import { project } from "../projects/pistov/project.js";
+import { planToMetres } from "../core/panorama.js";
 
 renderChrome({ page: "kontakty", solid: true });
-const { lat, lon } = site.location, d = 0.012;
+const { lat, lon } = site.location;
 const card = (title, c, extra = "") => `<div class="contact"><p class="eyebrow">${title}</p><p class="contact__name">${esc(c.name)}</p><p>${esc(c.address)}</p><p class="muted">${esc(c.role)}</p>${extra}</div>`;
 
 document.querySelector("[data-contacts]").innerHTML = `
@@ -15,8 +17,8 @@ document.querySelector("[data-contacts]").innerHTML = `
       ${card("Architekti", site.architect)}
     </div>
     <figure class="contacts__map">
-      <iframe title="Mapa – ${esc(site.location.label)}" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${lon - d * 1.6},${lat - d},${lon + d * 1.6},${lat + d}&layer=mapnik&marker=${lat},${lon}"></iframe>
-      <figcaption>${esc(site.location.label)} · <a class="link" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=15/${lat}/${lon}" target="_blank" rel="noopener">Otevřít větší mapu</a> · © přispěvatelé OpenStreetMap</figcaption>
+      <div class="contacts__mapcanvas" data-map role="region" aria-label="Mapa – ${esc(site.location.label)}"></div>
+      <figcaption>${esc(site.location.label)} · hranice parcel orientačně podle situačního plánu · <a class="link" href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=16/${lat}/${lon}" target="_blank" rel="noopener">Otevřít větší mapu</a></figcaption>
     </figure>
   </div>
   <div class="wrap contacts__form" id="formular">
@@ -35,6 +37,29 @@ document.querySelector("[data-contacts]").innerHTML = `
       <div class="form__done" data-done hidden tabindex="-1"></div>
     </form>
   </div>`;
+
+// ---- map: OpenStreetMap + Leaflet (vendored), red pin with the Pístov mark, plots outlined from the site plan ----
+const PIN = `<svg viewBox="0 0 44 58" aria-hidden="true"><path class="mappin__body" d="M22 56C22 56 4 34.5 4 21.5a18 18 0 0 1 36 0C40 34.5 22 56 22 56Z"/><g class="mappin__mark" transform="rotate(45 22 21.5)"><rect x="13.5" y="13" width="17" height="17"/><rect x="17.5" y="17" width="9" height="9"/></g></svg>`;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "assets/vendor/leaflet/leaflet.css"; document.head.append(css);
+  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = "assets/vendor/leaflet/leaflet.js"; s.onload = () => res(window.L); s.onerror = rej; document.head.append(s); });
+}
+const mapEl = document.querySelector("[data-map]");
+new IntersectionObserver(([e], io) => {
+  if (!e.isIntersecting) return; io.disconnect();
+  loadLeaflet().then((L) => {
+    const map = L.map(mapEl, { scrollWheelZoom: false, zoomSnap: 0.5 }).setView([lat, lon], 16);
+    map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">přispěvatelé OpenStreetMap</a>' }).addTo(map);
+    const g = project.planGeoref, toLL = (pt) => { const [e, n] = planToMetres(g, pt); return [g.ref[0] + n / g.mLat, g.ref[1] + e / g.mLon]; };
+    const plots = project.plots.filter((p) => p.geometry).map((p) => p.geometry.plan.map(toLL));
+    L.polygon(plots, { color: "#c4372b", weight: 1, opacity: 0.7, fillColor: "#c4372b", fillOpacity: 0.08, interactive: false }).addTo(map);
+    const icon = L.divIcon({ className: "mappin", html: PIN, iconSize: [44, 58], iconAnchor: [22, 56], popupAnchor: [0, -52] });
+    L.marker([lat, lon], { icon, title: "Pístov", alt: "Pístov – lokalita" }).addTo(map)
+      .bindPopup(`<b>Pístov</b><br>Pozemky a rodinné domy<br><a href="index.html#explorer">Prozkoumat lokalitu →</a>`);
+  }).catch(() => { mapEl.innerHTML = `<p class="muted contacts__mapfail">Mapu se nepodařilo načíst.</p>`; });
+}, { rootMargin: "200px" }).observe(mapEl);
 
 const f = document.querySelector("[data-contact-form]");
 f.addEventListener("submit", (e) => {
