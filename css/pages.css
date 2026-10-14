@@ -85,6 +85,18 @@ html.has-menu { overflow: hidden; }
 .pagehero__title { margin: 0; font-size: var(--fs-hero); font-weight: 300; line-height: 0.98; letter-spacing: -0.03em; }
 .pagehero .lead { margin: 0; max-width: 54ch; }
 @media (max-width: 899px) { .pagehero__grid { grid-template-columns: 1fr; } }
+/* page hero with an illustration on the right: title and lead stack on the left */
+.pagehero--image { position: relative; min-height: clamp(460px, 62vh, 680px); display: flex; align-items: flex-end; background-color: #e9dfcd; background-position: right center; background-size: cover; background-repeat: no-repeat; }
+.pagehero--image::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(240, 232, 216, 0.9) 0%, rgba(240, 232, 216, 0.55) 38%, rgba(240, 232, 216, 0) 62%); pointer-events: none; }
+.pagehero--image .pagehero__grid { position: relative; grid-template-columns: minmax(0, 1fr); max-width: min(720px, 58vw); gap: var(--s5); }
+.pagehero--fin-hero { background-image: url("../assets/img/fin-hero-2000.webp"); background-image: image-set(url("../assets/img/fin-hero-2000.webp") 1x, url("../assets/img/fin-hero-2688.webp") 2x); }
+@media (max-width: 899px) {
+  /* the illustration sits under the text: 150 % wide → its height is 64.3vw */
+  .pagehero--image { min-height: 0; padding-bottom: calc(64vw + 8px); background-size: 150% auto; background-position: 86% 100%; }
+  .pagehero--image::before { background: linear-gradient(180deg, rgba(240, 232, 216, 0.96) calc(100% - 66vw), rgba(240, 232, 216, 0) calc(100% - 50vw)); }
+  .pagehero--image .pagehero__grid { max-width: none; }
+  .pagehero--fin-hero { background-image: url("../assets/img/fin-hero-1000.webp"); background-image: image-set(url("../assets/img/fin-hero-1000.webp") 1x, url("../assets/img/fin-hero-2000.webp") 2x); }
+}
 .crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 var(--s5); font-size: var(--fs-xs); color: var(--pencil); }
 .crumbs a { color: var(--ink-2); text-decoration: none; }
 .crumbs a:hover { color: var(--red); text-decoration: underline; }
