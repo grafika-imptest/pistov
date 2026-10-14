@@ -217,5 +217,5 @@ export class Intro {
     setTimeout(() => draw(root.querySelector(".explore-note")?.parentElement || root), 900);
   }
 
-  _caption(t) { this.caption.textContent = t; this.caption.classList.toggle("is-on", !!t); }
+  _caption(t) { if (!this.caption) return; this.caption.textContent = t; this.caption.classList.toggle("is-on", !!t); }
 }

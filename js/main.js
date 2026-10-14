@@ -18,9 +18,12 @@ import { renderChrome } from "./site/chrome.js";
 import { renderHomeTeasers } from "./site/teasers.js";
 import { collections, bindSaveButtons, syncSaveButtons, COMPARE_MAX } from "./site/collections.js";
 import { toast } from "./site/ui.js";
+import { EDITION } from "./site/edition.js";
 
 // shared header (navigation, favourites / comparison counters, menu), footer and cookie consent
-renderChrome();
+// The same app runs the ateliér home page and the studio offer page (studio/nabidka.html, no intro film there).
+const STUDIO = EDITION === "studio";
+renderChrome(STUDIO ? { page: "nabidka", solid: true } : {});
 
 const $ = (s) => document.querySelector(s);
 const url = readUrl();
@@ -171,7 +174,7 @@ const explorer = new Explorer(explorerRoot, {
 const intro = new Intro(explorerRoot, explorer);
 const panel = new Panel($("[data-panel]"), app);
 const stage = new Stage($("[data-stage]"), app);
-const catalog = new Catalog($("[data-catalog]"), app);
+const catalog = $("[data-catalog]") ? new Catalog($("[data-catalog]"), app) : null;
 const detail = new Detail($("[data-detail]"), app);
 const enquiry = new Enquiry($("[data-enquiry]"), $("[data-enquiry-summary]"), app);
 explorer.onGesture = () => { if (explorerRoot.dataset.phase === "intro") intro.skip(); };
@@ -212,15 +215,15 @@ function render(st, prev, changed) {
   enquiry.update();
 
   // state-aware global CTA
-  const cta = $("[data-cta-global]");
-  cta.textContent = !desktop() ? "Poptat" : sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat";
-  cta.setAttribute("aria-label", sel.plot && sel.type ? `Poptat vybranou kombinaci: parcela ${sel.plot.no}, ${sel.type.name}` : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat");
+  const cta = STUDIO ? null : $("[data-cta-global]");
+  if (cta) cta.textContent = !desktop() ? "Poptat" : sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat";
+  cta?.setAttribute("aria-label", sel.plot && sel.type ? `Poptat vybranou kombinaci: parcela ${sel.plot.no}, ${sel.type.name}` : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat");
 
   // detail dialog
   if (st.detail) detail.open(st.detail); else detail.close();
   if (st.detail && changed && ["type", "layout", "material", "plotNo"].some((k) => changed.has(k))) detail.render();
 
-  if (!changed || ["type", "plotNo"].some((k) => changed?.has(k))) catalog.render();
+  if (!changed || ["type", "plotNo"].some((k) => changed?.has(k))) catalog?.render();
 }
 store.subscribe(render);
 
@@ -255,25 +258,25 @@ document.querySelector("[data-modes]").addEventListener("keydown", (e) => {
   const tabs = [...document.querySelectorAll("[data-mode]")]; const i = tabs.indexOf(document.activeElement);
   const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); app.setMode(n.dataset.mode);
 });
-$("[data-enter]").addEventListener("click", () => { intro.enter(); updateInsets(); explorer.frameAll(true, 900); });
-$("[data-skip]").addEventListener("click", () => { intro.enter({ instant: true }); updateInsets(); explorer.frameAll(true, 600); });
-$(".topbar .brand")?.addEventListener("click", (e) => { e.preventDefault(); app.restart(); });
+$("[data-enter]")?.addEventListener("click", () => { intro.enter(); updateInsets(); explorer.frameAll(true, 900); });
+$("[data-skip]")?.addEventListener("click", () => { intro.enter({ instant: true }); updateInsets(); explorer.frameAll(true, 600); });
+if (!STUDIO) $(".topbar .brand")?.addEventListener("click", (e) => { e.preventDefault(); app.restart(); });
 const replayBtn = $("[data-replay]");
-if (project.introVideo && replayBtn) { replayBtn.hidden = false; replayBtn.addEventListener("click", () => intro.replay()); }
-$("[data-cta-global]").addEventListener("click", (e) => { e.preventDefault(); app.goEnquiry(); });
+if (project.introVideo && replayBtn && !STUDIO) { replayBtn.hidden = false; replayBtn.addEventListener("click", () => intro.replay()); }
+if (!STUDIO) $("[data-cta-global]").addEventListener("click", (e) => { e.preventDefault(); app.goEnquiry(); });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape" || document.querySelector("dialog[open]") || document.querySelector(".popover:not([hidden])")) return;
   const st = store.get();
   if (st.mode === "plots" && st.plotNo && explorerRoot.contains(document.activeElement)) app.clearPlot();
 });
 // topbar: solid once the page scrolls past the explorer
-const io = new IntersectionObserver(([en]) => document.querySelector("[data-topbar]").classList.toggle("is-solid", !en.isIntersecting), { threshold: 0.02 });
-io.observe(explorerRoot);
+if (!STUDIO) new IntersectionObserver(([en]) => document.querySelector("[data-topbar]").classList.toggle("is-solid", !en.isIntersecting), { threshold: 0.02 }).observe(explorerRoot);
 
 // facts in the project section – computed from the data, not typed in
 const free = project.plots.filter((p) => statusOf(p) === "available").length;
 const areas = project.plots.map((p) => p.area);
-$("[data-facts]").innerHTML = `
+const factsEl = $("[data-facts]");
+if (factsEl) factsEl.innerHTML = `
   <div><dt>Parcel v plánu</dt><dd>${project.plots.length}</dd></div>
   <div><dt>Volných k prodeji</dt><dd>${free}</dd></div>
   <div><dt>Výměry parcel</dt><dd>${m2(Math.min(...areas))} – ${m2(Math.max(...areas))}</dd></div>
@@ -294,10 +297,10 @@ if (!location.hash) window.scrollTo(0, 0);
 render(store.get(), null, null);
 updateInsets();
 revealOnScroll();
-new PanoTeaser(document.querySelector("[data-pano-teaser]"), app);
+if (document.querySelector("[data-pano-teaser]")) new PanoTeaser(document.querySelector("[data-pano-teaser]"), app);
 renderHomeTeasers();
 const deepLink = url.plotNo || url.mode || url.detail || url.type || (url.view && url.view !== project.defaultView);
-if (deepLink) { intro.enter({ instant: true }); updateInsets(); requestAnimationFrame(() => { updateInsets(); const sel = selection(); if (sel.plot) explorer.framePlot(sel.plot.id, false); else explorer.frameAll(false); }); }
+if (deepLink || STUDIO) { intro.enter({ instant: true }); updateInsets(); requestAnimationFrame(() => { updateInsets(); const sel = selection(); if (sel.plot) explorer.framePlot(sel.plot.id, false); else explorer.frameAll(false); }); }
 else intro.play();
 
 // exposed for automated checks in the browser console

@@ -1,12 +1,22 @@
 // Shared site chrome for every page: header (nav, favourites/compare counters, menu), footer, cookie consent.
 import { site } from "../projects/pistov/content.js";
 import { collections } from "./collections.js";
+import { EDITION, EDITIONS, otherEditionHref, keepLinksInEdition } from "./edition.js";
 
 export const NAV = [
   { href: "index.html#explorer", label: "Lokalita", id: "lokalita" },
   { href: "index.html#domy", label: "Typové domy", id: "domy" },
   { href: "galerie.html", label: "Galerie", id: "galerie" },
   { href: "aktuality.html", label: "Aktuality", id: "aktuality" },
+  { href: "financovani.html", label: "Financování", id: "financovani" },
+  { href: "developer.html", label: "Developer", id: "developer" },
+  { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
+];
+// studio navigation (written in ateliér terms, mapped to /studio/ by edition.js)
+export const NAV_STUDIO = [
+  { href: "index.html#explorer", label: "Nabídka", id: "nabidka" },
+  { href: "index.html#domy", label: "Domy", id: "domy" },
+  { href: "index.html#lokalita", label: "Lokalita", id: "lokalita" },
   { href: "financovani.html", label: "Financování", id: "financovani" },
   { href: "developer.html", label: "Developer", id: "developer" },
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
@@ -27,19 +37,35 @@ const icon = {
 let home = false;
 const link = (h) => (home && h.startsWith("index.html#") ? h.slice(10) : h);
 
+/** switch to the same page in the other edition */
+function editionSwitch(cls = "") {
+  const other = EDITION === "studio" ? "atelier" : "studio";
+  return `<a class="edswitch ${cls}" href="${otherEditionHref()}" data-ed data-edition-switch title="Přepnout na verzi ${EDITIONS[other].label} – ${EDITIONS[other].desc}">
+    <span class="edswitch__track" aria-hidden="true"><span class="edswitch__knob"></span></span><span class="edswitch__txt"><span class="edswitch__pre">Verze </span>${EDITIONS[other].label}</span></a>`;
+}
+/** both editions with a short description (menu, footer) */
+function editionChoice() {
+  return `<div class="edchoice" role="group" aria-label="Vzhled webu"><p class="eyebrow">Vzhled webu</p>${["atelier", "studio"].map((k) => k === EDITION
+    ? `<span class="edchoice__opt is-on" aria-current="true"><b>${EDITIONS[k].label}</b><small>${EDITIONS[k].desc}</small></span>`
+    : `<a class="edchoice__opt" href="${otherEditionHref()}" data-ed data-edition-switch><b>${EDITIONS[k].label}</b><small>${EDITIONS[k].desc}</small></a>`).join("")}</div>`;
+}
+
 export function renderChrome({ page = "", solid = false } = {}) {
-  home = !page;
+  home = !page && EDITION === "atelier";
+  const nav = EDITION === "studio" ? NAV_STUDIO : NAV;
+  document.documentElement.classList.add(`ed-${EDITION}`);
   const header = document.querySelector("[data-topbar]");
   if (header) {
     header.classList.toggle("is-solid", solid);
     if (solid) header.dataset.alwaysSolid = "";
     header.innerHTML = `
       <a class="brand" href="${home ? "#explorer" : "index.html"}" aria-label="${site.name} – úvod"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">${site.name}</span></a>
-      <nav class="topnav" aria-label="Hlavní navigace">${NAV.map((n) => `<a href="${link(n.href)}" ${n.id === page ? 'aria-current="page"' : ""}>${n.label}</a>`).join("")}</nav>
+      <nav class="topnav" aria-label="Hlavní navigace">${nav.map((n) => `<a href="${link(n.href)}" ${n.id === page ? 'aria-current="page"' : ""}>${n.label}</a>`).join("")}</nav>
       <div class="topbar__tools">
+        ${editionSwitch()}
         <a class="toolbtn" href="oblibene.html" aria-label="Oblíbené" title="Oblíbené">${icon.heart}<span class="toolbtn__count" data-count="fav" hidden></span></a>
         <a class="toolbtn" href="porovnani.html" aria-label="Porovnání" title="Porovnání">${icon.compare}<span class="toolbtn__count" data-count="cmp" hidden></span></a>
-        <a class="btn btn--ink btn--sm topbar__cta" href="${page ? "kontakty.html#formular" : "#poptavka"}" data-cta-global>Poptat</a>
+        <a class="btn btn--ink btn--sm topbar__cta" href="${EDITION === "studio" ? "index.html#explorer" : page ? "kontakty.html#formular" : "#poptavka"}" data-cta-global>${EDITION === "studio" ? "Vybrat parcelu" : "Poptat"}</a>
         <button class="toolbtn toolbtn--menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sitemenu" data-menu-open>${icon.menu}</button>
       </div>`;
   }
@@ -51,6 +77,7 @@ export function renderChrome({ page = "", solid = false } = {}) {
       <div class="sitemenu__inner">
         <button class="toolbtn sitemenu__close" type="button" aria-label="Zavřít menu" data-menu-close>${icon.close}</button>
         <div class="sitemenu__cols">${MENU.map((c) => `<div><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></div>`).join("")}</div>
+        ${editionChoice()}
         <a class="btn btn--red btn--lg" href="${home ? "#poptavka" : "kontakty.html#formular"}">Poptat parcelu a dům <span aria-hidden="true">→</span></a>
       </div>`;
     document.body.append(m);
@@ -69,6 +96,12 @@ export function renderChrome({ page = "", solid = false } = {}) {
   if (!home) header?.querySelector(".brand")?.addEventListener("click", () => { try { sessionStorage.removeItem("pistov:intro-seen"); } catch { /* private mode */ } });
   renderFooter();
   updateCounts();
+  if (EDITION === "studio") { keepLinksInEdition(); studioHeader(header, solid); }
+  // the configuration lives in the URL and changes while browsing → resolve the switch target at click time
+  if (!document._edSwitch) {
+    document._edSwitch = true;
+    document.addEventListener("click", (e) => { const sw = e.target.closest("[data-edition-switch]"); if (sw) sw.href = otherEditionHref(); }, true);
+  }
   collections.subscribe(updateCounts);
   cookies.init();
 }
@@ -103,6 +136,7 @@ function renderFooter() {
     <div class="wrap footer__bottom">
       <p>© ${new Date().getFullYear()} ${site.name} · Vizualizace a výkresy: ${site.architect.name}</p>
       <nav aria-label="Právní informace"><a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a><button type="button" class="link" data-cookie-settings>Nastavení cookies</button></nav>
+      <p class="footer__ed">Vzhled webu: ${["atelier", "studio"].map((k) => k === EDITION ? `<b>${EDITIONS[k].label}</b>` : `<a href="${otherEditionHref()}" data-ed data-edition-switch>${EDITIONS[k].label}</a>`).join(" · ")}</p>
       <p class="footer__made">Web realizovalo <a href="${site.realisation.url}" target="_blank" rel="noopener">${site.realisation.label}</a></p>
     </div>`;
 }
@@ -149,3 +183,17 @@ export const cookies = {
     };
   },
 };
+
+// studio header: transparent over a hero, solid once scrolled; hides while scrolling down, returns on the way up
+function studioHeader(header, solid) {
+  if (!header || header._studio) return; header._studio = true;
+  let last = scrollY;
+  const onScroll = () => {
+    const y = scrollY, menuOpen = document.documentElement.classList.contains("has-menu");
+    header.classList.toggle("is-solid", solid || y > 40);
+    if (!menuOpen && Math.abs(y - last) > 6) { header.classList.toggle("is-hidden", y > last && y > 160); last = y; }
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  header.addEventListener("focusin", () => header.classList.remove("is-hidden"));
+  onScroll();
+}

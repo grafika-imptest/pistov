@@ -12,7 +12,7 @@
 .topbar__cta { margin-left: 8px; }
 @media (max-width: 899px) { .topbar__tools { margin-left: auto; } .topbar__cta { margin-left: 4px; } }
 /* seven links need ~1240 px next to the logo and tools – below that the menu button takes over */
-@media (max-width: 1239px) { .topnav { display: none; } .topbar__tools { margin-left: auto; } }
+@media (max-width: 1359px) { .topnav { display: none; } .topbar__tools { margin-left: auto; } }
 @media (max-width: 420px) { .brand__name { letter-spacing: 0.28em; } .topbar { gap: 8px; } .toolbtn { width: 36px; } }
 
 /* ---------------- full-screen menu ---------------- */
@@ -453,3 +453,28 @@ html.has-menu { overflow: hidden; }
 .hp-dev .devfacts span { font-size: var(--fs-sm); }
 @media (max-width: 899px) { .hp-dev__grid { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .hp-dev .devfacts { grid-template-columns: 1fr; } }
+
+/* ---------------- edition switch (Ateliér ↔ Studio), both editions ---------------- */
+.edswitch { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px 0 7px; margin-right: 6px; border: 1px solid currentColor; border-radius: 999px; color: inherit; text-decoration: none; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; opacity: 0.86; transition: opacity var(--dur-fast), background-color var(--dur-fast); }
+.edswitch:hover { opacity: 1; background: rgba(127, 127, 120, 0.14); }
+.edswitch__track { position: relative; width: 26px; height: 14px; border-radius: 999px; background: currentColor; opacity: 0.9; }
+.edswitch__knob { position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--paper); transition: transform 300ms var(--ease-out); }
+.ed-studio .edswitch__knob { transform: translateX(12px); background: var(--s-bg, #fff); }
+.edswitch:hover .edswitch__knob { transform: translateX(6px); }
+.ed-studio .edswitch { font-family: var(--s-text, inherit); letter-spacing: 0.02em; text-transform: none; font-size: 0.8125rem; font-weight: 500; }
+@media (max-width: 1399px) { .edswitch__pre { display: none; } }
+@media (max-width: 520px) { .edswitch { padding: 0 9px 0 6px; } .edswitch__txt { font-size: 0.625rem; } }
+.edchoice { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 760px; }
+.edchoice .eyebrow { grid-column: 1 / -1; margin: 0; }
+.edchoice__opt { display: grid; gap: 4px; padding: 16px 18px; border: 1px solid rgba(244, 239, 227, 0.2); border-radius: var(--r-sm); color: inherit; text-decoration: none; }
+.edchoice__opt b { font-size: 1.15rem; font-weight: 500; }
+.edchoice__opt small { font-size: var(--fs-xs); opacity: 0.7; line-height: 1.5; }
+.edchoice__opt.is-on { border-color: currentColor; }
+a.edchoice__opt:hover { background: rgba(244, 239, 227, 0.08); }
+@media (max-width: 600px) { .edchoice { grid-template-columns: 1fr; } }
+.footer__ed { margin: 0; }
+.footer__ed a { color: var(--paper); }
+.footer__ed b { font-weight: 600; color: var(--paper); }
+/* small screens: the edition switch lives in the menu and the footer */
+@media (max-width: 639px) { .topbar .edswitch { display: none; } }
+@media (max-width: 380px) { .topbar { gap: 6px; } .topbar__cta { padding: 0 10px; } .toolbtn { width: 32px; } .brand__name { letter-spacing: 0.2em; } .brand { gap: 8px; } }

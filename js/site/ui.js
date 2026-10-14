@@ -5,10 +5,11 @@ const IMG = "assets/img/";
 // available widths per image family (see tools/build-assets.mjs, pano-stills.mjs)
 const WIDTHS = { aerial: [800, 1400, 2200], plan: [900, 1800], "section-1": [1400, 2400], "section-2": [1400, 2400] };
 const SHEET = /^[A-D]2?-(plans|site)/; // catalogue sheets (house plans, site plans)
-export const widthsOf = (name) => WIDTHS[name] || (SHEET.test(name) ? [1100, 2000] : [480, 960, 1600]);
+const ELEV = /^[A-D]2?-elev-/; // catalogue elevations
+export const widthsOf = (name) => WIDTHS[name] || (SHEET.test(name) ? [1100, 2000] : ELEV.test(name) ? [500, 1000] : [480, 960, 1600]);
 export const img = (name, prefer = "s") => { const w = widthsOf(name); return `${IMG}${name}-${prefer === "l" ? w[w.length - 1] : prefer === "m" ? w[Math.min(1, w.length - 1)] : w[0]}.webp`; };
 export const srcset = (name) => widthsOf(name).map((w) => `${IMG}${name}-${w}.webp ${w}w`).join(", ");
-export const isDrawing = (name) => name === "plan" || /^section-/.test(name) || SHEET.test(name);
+export const isDrawing = (name) => name === "plan" || /^section-/.test(name) || SHEET.test(name) || ELEV.test(name);
 
 export const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 export function dateLabel(n) {

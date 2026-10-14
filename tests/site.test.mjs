@@ -117,3 +117,36 @@ test("developer: Horák & Vetchý everywhere, no former client name left", () =>
   for (const f of files) assert.doesNotMatch(read(f), /START Zelen|Brtnice|Zadavatel projektu/i, f);
   assert.match(read("js/site/chrome.js"), /developer\.html/);
 });
+
+test("studio edition: every page exists, resolves against the root and loads the studio styles", async () => {
+  const { pages: sub } = await import("../tools/site-pages.mjs");
+  const files = ["index.html", "nabidka.html", "domy.html", ...sub.map((p) => p.file)];
+  for (const f of files) {
+    const html = read(`studio/${f}`);
+    assert.match(html, /data-edition="studio"/, f);
+    assert.match(html, /<base href="\.\.\/">/, f);
+    assert.match(html, /href="css\/studio\.css"/, f);
+    const src = html.match(/<script type="module" src="([^"]+)"/)[1];
+    assert.ok(exists(src), `${f} → ${src}`);
+  }
+  // the offer page runs the very same explorer app as the ateliér home page
+  assert.match(read("studio/nabidka.html"), /id="explorer"/);
+  assert.match(read("studio/nabidka.html"), /src="js\/main\.js"/);
+  for (const a of ["assets/video/studio-house-a-1600.mp4", "assets/video/studio-house-a-960.mp4", "assets/video/studio-house-a-poster.webp", "assets/img/plan-light-900.webp"]) assert.ok(exists(a), a);
+});
+
+test("edition switch: pages map to their counterpart, configuration survives the switch", async () => {
+  const { toStudio, toAtelier } = await import("../js/site/edition.js");
+  assert.equal(toStudio("galerie.html"), "studio/galerie.html");
+  assert.equal(toStudio("index.html"), "studio/");
+  assert.equal(toStudio("index.html#domy"), "studio/domy.html");
+  assert.equal(toStudio("index.html#explorer"), "studio/nabidka.html");
+  assert.equal(toStudio("index.html?parcela=12&dum=A&rezim=navrh#explorer"), "studio/nabidka.html?parcela=12&dum=A&rezim=navrh");
+  assert.equal(toStudio("index.html#poptavka"), "studio/kontakty.html#formular");
+  assert.equal(toStudio("https://hvreality.cz"), "https://hvreality.cz");
+  assert.equal(toStudio("assets/img/plan-900.webp"), "assets/img/plan-900.webp");
+  assert.equal(toAtelier(""), "index.html");
+  assert.equal(toAtelier("nabidka.html?parcela=5"), "index.html?parcela=5#explorer");
+  assert.equal(toAtelier("domy.html#dum-b"), "index.html#domy");
+  assert.equal(toAtelier("kontakty.html#formular"), "kontakty.html#formular");
+});
