@@ -59,6 +59,24 @@ export class Intro {
     const short = this.seen || reducedMotion() || window.innerWidth < 700;
     if (short) { this._settle(); return; }
 
+    // preferred: the intro film (drone over the plots → houses rise → fly-through → back to the overview)
+    if (ex.project.introVideo) {
+      try {
+        const played = await this._playVideo(signal);
+        if (played) {
+          ex.heroFrame(true, 1900);
+          await wait(1950, signal);
+          this._drawArrow();
+          this._caption("");
+          this.markSeen();
+          root.dataset.phase = "ready";
+          v.interactive = true;
+          return;
+        }
+      } catch (e) { if (e.name === "AbortError") return; throw e; }
+    }
+
+    // fallback: the architect's plan laid on the aerial view dissolves into the visualisation
     const overlay = ex.addPlanOverlay();
     root.classList.add("is-drawing");
     // Scene 1: close over the northern streets
@@ -91,6 +109,37 @@ export class Intro {
     }
   }
 
+  /** full-bleed intro film; resolves true when it played to the end, false when it cannot play */
+  async _playVideo(signal) {
+    const cfg = this.explorer.project.introVideo, root = this.root, v = this.explorer.viewer;
+    const el = document.createElement("video");
+    el.className = "hero-video"; el.muted = true; el.defaultMuted = true; el.playsInline = true; el.preload = "auto";
+    el.setAttribute("muted", ""); el.setAttribute("playsinline", ""); el.setAttribute("aria-hidden", "true");
+    el.poster = cfg.poster;
+    el.src = window.innerWidth >= 900 && !navigator.connection?.saveData ? cfg.src.hd : cfg.src.sd;
+    root.querySelector("[data-viewer]").after(el);
+    this.video = el;
+    // the interactive aerial sits underneath in exactly the framing of the film's last frame → seamless hand-over
+    v.cover(cfg.endBox, { animate: false });
+    root.classList.add("has-video");
+    try { await el.play(); } catch { this._removeVideo(); return false; }
+    this._caption(cfg.caption);
+    const ended = new Promise((res, rej) => {
+      el.addEventListener("ended", () => res(true), { once: true });
+      el.addEventListener("error", () => res(false), { once: true });
+      signal.addEventListener("abort", () => rej(new DOMException("aborted", "AbortError")), { once: true });
+    });
+    await wait(900, signal);
+    root.classList.add("hero-in");
+    draw(root.querySelector(".hero"));
+    const ok = await ended;
+    el.classList.add("is-out");
+    root.classList.remove("has-video");
+    setTimeout(() => this._removeVideo(), 1000);
+    return ok;
+  }
+  _removeVideo() { this.video?.remove(); this.video = null; this.root.classList.remove("has-video"); }
+
   /** skip: jump to the final framing of the intro */
   skip() {
     this.ctrl?.abort();
@@ -98,6 +147,7 @@ export class Intro {
   }
   _settle() {
     const ex = this.explorer, root = this.root;
+    this._removeVideo();
     root.querySelector(".viewer__overlay")?.remove();
     root.classList.remove("is-drawing", "is-transforming");
     root.classList.add("hero-in");
@@ -114,6 +164,7 @@ export class Intro {
   enter({ instant = false } = {}) {
     this.ctrl?.abort();
     const root = this.root, ex = this.explorer;
+    this._removeVideo();
     root.querySelector(".viewer__overlay")?.remove();
     root.classList.remove("is-drawing", "is-transforming");
     root.dataset.phase = "explore";

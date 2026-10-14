@@ -94,6 +94,20 @@ Ověřeno v prohlížeči (schéma i sekvence snímků přes `?fixture=timelapse
 5) opětovné zapnutí přehraje vše od začátku, 6) jiný dům / dispozice / materiál = nová animace,
 7) rychlé přepínání neskončí na zastaralém snímku.
 
+## Úvodní film
+
+Úvod webu přehrává 20s film (`assets/video/intro-1080.mp4`, mobil `intro-720.mp4`, poster `intro-poster.webp`):
+dron nad připravenými parcelami → domy vyrostou → průlet k domu a skrz dům → návrat do výchozího záběru.
+Poslední snímek filmu je letecká vizualizace oříznutá na `introVideo.endBox`, takže interaktivní scéna pod ním převezme
+obraz bez skoku. Přeskočení, `prefers-reduced-motion` a vracející se návštěvníci film přeskočí; když prohlížeč video
+nepřehraje, spustí se původní úvod (výkres položený do terénu).
+
+- **Původ:** AI ilustrace (Higgsfield, Kling 3.0 Pro, 2× 10 s s první a poslední klapkou) z letecké vizualizace TAM architekti;
+  snímek „před výstavbou“ je AI úprava téže vizualizace. Na webu je to tak i popsané.
+- **Omezení:** dům a interiér v průletu jsou interpretace modelu, ne konkrétní typ z katalogu (interiér není součástí podkladů).
+  Pro finální web doporučeno nahradit renderem z 3D modelu (stejný slot `introVideo`).
+- Zdrojové klipy a snímky: `podklady/video/` (mimo repozitář).
+
 ## Panorama 360° — dnešní stav lokality
 
 Šest dronových 360° panoramat (DJI, equirektangulární 14400×7200, 13. 10. 2026) z pěti míst: střed lokality ve 30 a 60 m,

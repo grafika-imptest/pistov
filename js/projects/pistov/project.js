@@ -64,6 +64,15 @@ export const project = {
     { id: "street", label: "Pohled z ulice", kind: "image", interactive: true, pending: "Čeká na podklady" },
   ],
   defaultView: "aerial",
+  // Intro film – AI illustration (Higgsfield, Kling 3.0) built from the architects' aerial visualisation:
+  // prepared plots → houses rise → fly-through → back to the overview. Its last frame = the aerial view cropped to
+  // endBox, so the interactive scene takes over seamlessly.
+  introVideo: {
+    src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
+    poster: "assets/video/intro-poster.webp",
+    endBox: { x: 0, y: 58, w: 3419, h: 1923 },
+    caption: "Ilustrační vizualizace (AI) podle návrhu TAM architekti",
+  },
   img: (name, w) => `${IMG}${name}-${w}.webp`,
   imgSet: (name, widths) => widths.map((w) => `${IMG}${name}-${w}.webp ${w}w`).join(", "),
 };
