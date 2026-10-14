@@ -12,6 +12,7 @@
   <link rel="preload" as="image" href="assets/img/aerial-2200.webp" imagesrcset="assets/img/aerial-800.webp 800w, assets/img/aerial-1400.webp 1400w, assets/img/aerial-2200.webp 2200w, assets/img/aerial-3400.webp 3400w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/pages.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2323231f'/%3E%3Cpath d='M9 23V9h7a4.5 4.5 0 0 1 0 9H9' fill='none' stroke='%23f4efe3' stroke-width='2.4'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -185,12 +186,29 @@
       <div class="catalog" data-catalog></div>
     </section>
 
+    <!-- ===================== GALLERY (teaser → galerie.html) ===================== -->
+    <section class="section hp-gallery" aria-labelledby="hp-gallery-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">04 — Galerie</p>
+            <h2 class="h2 reveal" id="hp-gallery-title">Pístov <em>v obrazech</em></h2>
+          </div>
+          <div class="sechead__aside reveal">
+            <p class="lead">Vizualizace domů od TAM architekti, dronové snímky dnešní lokality a výkresy – všechno na jednom místě.</p>
+            <a class="btn btn--ghost" href="galerie.html">Otevřít galerii <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="hp-gallery__grid reveal" data-hp-gallery></div>
+      </div>
+    </section>
+
     <!-- ===================== LOCALITY ===================== -->
     <section id="lokalita" class="section lokalita" aria-labelledby="lokalita-title">
       <div class="wrap">
         <div class="sechead">
           <div>
-            <p class="eyebrow reveal">04 — Lokalita</p>
+            <p class="eyebrow reveal">05 — Lokalita</p>
             <h2 class="h2 reveal" id="lokalita-title">Terén, voda a zeleň <em>v řezu</em></h2>
           </div>
           <p class="lead reveal">Lokalita navazuje na stávající zástavbu obce. Podle situačního plánu ji z východu lemuje soustava vodních ploch a pás veřejné zeleně; domy jsou osazeny do mírně svažitého terénu.</p>
@@ -211,29 +229,62 @@
       </div>
     </section>
 
+    <!-- ===================== NEWS (teaser → aktuality.html) ===================== -->
+    <section class="section section--paper hp-news" aria-labelledby="hp-news-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">06 — Aktuality</p>
+            <h2 class="h2 reveal" id="hp-news-title">Co je <em>v projektu nového</em></h2>
+          </div>
+          <div class="sechead__aside reveal">
+            <p class="lead">Novinky z přípravy lokality – od katalogu domů po dronové snímky. Průběh výstavby bude doplňovat developer.</p>
+            <a class="btn btn--ghost" href="aktuality.html">Všechny aktuality <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="newsgrid reveal" data-hp-news></div>
+      </div>
+    </section>
+
+    <!-- ===================== FINANCING + FAQ (teasers → financovani.html, faq.html) ===================== -->
+    <section class="section hp-fin" aria-labelledby="hp-fin-title">
+      <div class="wrap hp-fin__grid">
+        <div class="fincard reveal">
+          <svg class="fincard__sketch sketch" viewBox="0 0 150 100" aria-hidden="true"><path pathLength="1" d="M14 80 C 40 78, 52 40, 78 46 S 116 22, 136 14"/><path pathLength="1" d="M122 12 L137 13 L131 27"/></svg>
+          <p class="eyebrow">07 — Financování</p>
+          <h2 class="h2" id="hp-fin-title">Pozemek i dům <em>s hypotékou</em></h2>
+          <p>Spočítejte si orientační měsíční splátku a podívejte se, jak probíhá koupě pozemku se stavbou domu.</p>
+          <ol data-hp-fin-steps></ol>
+          <div class="fincard__actions">
+            <a class="btn btn--paper" href="financovani.html">Spočítat splátku <span aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="financovani.html#postup">Celý postup</a>
+          </div>
+        </div>
+        <div class="hp-faq reveal">
+          <p class="eyebrow">Časté otázky</p>
+          <h2 class="h2">Na co se <em>nejčastěji ptáte</em></h2>
+          <div class="accordion" data-hp-faq></div>
+          <p class="hp-more"><a class="btn btn--ink" href="faq.html">Všechny otázky <span aria-hidden="true">→</span></a><a class="link" href="kontakty.html">Kontakty a mapa</a></p>
+        </div>
+      </div>
+    </section>
+
     <!-- ===================== ENQUIRY ===================== -->
     <section id="poptavka" class="section section--ink poptavka" aria-labelledby="poptavka-title">
       <div class="wrap poptavka__grid">
         <div>
-          <p class="eyebrow">05 — Poptávka</p>
+          <p class="eyebrow">08 — Poptávka</p>
           <h2 class="h2" id="poptavka-title">Pošlete nám <em>svou kombinaci</em></h2>
           <p class="lead">Ozveme se s aktuální dostupností parcely, cenou a dalším postupem. Výběr parcely a domu doplníme do zprávy za vás.</p>
           <div class="poptavka__summary" data-enquiry-summary></div>
+          <p class="poptavka__more muted">Kontakty na developera a architekty a mapu lokality najdete na stránce <a class="link" href="kontakty.html">Kontakty</a>.</p>
         </div>
         <form class="form" data-enquiry novalidate></form>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap footer__grid">
-      <div>
-        <p class="brand brand--footer"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">Pístov</span></p>
-        <p class="footer__small">Prototyp interaktivní prezentace. Vizualizace, výkresy a situační plán: TAM architekti s.r.o., katalog rodinných domů (duben 2026). Zadavatel katalogu: START Zelený s.r.o.</p>
-      </div>
-      <p class="footer__small">Vizualizace jsou ilustrační. Ceny, dostupnost parcel a pravidla umístění domů budou doplněny a potvrzeny developerem.</p>
-    </div>
-  </footer>
+  <footer data-site-footer></footer>
 
   <!-- house detail (full-screen dialog, URL ?detail=) -->
   <dialog class="detail" data-detail aria-labelledby="detail-title"></dialog>

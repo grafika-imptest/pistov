@@ -4,6 +4,7 @@ import { priceSummary, formatPrice } from "../core/pricing.js";
 import { bbox, toPath } from "../core/geometry.js";
 import { esc, m2, statusBadge, plural, STATUS } from "./format.js";
 import { arrowSVG, draw } from "./sketch.js";
+import { saveButtons } from "../site/collections.js";
 
 const AREA_BANDS = [
   { id: "s", label: "do 580 m²", test: (a) => a < 580 },
@@ -45,7 +46,7 @@ export class Panel {
     const scroll = key === this._key ? this.body.scrollTop : 0;
     // keep keyboard focus on the equivalent control after re-render
     const ae = this.body.contains(document.activeElement) ? document.activeElement : null;
-    const attr = ae && ["data-material", "data-type", "data-layout", "data-select", "data-action", "data-try"].find((a) => ae.hasAttribute(a));
+    const attr = ae && ["data-material", "data-type", "data-layout", "data-select", "data-action", "data-try", "data-save"].find((a) => ae.hasAttribute(a));
     const focusSel = attr ? `[${attr}="${ae.getAttribute(attr)}"]${ae.dataset.value ? `[data-value="${ae.dataset.value}"]` : ""}` : ae?.dataset.filter ? `[data-filter="${ae.dataset.filter}"][data-value="${ae.dataset.value}"]` : null;
     this.body.innerHTML = html;
     this.body.scrollTop = scroll;
@@ -104,6 +105,7 @@ export class Panel {
         </div>
         ${plot.geometry?.approx ? `<p class="hint">Hranice této parcely je v podkladu jen částečně čitelná – zobrazení je orientační.</p>` : ""}
         ${!plot.geometry ? `<p class="hint">${esc(plot.geometryNote)}</p>` : ""}
+        <div class="savebar">${saveButtons({ kind: "plot", no: plot.no }, { what: `parcela ${plot.no}` })}</div>
       </header>
       <button type="button" class="pano-link" data-action="pano-plot"><span class="pano-link__icon" aria-hidden="true">360°</span><span><b>Výhled na parcelu dnes</b><small>dronové panorama, stav před výstavbou</small></span><span aria-hidden="true">→</span></button>
       <dl class="facts facts--panel">
@@ -179,6 +181,7 @@ export class Panel {
                 <button type="button" class="btn btn--ink" data-action="try" data-type-id="${t.id}">Vyzkoušet na parcele</button>
                 <button type="button" class="btn btn--ghost" data-action="detail" data-type-id="${t.id}">Detail domu</button>
               </div>
+              <div class="savebar">${saveButtons({ kind: "house", type: t.id }, { what: t.name })}</div>
             </div>` : ""}
           </article>`;
         }).join("")}
@@ -237,7 +240,8 @@ export class Panel {
       <div class="pn__actions">
         <button type="button" class="btn btn--red btn--block" data-action="enquire">Poptat tuto kombinaci <span aria-hidden="true">→</span></button>
         <button type="button" class="btn btn--ghost btn--block" data-action="detail" data-type-id="${type.id}">Detail domu ${type.id}</button>
-      </div>` : `<p class="hint">Zvolte typový dům – na parcele se vám zobrazí jeho hmota a vizualizace.</p>`}`;
+      </div>
+      <div class="savebar">${saveButtons({ kind: "combo", plot: plot.no, type: type.id, layout: layout?.id, material: variant?.id }, { what: `parcela ${plot.no} + ${type.name}` })}</div>` : `<p class="hint">Zvolte typový dům – na parcele se vám zobrazí jeho hmota a vizualizace.</p>`}`;
   }
 
   // ---------- events ----------

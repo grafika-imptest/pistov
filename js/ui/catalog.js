@@ -3,6 +3,7 @@
 import { esc, plural } from "./format.js";
 import { plotsForType } from "../core/compat.js";
 import { reducedMotion } from "../core/motion.js";
+import { saveButtons } from "../site/collections.js";
 
 // tag colours of the cards (catalogue palette: clay, olive, amber, graphite)
 const TONES = ["#b5533c", "#5f6b3f", "#a5752f", "#45443e"];
@@ -107,6 +108,7 @@ export class Catalog {
           <div class="cat__actions">
             <button type="button" class="btn btn--ink" data-cat-try="${t.id}">Vyzkoušet na parcele <span aria-hidden="true">→</span></button>
             <button type="button" class="btn btn--ghost" data-cat-detail="${t.id}">Detail domu</button>
+            <span class="savebar">${saveButtons({ kind: "house", type: t.id }, { what: t.name })}</span>
           </div>
         </div>
         </div>

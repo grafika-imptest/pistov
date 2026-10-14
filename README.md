@@ -27,9 +27,11 @@ Užitečné URL parametry: `?parcela=12&dum=A&dispozice=A1&material=A-m2&rezim=n
 ## Struktura
 
 ```
-index.html                     sémantická kostra stránky
+index.html                     sémantická kostra hlavní stránky
+*.html (galerie, aktuality, …) podstránky – generuje tools/build-pages.mjs ze společné šablony
 css/tokens.css                 design tokeny (barvy z katalogu, typografie, motion, z-index)
-css/app.css                    komponenty
+css/app.css                    komponenty hlavní stránky
+css/pages.css                  hlavička, menu, patička, cookies, podstránky, upoutávky na HP
 js/core/                       obecný engine – znovupoužitelný pro další developery
   store.js                     jediný stav výběru + synchronizace s URL a historií
   viewer.js                    pan/zoom nad obrázkem; parcely sdílí souřadnice obrázku → vždy sedí
@@ -45,6 +47,10 @@ js/projects/pistov/            vše specifické pro Pístov (data)
   plotHouseCompatibility.js    pravidla přiřazení (UKÁZKOVÁ)
   statusOverrides.demo.js      ukázkové stavy jen pro ?demo=stavy
   project.js                   konfigurace projektu (pohledy, texty cen, zdroje)
+  content.js                   aktuality, časté otázky, financování, galerie, kontakty (jen ověřená fakta)
+js/site/                       společné pro všechny stránky: chrome (hlavička, menu, patička, cookies),
+                               collections (oblíbené + porovnání v localStorage), items, teasers, ui
+js/pages/                      skript každé podstránky
 js/ui/                         komponenty rozhraní (explorer, hero, panel, stage, catalog, detail, enquiry)
 tools/                         pipeline: extrakce z PDF, trasování parcel, homografie, optimalizace obrázků
 tests/                         node testy + testovací fixture
@@ -52,6 +58,22 @@ podklady/                      zdrojové PDF a mezivýstupy (nenasazovat)
 ```
 
 Nový projekt = nová složka `js/projects/<nazev>/` se stejnou strukturou a import v `js/main.js`.
+
+## Podstránky
+
+| Stránka | Obsah |
+|---|---|
+| `galerie.html` | vizualizace, dron, výkresy; filtr kategorií (`?kategorie=`), prohlížeč s šipkami / klávesnicí / swipem |
+| `aktuality.html`, `aktualita.html?id=` | novinky z `content.js` |
+| `financovani.html` | obecný postup koupě + orientační anuitní kalkulačka (předvyplněné hodnoty jsou jen příklad) |
+| `faq.html` | časté otázky s kategoriemi |
+| `kontakty.html` | developer, architekti, prodej (doplní developer), mapa OpenStreetMap, formulář (ukázkový) |
+| `oblibene.html`, `porovnani.html` | uložené parcely / domy / kombinace; porovnání až 4 položek, pořadí přetažením |
+| `ochrana-osobnich-udaju.html` | struktura zásad + cookies; finální text doplní správce |
+
+Srdíčko a porovnání jsou u parcely, typového domu (panel i katalog) a kombinace v režimu Můj návrh.
+Cookie lišta jen ukládá volbu – web zatím nespouští žádné analytické ani marketingové skripty.
+Po změně šablony podstránek: `cd tools && node build-pages.mjs`.
 
 ## Odkud pochází data
 
@@ -133,7 +155,7 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
 
 ## Ověřeno
 
-- `npm test` – 13 testů (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
+- `npm test` – 23 testů (vč. podstránek, odkazů, obsahu, oblíbených/porovnání) (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
 - Prohlížeč 1440×900 a 375×812: úvod + přeskočení, výběr parcely myší / dotykem / klávesnicí (Tab, Enter, Esc),
   popup, filtry, pohledy (letecký, plán, řezy, nedostupné pohledy zašedlé), zoom/reset/kompas/nápověda/celá obrazovka,
   režimy Pozemky / Typové domy / Můj návrh, timelapse, detail domu (záložky půdorysy/situace/pohledy), Zpět v prohlížeči
@@ -149,5 +171,6 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
 5. Animace výstavby a/nebo stavy 1–4 pro každý typ × variantu; případně 3D modely.
 6. Panoramata s vizualizací zástavby („po dostavbě“) ze stejných stanovišť; případně výškový model terénu pro přesnější překryv parcel.
 7. Obestavěná plocha přízemních variant D2/D3, dispozice domů C a D (katalog je neuvádí), vizualizace podvariant A2, B2, C2, D2, D3.
-8. Kontaktní údaje, zpracovatel poptávek (e-mail / CRM), GDPR text.
+8. Kontaktní osoba pro prodej, zpracovatel poptávek (e-mail / CRM), text zásad ochrany osobních údajů, případné měřicí nástroje pro cookies.
+10. Podmínky prodeje, rezervace a partneři financování; další aktuality a fotografie z průběhu výstavby.
 9. Ověřené informace o lokalitě (doprava, vybavenost, sítě, termíny) – záměrně nejsou uvedeny.

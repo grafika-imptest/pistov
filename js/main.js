@@ -14,6 +14,13 @@ import { m2, plural } from "./ui/format.js";
 import { applyFixtures } from "./fixtures.js";
 import { planToMetres } from "./core/panorama.js";
 import { PanoTeaser } from "./ui/panoTeaser.js";
+import { renderChrome } from "./site/chrome.js";
+import { renderHomeTeasers } from "./site/teasers.js";
+import { collections, bindSaveButtons, syncSaveButtons, COMPARE_MAX } from "./site/collections.js";
+import { toast } from "./site/ui.js";
+
+// shared header (navigation, favourites / comparison counters, menu), footer and cookie consent
+renderChrome();
 
 const $ = (s) => document.querySelector(s);
 const url = readUrl();
@@ -260,6 +267,10 @@ if (demoStatus) {
   document.body.append(b);
 }
 
+// favourites + comparison buttons (panel, catalogue)
+bindSaveButtons(document.body, () => toast(`Porovnat lze nejvýše ${COMPARE_MAX} položky – nejdřív některou odeberte na stránce Porovnání.`));
+collections.subscribe(() => syncSaveButtons());
+
 // ---------------- boot ----------------
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 if (!location.hash) window.scrollTo(0, 0);
@@ -267,6 +278,7 @@ render(store.get(), null, null);
 updateInsets();
 revealOnScroll();
 new PanoTeaser(document.querySelector("[data-pano-teaser]"), app);
+renderHomeTeasers();
 const deepLink = url.plotNo || url.mode || url.detail || url.type || (url.view && url.view !== project.defaultView);
 if (deepLink) { intro.enter({ instant: true }); updateInsets(); requestAnimationFrame(() => { updateInsets(); const sel = selection(); if (sel.plot) explorer.framePlot(sel.plot.id, false); else explorer.frameAll(false); }); }
 else intro.play();
