@@ -17,7 +17,59 @@ export class Intro {
     this.note = root.querySelector("[data-hero-note]");
     // the arrow follows the camera, so it always points at the development
     explorer.onViewChange = () => { if (root.dataset.phase !== "explore") this.placeArrow(); };
-    window.addEventListener("resize", () => this.placeArrow());
+    window.addEventListener("resize", () => {
+      this.placeArrow();
+      // the hero framing is recomputed on resize → restart the drift from the new framing
+      if (root.dataset.phase !== "ready" || reducedMotion()) return;
+      this._stopDrift();
+      clearTimeout(this._rz);
+      this._rz = setTimeout(() => { if (root.dataset.phase === "ready") { explorer.heroFrame(false); this._startDrift(); } }, 400);
+    });
+    // the drift only runs while the hero is on screen
+    new IntersectionObserver(([e]) => { this._heroVisible = e.isIntersecting; }, { threshold: 0.05 }).observe(root);
+  }
+
+  /** after the intro: slow left → right pan with a slight zoom over the aerial view, there and back,
+   *  like the self-rotating panorama in the Lokalita section. Any interaction with the map stops it. */
+  _startDrift(delay = 0) {
+    this._stopDrift();
+    if (reducedMotion() || this.root.dataset.phase !== "ready") return;
+    if (delay) { this._driftTimer = setTimeout(() => this._startDrift(), delay); return; }
+    const v = this.explorer.viewer, f = v.free;
+    const s0 = v.s, tx0 = v.tx, ty0 = v.ty;
+    const [cx0, cy0] = v.toScene([f.x + f.w / 2, f.y + f.h / 2]);
+    const Z = 0.07, s1 = s0 * (1 + Z);                                     // zoom in by 7 %
+    const D = Math.max(0, Math.min(v.size[0] * 0.14, v.size[0] - f.w / (2 * s1) - cx0)); // travel to the right (scene px)
+    const T = 56000;                                                      // one there-and-back cycle
+    let t = 0, last = performance.now();
+    const step = (now) => {
+      if (this.root.dataset.phase !== "ready") { this._stopDrift(); return; }
+      const dt = Math.min(64, now - last); last = now;
+      if (this._heroVisible !== false && !document.hidden) {
+        t += dt;
+        const p = (1 - Math.cos((2 * Math.PI * t) / T)) / 2;               // 0 → 1 → 0, soft at both ends
+        const s = s0 * (1 + Z * p), cx = cx0 + D * p;
+        let tx = f.x + f.w / 2 - cx * s, ty = f.y + f.h / 2 - cy0 * s;
+        // never reveal the edge of the image (bounds widened to the start so nothing jumps)
+        const W = v.size[0] * s, H = v.size[1] * s;
+        if (W >= f.w) tx = Math.min(Math.max(f.x, tx0), Math.max(Math.min(f.x + f.w - W, tx0), tx));
+        if (H >= f.h) ty = Math.min(Math.max(f.y, ty0), Math.max(Math.min(f.y + f.h - H, ty0), ty));
+        v.setView({ s, tx, ty }, { clamp: false });
+      }
+      this._drift = requestAnimationFrame(step);
+    };
+    this._drift = requestAnimationFrame(step);
+    // stop as soon as the visitor takes over the map
+    const off = (this._driftOff = new AbortController());
+    const stop = () => this._stopDrift();
+    v.vp.addEventListener("pointerdown", stop, { signal: off.signal });
+    v.vp.addEventListener("keydown", stop, { signal: off.signal });
+    v.vp.addEventListener("wheel", (e) => { if (e.ctrlKey || e.metaKey) stop(); }, { signal: off.signal, passive: true });
+  }
+  _stopDrift() {
+    cancelAnimationFrame(this._drift); this._drift = 0;
+    clearTimeout(this._driftTimer);
+    this._driftOff?.abort(); this._driftOff = null;
   }
 
   _drawArrow() {
@@ -63,6 +115,7 @@ export class Intro {
 
   async play({ force = false } = {}) {
     const ex = this.explorer, v = ex.viewer, root = this.root;
+    this._stopDrift();
     this.ctrl = new AbortController(); const { signal } = this.ctrl;
     root.dataset.phase = "intro";
     v.interactive = false;
@@ -82,6 +135,7 @@ export class Intro {
           this.markSeen();
           root.dataset.phase = "ready";
           v.interactive = true;
+          this._startDrift();
           return;
         }
       } catch (e) { if (e.name === "AbortError") return; throw e; }
@@ -115,6 +169,7 @@ export class Intro {
       this.markSeen();
       root.dataset.phase = "ready";
       v.interactive = true;
+      this._startDrift();
     } catch (e) {
       if (e.name !== "AbortError") throw e;
     }
@@ -169,11 +224,13 @@ export class Intro {
     this.markSeen();
     root.dataset.phase = "ready";
     ex.viewer.interactive = true;
+    this._startDrift(reducedMotion() ? 0 : 760); // after the 700 ms settle animation
   }
 
   /** Scene 3: from presentation to exploration */
   enter({ instant = false } = {}) {
     this.ctrl?.abort();
+    this._stopDrift();
     const root = this.root, ex = this.explorer;
     this._removeVideo();
     root.querySelector(".viewer__overlay")?.remove();
