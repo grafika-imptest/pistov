@@ -193,15 +193,17 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 .hero__lead { font-size: var(--fs-lg); max-width: 46ch; margin: 0 0 var(--s6); opacity: 0; transform: translateY(10px); transition: all 800ms var(--ease-out) 450ms; color: rgba(244, 239, 227, 0.92); }
 .hero__actions { opacity: 0; transform: translateY(10px); transition: all 800ms var(--ease-out) 600ms; }
 .hero__note { position: absolute; right: -190px; top: 8px; color: #ffd7cc; font-size: 1.6rem; opacity: 0; transition: opacity 600ms 1300ms; transform: rotate(-4deg); }
-.hero__arrow { position: absolute; right: -230px; top: 60px; width: 200px; height: 110px; }
-.hero__arrow path { stroke: #ffd7cc; }
+.hero-arrow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--z-hero); pointer-events: none; overflow: visible; transition: opacity 500ms var(--ease-out); }
+.hero-arrow path { stroke: #ffd7cc; stroke-width: 2; }
+.explorer[data-phase="explore"] .hero-arrow { opacity: 0; }
 .explorer.hero-in .hero__kicker, .explorer.hero-in .hero__lead, .explorer.hero-in .hero__actions { opacity: 1; transform: none; }
 .explorer.hero-in .hero__title .line > span { transform: none; }
 .explorer.hero-in .hero__note { opacity: 1; }
-.hero__arrow.is-drawn path { transition-delay: 1500ms; }
+.hero-arrow.is-drawn path { transition-delay: 1400ms; transition-duration: 1100ms; }
+.hero-arrow.is-drawn path + path { transition-delay: 2400ms; transition-duration: 300ms; }
 .explorer[data-phase="explore"] .hero { opacity: 0; transform: translateY(24px); pointer-events: none; transition: opacity 500ms var(--ease-out), transform 700ms var(--ease-out); }
 .explorer[data-phase="explore"] .hero > * { pointer-events: none; }
-@media (max-width: 1100px) { .hero__note, .hero__arrow { display: none; } }
+@media (max-width: 1100px) { .hero__note, .hero-arrow { display: none; } }
 
 .intro-ui { position: absolute; z-index: var(--z-ui); inset: auto var(--gutter) 24px auto; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 .intro-skip { color: var(--paper); border-color: rgba(244, 239, 227, 0.5); }

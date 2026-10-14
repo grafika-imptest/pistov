@@ -71,8 +71,9 @@
           <button class="btn btn--paper btn--lg" type="button" data-enter>Prozkoumat lokalitu <span class="btn__arrow" aria-hidden="true">→</span></button>
         </div>
         <p class="hero__note note" aria-hidden="true" data-hero-note>z výkresu architekta<br>až k budoucí ulici</p>
-        <svg class="hero__arrow sketch" viewBox="0 0 220 120" aria-hidden="true" data-hero-arrow><path pathLength="1" d="M6 18 C 70 8, 150 30, 196 98"/><path pathLength="1" d="M178 90 L197 100 L199 78"/></svg>
       </div>
+      <!-- hand-drawn arrow from the note to the development; geometry computed in js/ui/hero.js -->
+      <svg class="hero-arrow sketch" aria-hidden="true" data-hero-arrow><path pathLength="1"/><path pathLength="1"/></svg>
       <div class="intro-ui">
         <button class="btn btn--ghost btn--sm intro-skip" type="button" data-skip>Přeskočit úvod</button>
         <p class="intro-caption" data-intro-caption aria-live="polite"></p>

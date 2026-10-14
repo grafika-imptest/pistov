@@ -15,7 +15,7 @@ export class Explorer {
     this.onSelectPlot = onSelectPlot; this.onEnterExplore = onEnterExplore; this.onStation = onStation;
     this.$ = (s) => root.querySelector(s);
     this.viewer = new Viewer(this.$("[data-viewer]"), this.$("[data-scene]"), {
-      onChange: (v) => { this.layer.setScale(v.s); this._placeTooltip(); },
+      onChange: (v) => { this.layer.setScale(v.s); this._placeTooltip(); this.onViewChange?.(); },
       onUserGesture: () => this.onGesture?.(),
     });
     this.viewer.onResize = () => this._onResize();
