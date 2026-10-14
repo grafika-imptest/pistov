@@ -132,7 +132,7 @@ test("studio edition: every page exists, resolves against the root and loads the
   // the offer page runs the very same explorer app as the ateliér home page
   assert.match(read("studio/nabidka.html"), /id="explorer"/);
   assert.match(read("studio/nabidka.html"), /src="js\/main\.js"/);
-  for (const a of ["assets/video/studio-house-a-1600.mp4", "assets/video/studio-house-a-960.mp4", "assets/video/studio-house-a-poster.webp", "assets/img/plan-light-900.webp"]) assert.ok(exists(a), a);
+  for (const a of ["assets/video/studio-house-a-1600.mp4", "assets/video/studio-house-a-960.mp4", "assets/video/studio-house-a-poster.webp", "assets/img/plan-light-900.webp", "assets/img/detail-cihla-480.webp", "assets/img/detail-drevo-480.webp", "assets/img/detail-taska-480.webp"]) assert.ok(exists(a), a);
 });
 
 test("edition switch: pages map to their counterpart, configuration survives the switch", async () => {

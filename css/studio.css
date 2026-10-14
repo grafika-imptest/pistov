@@ -120,15 +120,14 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 /* motion: content is visible by default; only with .s-motion (JS + motion allowed) it starts hidden */
 .s-motion [data-s-in] { opacity: 0; transform: translateY(28px); transition: opacity var(--s-dur) var(--s-ease), transform var(--s-dur) var(--s-ease); }
 .s-motion [data-s-in].is-in { opacity: 1; transform: none; }
-.s-motion [data-s-reveal] { clip-path: inset(100% 0 0 0); transition: clip-path 1200ms var(--s-ease); }
-.s-motion [data-s-reveal].is-in { clip-path: inset(0 0 0 0); }
-.s-motion [data-s-reveal] img { transform: scale(1.12); transition: transform 1600ms var(--s-ease); }
-.s-motion [data-s-reveal].is-in img { transform: none; }
+/* the wipe clips the image, never the observed frame: a fully clipped element never "intersects" (Chrome IO) */
+.s-motion [data-s-reveal] img { clip-path: inset(100% 0 0 0); transform: scale(1.12); transition: clip-path 1200ms var(--s-ease), transform 1600ms var(--s-ease); }
+.s-motion [data-s-reveal].is-in img { clip-path: inset(0 0 0 0); transform: none; }
 .s-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .s-w > span { display: inline-block; }
 .s-motion [data-s-lines] .s-w > span { transform: translateY(105%); transition: transform 1000ms var(--s-ease); transition-delay: calc(var(--i) * 40ms); }
 .s-motion [data-s-lines].is-in .s-w > span { transform: none; }
-@media (prefers-reduced-motion: reduce) { .s-motion [data-s-in], .s-motion [data-s-reveal], .s-motion [data-s-lines] .s-w > span, .s-motion [data-s-reveal] img { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .s-motion [data-s-in], .s-motion [data-s-lines] .s-w > span, .s-motion [data-s-reveal] img { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; } }
 
 /* ---------------------------------------------------------------- chrome */
 .ed-studio .topbar { height: var(--topbar-h); color: var(--s-ink); background: transparent; transition: background-color 300ms, color 300ms, box-shadow 300ms, transform 450ms var(--s-ease); }
@@ -207,9 +206,14 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-arch__t1 p, .s-arch__t2 p { color: var(--s-ink-2); max-width: 38ch; }
 .s-arch__b { grid-column: 2 / span 4; aspect-ratio: 4 / 5; }
 .s-arch__c { grid-column: 7 / span 5; aspect-ratio: 3 / 2; margin-top: clamp(40px, 8vw, 140px) !important; }
-.s-arch__t2 { grid-column: 7 / span 5; }
+.s-arch__t2 { grid-column: 7 / span 5; grid-row: 3; }
+.s-arch__mat { grid-column: 2 / span 4; grid-row: 3; align-self: start; margin: 0; }
+.s-arch__mats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.s-arch__mats span { display: grid; gap: 8px; }
+.s-arch__mats img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.s-arch__mats small { font-family: var(--s-mono); font-size: 0.6875rem; letter-spacing: 0.04em; color: var(--s-ink-2); }
 @media (max-width: 899px) {
-  .s-arch__a, .s-arch__t1, .s-arch__b, .s-arch__c, .s-arch__t2 { grid-column: 1 / -1; margin-top: 0 !important; }
+  .s-arch__a, .s-arch__t1, .s-arch__b, .s-arch__c, .s-arch__t2, .s-arch__mat { grid-column: 1 / -1; grid-row: auto; margin-top: 0 !important; }
   .s-arch__b { aspect-ratio: 3 / 2; }
   .s-arch__cap { left: var(--s-margin); right: auto; bottom: 12px; }
 }

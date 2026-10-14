@@ -21,6 +21,11 @@ export function reveal(root = document) {
   const els = root.querySelectorAll("[data-s-in], [data-s-reveal], [data-s-lines]");
   if (reducedMotion() || !("IntersectionObserver" in window)) { els.forEach((e) => e.classList.add("is-in")); return; }
   document.documentElement.classList.add("s-motion");
+  // clipped images do not count as visible for native lazy loading → start loading them well before they arrive
+  const pre = new IntersectionObserver((list) => {
+    for (const en of list) if (en.isIntersecting) { en.target.querySelectorAll("img[loading=lazy]").forEach((i) => (i.loading = "eager")); pre.unobserve(en.target); }
+  }, { rootMargin: "600px 0px" });
+  root.querySelectorAll("[data-s-reveal]").forEach((e) => pre.observe(e));
   const io = new IntersectionObserver((list) => {
     for (const en of list) if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
   }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
