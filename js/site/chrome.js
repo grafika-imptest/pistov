@@ -8,10 +8,11 @@ export const NAV = [
   { href: "galerie.html", label: "Galerie", id: "galerie" },
   { href: "aktuality.html", label: "Aktuality", id: "aktuality" },
   { href: "financovani.html", label: "Financování", id: "financovani" },
+  { href: "developer.html", label: "Developer", id: "developer" },
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
 ];
 export const MENU = [
-  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["index.html#lokalita", "Lokalita"], ["galerie.html", "Galerie"]] },
+  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["index.html#lokalita", "Lokalita"], ["galerie.html", "Galerie"], ["developer.html", "Developer"]] },
   { title: "Nákup", items: [["financovani.html", "Financování"], ["faq.html", "Časté otázky"], ["aktuality.html", "Aktuality"], ["kontakty.html", "Kontakty"]] },
   { title: "Nástroje", items: [["oblibene.html", "Oblíbené"], ["porovnani.html", "Porovnání"], ["index.html?rezim=navrh", "Můj návrh"]] },
 ];
@@ -93,9 +94,9 @@ function renderFooter() {
       ${MENU.map((c) => `<nav class="footer__col" aria-label="${c.title}"><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></nav>`).join("")}
       <div class="footer__col">
         <p class="eyebrow">Kontakt</p>
-        <p class="footer__small"><b>${site.developer.name}</b><br>${site.developer.address}<br><span class="muted">${site.developer.role}</span></p>
-        <p class="footer__small muted">${site.salesContact.note}</p>
-        <a class="link" href="kontakty.html">Všechny kontakty</a>
+        <p class="footer__small"><span class="muted">${site.developer.role}</span><br><b>${site.developer.brand}</b><br>${site.developer.address}</p>
+        <p class="footer__small"><a href="tel:${site.developer.phone.replace(/s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
+        <p class="footer__small"><a class="link" href="developer.html">O developerovi</a> · <a class="link" href="kontakty.html">Všechny kontakty</a></p>
       </div>
     </div>
     <div class="wrap"><p class="footer__disclaimer">Vizualizace jsou ilustrační. Ceny, dostupnost parcel a pravidla umístění domů doplní a potvrdí developer.</p></div>

@@ -1,5 +1,5 @@
 // Home page teasers – short previews of the subpages with a click-through (gallery, news, financing + FAQ).
-import { news, faq, financing, gallery } from "../projects/pistov/content.js";
+import { news, faq, financing, gallery, developer } from "../projects/pistov/content.js";
 import { newsCard, accordion, bindAccordion, img, srcset, isDrawing, esc } from "./ui.js";
 
 const PICKS = [["Domy", "A-garden-warm"], ["Lokalita", "drone-site-centre"], ["Domy", "D-garden-white"], ["Výkresy", "A-plans"]];
@@ -22,9 +22,13 @@ export function renderHomeTeasers() {
   const f = document.querySelector("[data-hp-fin-steps]");
   if (f) f.innerHTML = financing.steps.slice(0, 4).map((s) => `<li><span>${esc(s.title)}</span></li>`).join("");
 
+  const d = document.querySelector("[data-hp-devfacts]");
+  if (d) d.innerHTML = developer.facts.map(([big, small]) => `<li><b>${esc(big)}</b><span>${esc(small)}</span></li>`).join("");
+
   const q = document.querySelector("[data-hp-faq]");
   if (q) {
-    const pick = [7, 5, 0, 9].map((i) => ({ ...faq[i], id: `hp${i}` }));
+    const want = ["Kolik stojí", "libovolný dům", "Kolik parcel", "Kdo je developerem"];
+    const pick = want.map((w) => faq.findIndex((f) => f.q.includes(w))).filter((i) => i >= 0).map((i) => ({ ...faq[i], id: `hp${i}` }));
     q.innerHTML = accordion(pick);
     bindAccordion(q);
   }

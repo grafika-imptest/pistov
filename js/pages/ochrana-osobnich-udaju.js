@@ -9,7 +9,7 @@ document.querySelector("[data-legal]").innerHTML = `
   <p class="notice">Znění zásad zpracování osobních údajů doplní a schválí správce (developer projektu). Níže je přehled toho, jak web funguje dnes.</p>
   <nav class="legal__toc" aria-label="Obsah"><ol><li><a href="#spravce">Správce údajů</a></li><li><a href="#formular">Kontaktní formulář</a></li><li><a href="#prohlizec">Údaje ve vašem prohlížeči</a></li><li><a href="#cookies">Cookies</a></li><li><a href="#prava">Vaše práva</a></li></ol></nav>
   <h2 id="spravce" class="h3">1. Správce údajů</h2>
-  <p>Správcem osobních údajů bude provozovatel projektu. Zadavatel projektu podle katalogu: <b>${site.developer.name}</b>, ${site.developer.address}. Kontakt pro uplatnění práv doplní developer.</p>
+  <p>Správcem osobních údajů bude developer projektu <b>${site.developer.name}</b>, IČO ${site.developer.ico}, ${site.developer.address}, zapsaná v obchodním rejstříku vedeném u ${site.developer.register.replace("Krajský soud v Brně", "Krajského soudu v Brně")}. Dotazy k osobním údajům můžete posílat na <a class="link" href="mailto:${site.developer.email}">${site.developer.email}</a>.</p>
   <h2 id="formular" class="h3">2. Kontaktní a poptávkový formulář</h2>
   <p>Formuláře na webu zatím nejsou napojené na server ani e-mail – vyplněné údaje se nikam neodesílají a neukládají. Po napojení budou sloužit jen k odpovědi na váš dotaz nebo poptávku; účel, dobu uložení a příjemce doplní správce.</p>
   <h2 id="prohlizec" class="h3">3. Údaje uložené ve vašem prohlížeči</h2>

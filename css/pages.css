@@ -11,6 +11,8 @@
 .toolbtn__count { position: absolute; top: 3px; right: 1px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: var(--r-pill); background: var(--red); color: #fff; font-size: 10px; font-weight: 600; line-height: 17px; text-align: center; }
 .topbar__cta { margin-left: 8px; }
 @media (max-width: 899px) { .topbar__tools { margin-left: auto; } .topbar__cta { margin-left: 4px; } }
+/* seven links need ~1240 px next to the logo and tools – below that the menu button takes over */
+@media (max-width: 1239px) { .topnav { display: none; } .topbar__tools { margin-left: auto; } }
 @media (max-width: 420px) { .brand__name { letter-spacing: 0.28em; } .topbar { gap: 8px; } .toolbtn { width: 36px; } }
 
 /* ---------------- full-screen menu ---------------- */
@@ -367,3 +369,63 @@ html.has-menu { overflow: hidden; }
 @media (max-width: 560px) { .fincard__sketch { display: none; } }
 .hp-faq .accordion { margin-top: var(--s4); }
 .poptavka__more { margin: var(--s5) 0 0; font-size: var(--fs-sm); }
+
+/* ---------------- developer ---------------- */
+.subpage[data-page="developer"] .pagebody { padding-bottom: 0; }
+.devfacts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 48px); }
+.devfacts li { display: grid; gap: 6px; padding-top: var(--s4); border-top: 1px solid var(--line-strong); }
+.devfacts b { font-size: var(--fs-2xl); font-weight: 300; line-height: 1; letter-spacing: -0.02em; }
+.devfacts span { color: var(--ink-2); max-width: 30ch; }
+@media (max-width: 760px) { .devfacts { grid-template-columns: 1fr; } }
+.devvalues { list-style: none; margin: var(--s7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 44px); }
+.devvalues li { position: relative; padding-top: var(--s5); border-top: 1px solid var(--line-strong); }
+.devvalues__no { font-family: var(--hand); font-size: 2.4rem; color: var(--red); line-height: 1; }
+.devvalues h3 { font-size: var(--fs-xl); font-weight: 300; margin: 6px 0 10px; }
+.devvalues p { margin: 0; color: var(--ink-2); line-height: 1.65; }
+@media (max-width: 1000px) { .devvalues { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .devvalues { grid-template-columns: 1fr; } }
+.devservices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 24px); margin-top: var(--s7); }
+.devservice { padding: 24px 24px 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: rgba(255, 253, 248, 0.7); }
+.devservice h3 { margin: 0 0 8px; font-size: var(--fs-lg); font-weight: 500; }
+.devservice p { margin: 0 0 8px; color: var(--ink-2); line-height: 1.6; }
+.devservice--link { border-color: var(--red); background: #fffdf8; }
+@media (max-width: 899px) { .devservices { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .devservices { grid-template-columns: 1fr; } }
+.devprojects { list-style: none; margin: var(--s7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line-strong); }
+.devprojects li { border-bottom: 1px solid var(--line-strong); }
+.devprojects li:not(:nth-child(3n)) { border-right: 1px solid var(--line); }
+.devprojects a { position: relative; display: grid; gap: 4px; padding: 24px 48px 24px 0; padding-left: clamp(0px, 1.5vw, 20px); text-decoration: none; transition: background-color var(--dur-fast); }
+.devprojects a:hover { background: rgba(196, 55, 43, 0.05); }
+.devprojects__place { font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--red); }
+.devprojects b { font-size: var(--fs-xl); font-weight: 300; }
+.devprojects__go { position: absolute; right: 18px; top: 24px; font-size: 1.2rem; color: var(--pencil); transition: transform var(--dur-fast), color var(--dur-fast); }
+.devprojects a:hover .devprojects__go { transform: translate(3px, -3px); color: var(--red); }
+@media (max-width: 899px) { .devprojects { grid-template-columns: 1fr 1fr; } .devprojects li:not(:nth-child(3n)) { border-right: 0; } .devprojects li:nth-child(odd) { border-right: 1px solid var(--line); } }
+@media (max-width: 560px) { .devprojects { grid-template-columns: 1fr; } .devprojects li:nth-child(odd) { border-right: 0; } }
+.devcontact { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: end; }
+.devcontact a { color: var(--paper); }
+.devcontact__people { display: flex; flex-wrap: wrap; gap: 8px 28px; color: rgba(244, 239, 227, 0.85); }
+.devcontact__people b { font-weight: 500; margin-right: 6px; }
+.devcontact__branches { color: rgba(244, 239, 227, 0.85); }
+.devcontact .btn--ghost { color: var(--paper); border-color: rgba(244, 239, 227, 0.35); }
+.devcontact__company { margin: 0; display: grid; gap: 12px; padding: 24px; border: 1px solid rgba(244, 239, 227, 0.18); border-radius: var(--r-md); font-size: var(--fs-sm); }
+.devcontact__company dt { font-size: var(--fs-xs); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244, 239, 227, 0.55); }
+.devcontact__company dd { margin: 2px 0 0; }
+.section--ink .source { color: rgba(244, 239, 227, 0.5); margin-top: var(--s6); }
+@media (max-width: 899px) { .devcontact { grid-template-columns: 1fr; } }
+.contact__lines { margin: 10px 0 6px !important; line-height: 1.7; }
+.contact__lines a { text-decoration: none; }
+.contact__lines a:hover { color: var(--red); text-decoration: underline; }
+.contact__small { font-size: var(--fs-xs); }
+.contact__actions { margin-top: 12px !important; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.footer__small a { color: inherit; text-decoration: none; }
+.footer__small a:hover { text-decoration: underline; }
+
+/* home: developer band */
+.hp-dev { padding: clamp(56px, 7vw, 96px) 0; border-top: 1px solid var(--line); }
+.hp-dev__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.hp-dev .devfacts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hp-dev .devfacts b { font-size: var(--fs-xl); }
+.hp-dev .devfacts span { font-size: var(--fs-sm); }
+@media (max-width: 899px) { .hp-dev__grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .hp-dev .devfacts { grid-template-columns: 1fr; } }

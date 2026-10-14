@@ -38,7 +38,7 @@ export const project = {
   name: "Pístov",
   claim: "Vaše místo. Váš dům. Vaše budoucnost.",
   source: "Pístov – katalog rodinných domů, TAM architekti s.r.o., duben 2026",
-  developer: "START Zelený s.r.o.",
+  developer: "Horák & Vetchý s.r.o.",
   architect: "TAM architekti s.r.o.",
   currency: "Kč",
   plots,

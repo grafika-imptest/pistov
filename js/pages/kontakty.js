@@ -7,13 +7,16 @@ import { planToMetres } from "../core/panorama.js";
 
 renderChrome({ page: "kontakty", solid: true });
 const { lat, lon } = site.location;
-const card = (title, c, extra = "") => `<div class="contact"><p class="eyebrow">${title}</p><p class="contact__name">${esc(c.name)}</p><p>${esc(c.address)}</p><p class="muted">${esc(c.role)}</p>${extra}</div>`;
+const card = (title, c, extra = "") => `<div class="contact"><p class="eyebrow">${title}</p><p class="contact__name">${esc(c.brand || c.name)}</p><p>${esc(c.address)}</p><p class="muted">${esc(c.role)}</p>${extra}</div>`;
+const dev = site.developer, tel = (p) => `<a href="tel:${p.replace(/s/g, "")}">${p}</a>`;
 
 document.querySelector("[data-contacts]").innerHTML = `
   <div class="wrap contacts">
     <div class="contacts__cards">
-      <div class="contact contact--pending"><p class="eyebrow">Prodej</p><p class="contact__name">Kontaktní osoba</p><p class="muted">${esc(site.salesContact.note)}</p><a class="btn btn--red btn--sm" href="#formular">Napsat poptávku</a></div>
-      ${card("Developer", site.developer)}
+      ${card("Developer a prodej", dev, `
+        <p class="contact__lines">${tel(dev.phone)}<br><a href="mailto:${dev.email}">${dev.email}</a><br><a href="${dev.web}" target="_blank" rel="noopener">hvreality.cz</a></p>
+        <p class="muted contact__small">${esc(dev.name)} · IČO ${dev.ico} · ${esc(site.salesContact.note)}</p>
+        <p class="contact__actions"><a class="btn btn--red btn--sm" href="#formular">Napsat poptávku</a> <a class="link" href="developer.html">O developerovi</a></p>`)}
       ${card("Architekti", site.architect)}
     </div>
     <figure class="contacts__map">

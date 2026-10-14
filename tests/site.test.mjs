@@ -14,7 +14,7 @@ import { widthsOf } from "../js/site/ui.js";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const exists = (rel) => fs.existsSync(path.join(root, rel));
 const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
-const PAGES = ["galerie", "aktuality", "aktualita", "financovani", "faq", "kontakty", "porovnani", "oblibene", "ochrana-osobnich-udaju"];
+const PAGES = ["galerie", "aktuality", "aktualita", "financovani", "faq", "kontakty", "developer", "porovnani", "oblibene", "ochrana-osobnich-udaju"];
 
 test("subpages: every page exists with its script, shared styles, header and footer slots", () => {
   for (const p of PAGES) {
@@ -27,7 +27,7 @@ test("subpages: every page exists with its script, shared styles, header and foo
   const index = read("index.html");
   assert.match(index, /href="css\/pages.css"/);
   assert.match(index, /data-site-footer/);
-  for (const t of ["data-hp-gallery", "data-hp-news", "data-hp-faq", "data-hp-fin-steps"]) assert.ok(index.includes(t), `home teaser ${t}`);
+  for (const t of ["data-hp-gallery", "data-hp-news", "data-hp-faq", "data-hp-fin-steps", "data-hp-devfacts"]) assert.ok(index.includes(t), `home teaser ${t}`);
 });
 
 test("links: every local page linked from HTML, navigation and content exists", () => {
@@ -107,4 +107,13 @@ test("items: links reopen the configuration, plot crops stay inside the aerial v
   const d2 = project.houseTypes.find((t) => t.id === "D").layouts[1];
   const info = itemInfo({ kind: "combo", plot: 1, type: "D", layout: d2.id });
   assert.equal(info.builtUp, d2.builtUpArea !== undefined ? d2.builtUpArea : 156);
+});
+
+test("developer: Horák & Vetchý everywhere, no former client name left", () => {
+  assert.equal(site.developer.name, "Horák & Vetchý s.r.o.");
+  assert.equal(project.developer, site.developer.name);
+  assert.match(site.developer.ico, /^\d{8}$/);
+  const files = ["index.html", "README.md", ...PAGES.map((p) => `${p}.html`), ...fs.readdirSync(path.join(root, "js"), { recursive: true }).filter((f) => f.endsWith(".js")).map((f) => `js/${f}`)];
+  for (const f of files) assert.doesNotMatch(read(f), /START Zelen|Brtnice|Zadavatel projektu/i, f);
+  assert.match(read("js/site/chrome.js"), /developer\.html/);
 });

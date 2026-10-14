@@ -67,6 +67,7 @@ Nový projekt = nová složka `js/projects/<nazev>/` se stejnou strukturou a imp
 | `aktuality.html`, `aktualita.html?id=` | novinky z `content.js` |
 | `financovani.html` | obecný postup koupě + orientační anuitní kalkulačka (předvyplněné hodnoty jsou jen příklad) |
 | `faq.html` | časté otázky s kategoriemi |
+| `developer.html` | developer Horák & Vetchý s.r.o. – fakta, hodnoty, služby a projekty v jejich nabídce podle hvreality.cz (10/2026) |
 | `kontakty.html` | developer, architekti, prodej (doplní developer), mapa OpenStreetMap, formulář (ukázkový) |
 | `oblibene.html`, `porovnani.html` | uložené parcely / domy / kombinace; porovnání až 4 položek, pořadí přetažením |
 | `ochrana-osobnich-udaju.html` | struktura zásad + cookies; finální text doplní správce |
@@ -155,7 +156,7 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
 
 ## Ověřeno
 
-- `npm test` – 23 testů (vč. podstránek, odkazů, obsahu, oblíbených/porovnání) (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
+- `npm test` – 24 testů (vč. podstránek, odkazů, obsahu, oblíbených/porovnání) (data parcel vs. plán, stavy, plochy domů, existence všech assetů, pravidla, ceny, validace, panoramata a zaměření).
 - Prohlížeč 1440×900 a 375×812: úvod + přeskočení, výběr parcely myší / dotykem / klávesnicí (Tab, Enter, Esc),
   popup, filtry, pohledy (letecký, plán, řezy, nedostupné pohledy zašedlé), zoom/reset/kompas/nápověda/celá obrazovka,
   režimy Pozemky / Typové domy / Můj návrh, timelapse, detail domu (záložky půdorysy/situace/pohledy), Zpět v prohlížeči

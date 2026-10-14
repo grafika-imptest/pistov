@@ -6,9 +6,13 @@ export const site = {
   name: "Pístov",
   claim: "Pozemky a rodinné domy",
   realisation: { label: "IMP net", url: "https://www.impnet.cz" },
-  developer: { name: "START Zelený s.r.o.", address: "Široká 376, 588 32 Brtnice", role: "Zadavatel projektu (podle katalogu)" },
+  developer: {
+    name: "Horák & Vetchý s.r.o.", brand: "Horák & Vetchý reality", role: "Developer projektu",
+    address: "17. listopadu 5904/1a, 586 01 Jihlava", ico: "14443112", dic: "CZ14443112", register: "Krajský soud v Brně, oddíl C, vložka 128347",
+    phone: "+420 603 841 123", email: "info@hvreality.cz", web: "https://hvreality.cz",
+  },
   architect: { name: "TAM architekti s.r.o.", address: "Fibichova 23, 586 01 Jihlava", role: "Autoři urbanistického návrhu a typových domů" },
-  salesContact: { pending: true, note: "Kontaktní osobu pro prodej doplní developer." },
+  salesContact: { pending: true, note: "Prodej zajišťuje Horák & Vetchý reality. Jméno makléře pro Pístov doplníme." },
   location: { lat: 49.38015, lon: 15.567753, label: "Pístov u Jihlavy" },
 };
 
@@ -61,6 +65,7 @@ export const faq = [
   { cat: "Ceny a financování", q: "Pomůžete mi s financováním?", a: "Podmínky financování a partnery developer teprve připravuje. Orientační splátku si můžete spočítat na stránce Financování." },
   { cat: "Postup a termíny", q: "Kdy začne výstavba?", a: "Termíny přípravy a výstavby developer zatím nezveřejnil. Nové informace budeme průběžně uvádět v aktualitách." },
   { cat: "Postup a termíny", q: "Jak pošlu poptávku?", a: "Vyberte parcelu a dům v interaktivní lokalitě a klikněte na „Poptat tuto kombinaci“. Vaši volbu doplníme do formuláře za vás. Napsat nám můžete i obecně přes stránku Kontakty." },
+  { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem Pístova je Horák & Vetchý s.r.o. – realitní a developerská společnost z Jihlavy s pobočkami v Jihlavě, Brně, Praze, Olomouci, Ostravě, Znojmě a ve Žďáru nad Sázavou. Urbanistický návrh a typové domy připravili TAM architekti." },
   { cat: "Vizualizace", q: "Je vizualizace domu na parcele přesná?", a: "Jde o ilustraci. Hmota domu vychází z rozměrů v katalogu a umístění ze situačního plánu, fotorealistické obrázky jsou vizualizace architektů. Úvodní film na hlavní stránce je ilustrační vizualizace vytvořená pomocí AI." },
 ];
 
@@ -99,3 +104,39 @@ export const gallery = [
     ["D-plans", "Dům D – půdorysy"], ["D-plans-v23", "Dům D – přízemní varianty"],
   ] },
 ];
+
+// Developer page – Horák & Vetchý. Facts and quotes from hvreality.cz (October 2026); projects listed there are
+// developments they represent / sell, not necessarily projects they built – worded accordingly.
+export const developer = {
+  lead: "Za Pístovem stojí Horák & Vetchý reality – realitní a developerská společnost z Jihlavy. Pomůže vám s celou koupí – od výběru parcely přes financování až po dokončení obchodu.",
+  facts: [
+    ["20 let", "v manažerských pozicích v bankovnictví a realitách"],
+    ["7 poboček", "Jihlava, Brno, Praha, Olomouc, Ostrava, Znojmo, Žďár n. S."],
+    ["20+", "makléřů v týmu"],
+  ],
+  values: [
+    { title: "Spolehlivost", text: "„Náš zákazník je pro nás absolutní priorita.“ Měřítkem spolehlivosti je pro ně současnost a budoucnost, ne jen minulé zkušenosti." },
+    { title: "Komfort", text: "„Dokážeme změnit složitou situaci v jednoduché řešení.“ Zajistí celý proces koupě a pomohou vybrat nejvhodnější financování i pojištění." },
+    { title: "Profesionalita", text: "Velká síť bonitních klientů napříč Českou republikou a dlouhodobé kontakty jim umožňují rychle reagovat na nabídku i poptávku." },
+    { title: "Dostupnost", text: "„Úspěch stavíme na rychlosti, efektivitě a spokojenosti všech stran.“ Jsou k zastižení online každý den." },
+  ],
+  services: [
+    { title: "Developerské projekty", text: "Podpora projektu od prvního plánování až po předání klíčů – výhradní zastoupení, marketing a prodejní strategie na míru." },
+    { title: "Prodej a pronájem", text: "Profesionální poradenství a kompletní servis při prodeji i pronájmu nemovitostí." },
+    { title: "Financování nemovitostí", text: "Poradenství k hypotékám, úvěrům a dalším možnostem financování vlastního bydlení.", href: "financovani.html" },
+    { title: "Oceňování nemovitostí", text: "Ocenění vycházející z analýzy trhu." },
+    { title: "Správa nemovitostí", text: "Správa bytových domů a dalších komplexů – komunikace s nájemníky, právní i technické poradenství." },
+    { title: "Prezentace a reklama", text: "Profesionální fotografie, videoprezentace a cílené digitální kampaně." },
+  ],
+  projects: [
+    { name: "Panorama Znojmo", place: "Znojmo", note: "7 etap, energetická třída A a B", url: "https://panoramaznojmo.cz" },
+    { name: "Viladomy Dobrovodská", place: "České Budějovice", note: "32 bytů 1+kk až 3+kk", url: "https://www.viladomy-dobrovodska.cz" },
+    { name: "Bytové domy Zahrádky", place: "Moravské Budějovice", note: "57 bytů 1+kk až 3+kk", url: "https://bytymbudejovice.cz" },
+    { name: "Bydlení za školou", place: "Dačice", note: "5 rodinných domů a 6 bytů", url: "https://bydlenidacice.cz" },
+    { name: "Dům u Hájku", place: "Brno", note: "byty a ateliéry blízko centra", url: "https://dumuhajku.cz" },
+    { name: "Rezidence Zahrada", place: "Hrušovany nad Jevišovkou", note: "II. etapa, energetická třída A", url: "https://rezidencezahrada.cz" },
+  ],
+  branches: ["Jihlava", "Brno", "Praha", "Olomouc", "Ostrava", "Znojmo", "Žďár nad Sázavou"],
+  people: [["Ing. Pavel Vetchý", "+420 603 841 123"], ["Stanislav Horák", "+420 737 205 131"]],
+  source: "Údaje podle webu hvreality.cz, říjen 2026.",
+};
