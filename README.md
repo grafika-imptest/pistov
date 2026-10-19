@@ -184,8 +184,9 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
 
 Klient pracuje s verzí **Studio** (přepínač verzí je jen v menu a patičce, ne v navigaci).
 
-1. **Situační plán se změní.** Na webu je označený jako předběžná verze (`project.planNote`, popisky). Po dodání nového plánu znovu
-   vyrobit podklady a hranice parcel (`npm run assets`, `npm run data`).
+1. **Situační plán – HOTOVO (opravená verze z 10/2026, `podklady/zasilka-…`).** Parcely 1–62, všechny k prodeji; obkreslení
+   `tools/trace-plots-v2.mjs`, data `tools/build-data-v2.mjs` (nový plán napasovaný na rámec původního, takže sedí letecký
+   pohled, panoramata i mapa). Parcely 10/11, 30/31 a 47/48 rozděleny podle výměr (dělicí čáru v plánu kříží dům).
 2. **Řez terénem a svažitost pro KAŽDOU parcelu.** Detail parcely má blok *Svažitost* (krátký text o sklonu + náhled řezu s
    tlačítkem *Zvětšit řez*). Ke každé parcele bude jiný řez – data patří do `project.terrain.perPlot`
    (`{ 12: { slope: "…", text: "…", section: "section-12" } }`, obrázek do `assets/img/section-12-*.webp`).

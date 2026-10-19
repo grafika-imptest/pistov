@@ -110,7 +110,7 @@ $("[data-s-specs]").innerHTML = [
   fig.addEventListener("pointerleave", () => (tip.hidden = true));
   fig.addEventListener("focusin", (e) => { const a = e.target.closest(".s-plot"); if (a) show(a); });
   fig.addEventListener("focusout", () => (tip.hidden = true));
-  $("[data-s-legend]").innerHTML = ["available", "reserved"].map((s) => `<li><i class="s-dot s-dot--${s}"></i><b>${count(s)}</b> ${STATUS[s].label === "volná" ? "volných" : "rezervovaných"}</li>`).join("");
+  $("[data-s-legend]").innerHTML = ["available", "reserved"].filter((s) => s === "available" || count(s)).map((s) => `<li><i class="s-dot s-dot--${s}"></i><b>${count(s)}</b> ${STATUS[s].label === "volná" ? "volných" : "rezervovaných"}</li>`).join("");
   const bands = [["do 580 m²", (a) => a < 580], ["580–650 m²", (a) => a >= 580 && a <= 650], ["nad 650 m²", (a) => a > 650]];
   $("[data-s-bands]").innerHTML = bands.map(([l, f]) => `<li><span>${l}</span><b>${free.filter((p) => f(p.area)).length}</b></li>`).join("");
 }

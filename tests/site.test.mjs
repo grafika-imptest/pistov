@@ -72,8 +72,8 @@ test("content: FAQ facts match the plot data", () => {
   const free = project.plots.filter((p) => p.status === "available").length;
   const reserved = project.plots.filter((p) => p.status === "reserved").length;
   const areas = project.plots.map((p) => p.area);
-  assert.ok(all.includes(`obsahuje ${project.plots.length} parcel`));
-  assert.ok(all.includes(`je ${free} k prodeji a ${reserved} rezervovaných`));
+  assert.ok(all.includes(`obsahuje ${project.plots.length} parcel a všech ${free} je k prodeji`));
+  assert.equal(reserved, 0);
   assert.ok(all.includes(`od ${Math.min(...areas)} do ${new Intl.NumberFormat("cs-CZ").format(Math.max(...areas)).replace(/\s/g, " ")} m²`));
   for (const t of project.houseTypes) assert.ok(read("js/projects/pistov/content.js").includes(`${t.builtUpArea} m²`), `area of ${t.id} in content`);
 });

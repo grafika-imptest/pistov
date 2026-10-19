@@ -54,8 +54,8 @@ export const news = [
 ];
 
 export const faq = [
-  { cat: "Parcely", q: "Kolik parcel je v nabídce?", a: "Situační plán obsahuje 72 parcel. Podle katalogu z dubna 2026 je 63 k prodeji a 9 rezervovaných. Aktuální dostupnost vám potvrdíme v odpovědi na poptávku." },
-  { cat: "Parcely", q: "Jak velké jsou parcely?", a: "Výměry parcel jsou od 499 do 1 423 m², většina se pohybuje mezi 560 a 700 m². U každé parcely najdete výměru v interaktivní lokalitě." },
+  { cat: "Parcely", q: "Kolik parcel je v nabídce?", a: "Opravený situační plán (říjen 2026) obsahuje 62 parcel a všech 62 je k prodeji. Aktuální dostupnost vám potvrdíme v odpovědi na poptávku." },
+  { cat: "Parcely", q: "Jak velké jsou parcely?", a: "Výměry parcel jsou od 499 do 1 067 m², většina se pohybuje mezi 560 a 700 m². U každé parcely najdete výměru v interaktivní lokalitě." },
   { cat: "Parcely", q: "Co ukazují dronová panoramata?", a: "Dnešní stav lokality z 13. 10. 2026, tedy před výstavbou. Hranice parcel jsou do panoramat promítnuté podle situačního plánu – jde o orientační zobrazení." },
   { cat: "Typové domy", q: "Jaké domy si mohu vybrat?", a: "Katalog nabízí čtyři typologie: A – základní typologie s garáží, B – kratší varianta, C – minimalistická varianta (včetně podvarianty C2) a D – varianta s plochou střechou, také v přízemních variantách." },
   { cat: "Typové domy", q: "Jsou uvedené plochy užitné?", a: "Ne. U domů uvádíme obestavěnou plochu podle katalogu. Plochy jednotlivých místností najdete v půdorysech v detailu domu." },

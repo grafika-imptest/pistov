@@ -14,18 +14,16 @@ const IMG = "assets/img/";
 const plots = plotsSource.map((p) => ({
   ...p,
   price: null, // Kč incl. VAT – to be supplied by the developer
-  statusSource: "Situační plán, katalog duben 2026",
+  statusSource: "Opravený situační plán, říjen 2026",
 }));
 
 // Hand-written notes that take turns over the aerial view in the hero. Only facts from the plan / plot data;
 // anchors in aerial-view pixels, by plot number(s) or by panorama station.
 const nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
-const reserved = plots.filter((p) => p.status === "reserved").map((p) => p.no).sort((a, b) => a - b);
 const biggestFree = plots.filter((p) => p.status === "available").reduce((a, p) => (p.area > a.area ? p : a));
 const heroNotes = [
   { lines: ["z výkresu architekta", "až k budoucí ulici"], at: "centre" },
   { lines: ["rybníky a pás", "veřejné zeleně"], at: [2520, 470] },
-  { lines: ["rezervované parcely", `${reserved[0]}–${reserved[reserved.length - 1]}`], at: { plots: reserved } },
   { lines: ["největší volná parcela", `č. ${biggestFree.no} · ${nf(biggestFree.area)} m²`], at: { plot: biggestFree.no } },
   { lines: ["odsud jsme fotili", "panorama 360°"], at: { station: "stred-60" } },
   { lines: ["stávající", "zástavba obce"], at: [1480, 228] },
@@ -60,7 +58,6 @@ export const project = {
     fallbackSections: ["section-1", "section-2"],
     note: "Ke každé parcele doplníme vlastní řez terénem a údaj o sklonu. Zatím ukazujeme ilustrační řez z katalogu.",
   },
-  planNote: "Situační plán je předběžný – developer ho ještě upraví.",
   pricing: {
     plotPriceNote: "Cena pozemku bude doplněna",
     housePriceNote: "Orientační cena domu bude doplněna",
@@ -82,8 +79,8 @@ export const project = {
     {
       id: "plan", label: "Situační plán", kind: "image", interactive: true, geometryKey: "plan",
       size: PLAN_SIZE,
-      sources: [[900, IMG + "plan-900.webp"], [1800, IMG + "plan-1800.webp"], [3364, IMG + "plan-3364.webp"]],
-      caption: "Situační plán M 1 : 2000 · předběžná verze – plán se ještě upraví",
+      sources: [[900, IMG + "plan-frame-900.webp"], [1800, IMG + "plan-frame-1800.webp"], [3364, IMG + "plan-frame-3364.webp"]],
+      caption: "Situační plán · opravená verze 10/2026",
       north: 0,
       hidden: true, // not offered in the views menu; still used for geometry and the compass
     },

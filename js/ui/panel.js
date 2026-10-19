@@ -69,11 +69,11 @@ export class Panel {
       <header class="pn__head">
         <p class="eyebrow">Pozemky</p>
         <h2 class="pn__title">${free} volných parcel</h2>
-        <p class="pn__sub">z ${P.plots.length} v lokalitě · stav podle katalogu, duben 2026</p>
+        <p class="pn__sub">z ${P.plots.length} v lokalitě · podle opraveného situačního plánu, říjen 2026</p>
       </header>
       <div class="filters" role="group" aria-label="Filtr parcel">
         <p class="filters__label">Stav</p>
-        <div class="chips">${chip("status", "all", "Vše", f.status === "all")}${chip("status", "available", "Volné", f.status === "available")}${chip("status", "reserved", "Rezervované", f.status === "reserved")}${this.app.demoStatus ? chip("status", "sold", "Prodané", f.status === "sold") : ""}</div>
+        <div class="chips">${chip("status", "all", "Vše", f.status === "all")}${chip("status", "available", "Volné", f.status === "available")}${P.plots.some((p) => this.app.statusOf(p) === "reserved") ? chip("status", "reserved", "Rezervované", f.status === "reserved") : ""}${this.app.demoStatus ? chip("status", "sold", "Prodané", f.status === "sold") : ""}</div>
         <p class="filters__label">Výměra</p>
         <div class="chips">${AREA_BANDS.map((b) => chip("area", b.id, b.label, f.area === b.id)).join("")}</div>
         <p class="filters__label">Lze postavit dům</p>
