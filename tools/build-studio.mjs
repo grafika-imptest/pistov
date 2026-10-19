@@ -4,7 +4,7 @@
 import fs from "node:fs";
 import { pages } from "./site-pages.mjs";
 
-const index = fs.readFileSync("../index.html", "utf8");
+const index = fs.readFileSync("../atelier.html", "utf8");
 const cut = (from, to) => { const a = index.indexOf(from), b = index.indexOf(to, a + from.length); if (a < 0 || b < 0) throw new Error(`index.html: ${from}`); return index.slice(a, b); };
 const defs = cut("<!-- shared SVG defs", "\n\n  <header");
 const explorer = cut("<!-- ===================== EXPLORER", "    <!-- ===================== PROJECT");

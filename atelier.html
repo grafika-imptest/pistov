@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pístov — pozemky a rodinné domy</title>
+  <meta name="description" content="Pístov: vyberte si parcelu, typový dům A–D a jeho materiálové řešení. Podívejte se, jak by vaše budoucí bydlení mohlo vypadat ještě před výstavbou.">
+  <meta name="theme-color" content="#f4efe3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/img/aerial-2200.webp" imagesrcset="assets/img/aerial-800.webp 800w, assets/img/aerial-1400.webp 1400w, assets/img/aerial-2200.webp 2200w, assets/img/aerial-3400.webp 3400w" imagesizes="100vw" fetchpriority="high">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2323231f'/%3E%3Cpath d='M9 23V9h7a4.5 4.5 0 0 1 0 9H9' fill='none' stroke='%23f4efe3' stroke-width='2.4'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Přeskočit na výběr parcel</a>
+
+  <!-- shared SVG defs: plot status patterns, pencil filter -->
+  <svg class="defs" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="hatch-reserved" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="10" stroke="#a5752f" stroke-width="2.4" stroke-opacity=".75"/>
+      </pattern>
+      <pattern id="hatch-sold" width="9" height="9" patternUnits="userSpaceOnUse">
+        <path d="M0 0L9 9M9 0L0 9" stroke="#23231f" stroke-width="1.4" stroke-opacity=".55"/>
+      </pattern>
+      <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <header class="topbar" data-topbar>
+    <a class="brand" href="#explorer" aria-label="Pístov — úvod">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">Pístov</span>
+    </a>
+    <nav class="topnav" aria-label="Hlavní navigace">
+      <a href="#explorer" data-nav="explorer">Lokalita</a>
+      <a href="#domy" data-nav="domy">Typové domy</a>
+      <a href="#projekt" data-nav="projekt">Projekt</a>
+      <a href="#poptavka" data-nav="poptavka">Poptávka</a>
+    </nav>
+    <a class="btn btn--ink btn--sm topbar__cta" href="#poptavka" data-cta-global>Poptat</a>
+  </header>
+
+  <main>
+    <!-- ===================== EXPLORER: hero + interactive locality ===================== -->
+    <section id="explorer" class="explorer" data-phase="intro" aria-label="Interaktivní lokalita Pístov">
+      <div class="viewer" data-viewer tabindex="-1">
+        <div class="viewer__scene" data-scene></div>
+      </div>
+      <div class="pano-host" data-pano tabindex="0" aria-label="Panorama 360°: táhnutím se rozhlédnete"></div>
+      <div class="pano-ui" data-pano-ui></div>
+      <div class="viewer__tooltip" data-tooltip role="status" aria-live="polite" hidden></div>
+      <div class="viewer__hint" data-zoom-hint aria-hidden="true">Přiblížení: <kbd>Ctrl</kbd> + kolečko, nebo tlačítka +/−</div>
+
+      <!-- hero copy (scene 1) -->
+      <div class="hero" data-hero>
+        <p class="hero__kicker">Pístov · pozemky a rodinné domy</p>
+        <h1 class="hero__title">
+          <span class="line"><span>Vaše místo.</span></span>
+          <span class="line"><span>Váš dům.</span></span>
+          <span class="line"><span>Vaše budoucnost.</span></span>
+        </h1>
+        <p class="hero__lead">Vyberte si parcelu v připravované lokalitě, najděte k ní jeden ze čtyř typových domů a podívejte se, jak by vaše budoucí bydlení mohlo vypadat.</p>
+        <div class="hero__actions">
+          <button class="btn btn--paper btn--lg" type="button" data-enter>Prozkoumat lokalitu <span class="btn__arrow" aria-hidden="true">→</span></button>
+          <button class="btn btn--lg hero__replay" type="button" data-replay hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Přehrát úvodní film</button>
+        </div>
+      </div>
+      <!-- hand-written notes about the places on the map (js/ui/heroNotes.js, texts in js/projects/pistov/project.js) -->
+      <div class="hero-notes" aria-hidden="true" data-hero-notes></div>
+      <div class="intro-ui">
+        <button class="btn btn--ghost btn--sm intro-skip" type="button" data-skip>Přeskočit úvod</button>
+        <p class="intro-caption" data-intro-caption aria-live="polite"></p>
+      </div>
+
+      <!-- exploration chrome -->
+      <div class="modes" role="tablist" aria-label="Režim prohlížení" data-modes>
+        <button role="tab" type="button" data-mode="plots" aria-selected="true"><span class="modes__no">01</span>Pozemky</button>
+        <button role="tab" type="button" data-mode="houses" aria-selected="false"><span class="modes__no">02</span>Typové domy</button>
+        <button role="tab" type="button" data-mode="design" aria-selected="false"><span class="modes__no">03</span>Můj návrh</button>
+        <span class="modes__ink" aria-hidden="true"></span>
+      </div>
+
+      <div class="controls" data-controls aria-label="Ovládání pohledu" role="toolbar" aria-orientation="vertical">
+        <div class="controls__group">
+          <button class="ctl" type="button" data-ctl="views" aria-haspopup="true" aria-expanded="false" title="Pohledy na lokalitu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><span class="sr-only">Pohledy na lokalitu</span></button>
+          <button class="ctl" type="button" data-ctl="markers" aria-pressed="true" title="Zobrazit / skrýt parcely"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4Z"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4"/></svg><span class="sr-only">Zobrazit nebo skrýt hranice parcel</span></button>
+          <button class="ctl" type="button" data-ctl="labels" aria-pressed="true" title="Čísla parcel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 7 20M17 4l-2 16M4 9h16M3 15h16"/></svg><span class="sr-only">Zobrazit nebo skrýt čísla parcel</span></button>
+        </div>
+        <div class="controls__group">
+          <button class="ctl" type="button" data-ctl="zoom-in" title="Přiblížit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="sr-only">Přiblížit</span></button>
+          <button class="ctl" type="button" data-ctl="zoom-out" title="Oddálit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Oddálit</span></button>
+          <button class="ctl" type="button" data-ctl="reset" title="Celá lokalita"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="sr-only">Zobrazit celou lokalitu</span></button>
+        </div>
+        <div class="controls__group">
+          <button class="ctl ctl--compass" type="button" data-ctl="compass" title="Sever"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><g data-needle><path d="M12 4.5 14.2 12h-4.4L12 4.5Z" fill="currentColor" stroke="none"/><path d="M12 19.5 9.8 12h4.4L12 19.5Z"/></g></svg><span class="sr-only">Orientace na sever</span></button>
+          <button class="ctl" type="button" data-ctl="fullscreen" aria-pressed="false" title="Celá obrazovka"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg><span class="sr-only">Celá obrazovka</span></button>
+          <button class="ctl" type="button" data-ctl="help" aria-haspopup="dialog" title="Nápověda k ovládání"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .8-1 1.5v.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg><span class="sr-only">Nápověda k ovládání</span></button>
+        </div>
+      </div>
+
+      <div class="popover views-menu" data-views-menu hidden role="menu" aria-label="Pohledy na lokalitu"></div>
+      <div class="popover help" data-help hidden role="dialog" aria-label="Nápověda k ovládání">
+        <p class="help__title">Jak ovládat lokalitu</p>
+        <ul>
+          <li><b>Výběr parcely</b> — klikněte nebo klepněte na parcelu, případně ji vyberte ze seznamu v panelu.</li>
+          <li><b>Posun</b> — táhněte myší nebo prstem.</li>
+          <li><b>Přiblížení</b> — tlačítka +/−, dvojklik, <kbd>Ctrl</kbd> + kolečko nebo dva prsty.</li>
+          <li><b>Klávesnice</b> — <kbd>Tab</kbd> mezi parcelami, <kbd>Enter</kbd> výběr, šipky posun, <kbd>+</kbd>/<kbd>−</kbd> zoom, <kbd>0</kbd> celá lokalita, <kbd>Esc</kbd> zrušení výběru.</li>
+          <li><b>Oko</b> — přepíná pohledy: letecká vizualizace, situační plán, řezy terénem a panorama 360° dnešní lokality.</li>
+          <li><b>Panorama 360°</b> — táhnutím se rozhlédnete, kroužky „360°“ v mapě otevřou výhled z daného místa.</li>
+        </ul>
+        <button class="btn btn--ink btn--sm" type="button" data-help-close>Rozumím</button>
+      </div>
+
+      <div class="legend" data-legend aria-label="Legenda stavů">
+        <span class="legend__item"><i class="sw sw--available" aria-hidden="true"></i>Volná</span>
+        <span class="legend__item"><i class="sw sw--reserved" aria-hidden="true"></i>Rezervovaná</span>
+        <span class="legend__item"><i class="sw sw--sold" aria-hidden="true"></i>Prodaná</span>
+        <span class="legend__view" data-view-caption></span>
+      </div>
+
+      <p class="explore-note note" data-explore-note aria-hidden="true">vyberte si parcelu</p>
+
+      <!-- contextual panel: desktop side panel / mobile bottom sheet -->
+      <aside class="panel" data-panel aria-label="Detail výběru" data-sheet="peek">
+        <button class="panel__grip" type="button" data-sheet-toggle aria-label="Rozbalit panel"><span></span></button>
+        <div class="panel__scroll" data-panel-body></div>
+      </aside>
+
+      <!-- house-on-plot visualisation stage (mode "Můj návrh") -->
+      <section class="stage" data-stage aria-label="Vizualizace domu na parcele" hidden></section>
+    </section>
+
+    <!-- ===================== PROJECT ===================== -->
+    <section id="projekt" class="section section--paper projekt">
+      <div class="wrap projekt__grid">
+        <div class="projekt__text reveal">
+          <p class="eyebrow">01 — Projekt</p>
+          <h2 class="h2">Lokalita, která se teprve rodí. <em>Dům, který si k ní vyberete.</em></h2>
+          <p class="lead">Pístov je připravovaná lokalita rodinných domů. Neprodáváme jen prázdné parcely: ke každé najdete typové domy, které na ni lze umístit, a uvidíte, jak by vaše kombinace mohla vypadat.</p>
+          <dl class="facts" data-facts></dl>
+          <p class="source">Zdroj: Pístov – katalog rodinných domů, TAM architekti, duben 2026. Stavy parcel podle situačního plánu k dubnu 2026.</p>
+        </div>
+        <figure class="projekt__plan reveal">
+          <img src="assets/img/plan-900.webp" srcset="assets/img/plan-900.webp 900w, assets/img/plan-1800.webp 1800w" sizes="(min-width: 900px) 46vw, 92vw" width="3364" height="2376" alt="Situační plán lokality Pístov s rozdělením na parcely 1–62 (TAM architekti)" loading="lazy" decoding="async">
+          <figcaption><span class="note">situační plán · M 1 : 2000</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== PRINCIPLE ===================== -->
+    <section class="section princip" aria-labelledby="princip-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">02 — Princip</p>
+            <h2 class="h2 reveal" id="princip-title">Pozemek a dům jako <em>jeden celek</em></h2>
+          </div>
+          <p class="lead reveal">Nevybíráte jen prázdný pozemek. Uvidíte, jak by mohlo vypadat vaše budoucí bydlení, a kombinaci parcely a domu si sestavíte sami – od výběru místa až po konkrétní poptávku.</p>
+        </div>
+        <ol class="steps">
+          <li class="step reveal"><span class="step__no">1</span><h3>Parcela</h3><p>Prozkoumejte lokalitu z výšky nebo v situačním plánu. U každé parcely uvidíte výměru, stav a typy domů, které na ni lze postavit.</p><svg class="step__sketch sketch" viewBox="0 0 120 80" aria-hidden="true"><path pathLength="1" d="M14 62 L28 18 L98 12 L108 58 Z"/><path pathLength="1" d="M50 40 m-4 0 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0"/></svg></li>
+          <li class="step reveal"><span class="step__no">2</span><h3>Typový dům</h3><p>Čtyři typologie od architektů z TAM architekti — od minimalistického domu C po dům D s plochou střechou. Každá s dispozičními a materiálovými variantami.</p><svg class="step__sketch sketch" viewBox="0 0 120 80" aria-hidden="true"><path pathLength="1" d="M20 66 V36 L48 14 L76 36 V66 Z"/><path pathLength="1" d="M76 66 H104 V44 H76"/></svg></li>
+          <li class="step reveal"><span class="step__no">3</span><h3>Vaše kombinace</h3><p>Dům se na vybrané parcele „postaví“ před vašima očima. Sestavu si uložíte odkazem a jedním klikem z ní pošlete konkrétní poptávku.</p><svg class="step__sketch sketch" viewBox="0 0 120 80" aria-hidden="true"><path pathLength="1" d="M10 58 C 34 18, 70 70, 108 22"/><path pathLength="1" d="M94 20 L109 21 L106 36"/></svg></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== HOUSE CATALOGUE ===================== -->
+    <section id="domy" class="section domy" aria-labelledby="domy-title">
+      <div class="wrap sechead">
+        <div>
+          <p class="eyebrow reveal">03 — Typové domy</p>
+          <h2 class="h2 reveal" id="domy-title">Čtyři typologie. <em>Jedna architektonická řeč.</em></h2>
+        </div>
+        <p class="lead reveal">Sedlové střechy, světlé omítky, cihla a dřevo — domy navazují na tradici venkovské zástavby a zároveň nabízejí současné dispozice. Hodnoty uvádějí obestavěnou plochu podle katalogu.</p>
+      </div>
+      <div class="catalog" data-catalog></div>
+    </section>
+
+    <!-- ===================== GALLERY (teaser → galerie.html) ===================== -->
+    <section class="section hp-gallery" aria-labelledby="hp-gallery-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">04 — Galerie</p>
+            <h2 class="h2 reveal" id="hp-gallery-title">Pístov <em>v obrazech</em></h2>
+          </div>
+          <div class="sechead__aside reveal">
+            <p class="lead">Vizualizace domů od TAM architekti, dronové snímky dnešní lokality a výkresy – všechno na jednom místě.</p>
+            <a class="btn btn--ghost" href="galerie.html">Otevřít galerii <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="hp-gallery__grid reveal" data-hp-gallery></div>
+      </div>
+    </section>
+
+    <!-- ===================== LOCALITY ===================== -->
+    <section id="lokalita" class="section lokalita" aria-labelledby="lokalita-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">05 — Lokalita</p>
+            <h2 class="h2 reveal" id="lokalita-title">Terén, voda <em>a zeleň</em></h2>
+          </div>
+          <p class="lead reveal">Lokalita navazuje na stávající zástavbu obce. Podle situačního plánu ji z východu lemuje soustava vodních ploch a pás veřejné zeleně; domy jsou osazeny do mírně svažitého terénu.</p>
+        </div>
+        <figure class="pano-teaser reveal" data-pano-teaser>
+          <div class="pano-teaser__gl" data-teaser-gl tabindex="0" aria-label="Panorama 360° lokality, táhnutím se rozhlédnete"></div>
+          <figcaption class="pano-teaser__cap">
+            <span class="note">takhle to tu vypadá dnes – rozhlédněte se</span>
+            <span class="pano-teaser__meta">Dronové panorama 60 m nad středem lokality · 13. 10. 2026 · stav před výstavbou</span>
+            <button type="button" class="btn btn--paper btn--sm" data-teaser-open>Otevřít 360° v lokalitě <span aria-hidden="true">→</span></button>
+          </figcaption>
+        </figure>
+        <p class="source reveal">Informace o dopravní dostupnosti, občanské vybavenosti, sítích a termínech výstavby doplní developer — v dodaných podkladech nejsou uvedeny.</p>
+      </div>
+    </section>
+
+    <!-- ===================== NEWS (teaser → aktuality.html) ===================== -->
+    <section class="section section--paper hp-news" aria-labelledby="hp-news-title">
+      <div class="wrap">
+        <div class="sechead">
+          <div>
+            <p class="eyebrow reveal">06 — Aktuality</p>
+            <h2 class="h2 reveal" id="hp-news-title">Co je <em>v projektu nového</em></h2>
+          </div>
+          <div class="sechead__aside reveal">
+            <p class="lead">Novinky z přípravy lokality – od katalogu domů po dronové snímky. Průběh výstavby bude doplňovat developer.</p>
+            <a class="btn btn--ghost" href="aktuality.html">Všechny aktuality <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="newsgrid reveal" data-hp-news></div>
+      </div>
+    </section>
+
+    <!-- ===================== FINANCING + FAQ (teasers → financovani.html, faq.html) ===================== -->
+    <section class="section hp-fin" aria-labelledby="hp-fin-title">
+      <div class="wrap hp-fin__grid">
+        <div class="fincard reveal">
+          <svg class="fincard__sketch sketch" viewBox="0 0 150 100" aria-hidden="true"><path pathLength="1" d="M14 80 C 40 78, 52 40, 78 46 S 116 22, 136 14"/><path pathLength="1" d="M122 12 L137 13 L131 27"/></svg>
+          <p class="eyebrow">07 — Financování</p>
+          <h2 class="h2" id="hp-fin-title">Pozemek i dům <em>s hypotékou</em></h2>
+          <p>Spočítejte si orientační měsíční splátku a podívejte se, jak probíhá koupě pozemku se stavbou domu.</p>
+          <ol data-hp-fin-steps></ol>
+          <div class="fincard__actions">
+            <a class="btn btn--paper" href="financovani.html">Spočítat splátku <span aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="financovani.html#postup">Celý postup</a>
+          </div>
+        </div>
+        <div class="hp-faq reveal">
+          <p class="eyebrow">Časté otázky</p>
+          <h2 class="h2">Na co se <em>nejčastěji ptáte</em></h2>
+          <div class="accordion" data-hp-faq></div>
+          <p class="hp-more"><a class="btn btn--ink" href="faq.html">Všechny otázky <span aria-hidden="true">→</span></a><a class="link" href="kontakty.html">Kontakty a mapa</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DEVELOPER (teaser → developer.html) ===================== -->
+    <section class="hp-dev" aria-labelledby="hp-dev-title">
+      <div class="wrap hp-dev__grid">
+        <div class="reveal">
+          <p class="eyebrow">Developer projektu</p>
+          <h2 class="h2" id="hp-dev-title">Za Pístovem stojí <em>Horák & Vetchý</em></h2>
+          <p class="lead">Realitní a developerská společnost z Jihlavy. Pomůže vám s celou koupí – od výběru parcely přes financování až po dokončení obchodu.</p>
+          <p class="hp-more"><a class="btn btn--ink" href="developer.html">O developerovi <span aria-hidden="true">→</span></a><a class="link" href="kontakty.html">Kontakty</a></p>
+          <ul class="devfacts" data-hp-devfacts></ul>
+        </div>
+        <figure class="hp-dev__photo reveal">
+          <img src="assets/img/hv-founders-960.webp" srcset="assets/img/hv-founders-480.webp 480w, assets/img/hv-founders-960.webp 960w, assets/img/hv-founders-1600.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1600" height="1067" alt="Stanislav Horák a Pavel Vetchý" loading="lazy" decoding="async">
+          <figcaption><span class="note">Stanislav Horák a Pavel Vetchý</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== ENQUIRY ===================== -->
+    <section id="poptavka" class="section section--ink poptavka" aria-labelledby="poptavka-title">
+      <div class="wrap poptavka__grid">
+        <div>
+          <p class="eyebrow">08 — Poptávka</p>
+          <h2 class="h2" id="poptavka-title">Pošlete nám <em>svou kombinaci</em></h2>
+          <p class="lead">Ozveme se s aktuální dostupností parcely, cenou a dalším postupem. Výběr parcely a domu doplníme do zprávy za vás.</p>
+          <div class="poptavka__summary" data-enquiry-summary></div>
+          <p class="poptavka__more muted">Kontakty na developera a architekty a mapu lokality najdete na stránce <a class="link" href="kontakty.html">Kontakty</a>.</p>
+        </div>
+        <form class="form" data-enquiry novalidate></form>
+      </div>
+    </section>
+  </main>
+
+  <footer data-site-footer></footer>
+
+  <!-- house detail (full-screen dialog, URL ?detail=) -->
+  <dialog class="detail" data-detail aria-labelledby="detail-title"></dialog>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -24,7 +24,7 @@ test("subpages: every page exists with its script, shared styles, header and foo
     assert.match(html, /href="css\/pages.css"/, `${p} links pages.css`);
     assert.match(html, /data-topbar/); assert.match(html, /data-site-footer/);
   }
-  const index = read("index.html");
+  const index = read("atelier.html");
   assert.match(index, /href="css\/pages.css"/);
   assert.match(index, /data-site-footer/);
   for (const t of ["data-hp-gallery", "data-hp-news", "data-hp-faq", "data-hp-fin-steps", "data-hp-devfacts"]) assert.ok(index.includes(t), `home teaser ${t}`);
@@ -32,7 +32,7 @@ test("subpages: every page exists with its script, shared styles, header and foo
 
 test("links: every local page linked from HTML, navigation and content exists", () => {
   const hrefs = new Set();
-  for (const f of ["index.html", ...PAGES.map((p) => `${p}.html`)]) for (const m of read(f).matchAll(/href="([^"#?:]+\.html)/g)) hrefs.add(m[1]);
+  for (const f of ["atelier.html", ...PAGES.map((p) => `${p}.html`)]) for (const m of read(f).matchAll(/href="([^"#?:]+\.html)/g)) hrefs.add(m[1]);
   for (const f of fs.readdirSync(path.join(root, "js/pages"))) for (const m of read(`js/pages/${f}`).matchAll(/href="([^"#?:$]+\.html)/g)) hrefs.add(m[1]);
   for (const n of NAV) hrefs.add(n.href.split(/[#?]/)[0]);
   for (const c of MENU) for (const [h] of c.items) hrefs.add(h.split(/[#?]/)[0]);
@@ -113,7 +113,7 @@ test("developer: Horák & Vetchý everywhere, no former client name left", () =>
   assert.equal(site.developer.name, "Horák & Vetchý s.r.o.");
   assert.equal(project.developer, site.developer.name);
   assert.match(site.developer.ico, /^\d{8}$/);
-  const files = ["index.html", "README.md", ...PAGES.map((p) => `${p}.html`), ...fs.readdirSync(path.join(root, "js"), { recursive: true }).filter((f) => f.endsWith(".js")).map((f) => `js/${f}`)];
+  const files = ["atelier.html", "index.html", "README.md", ...PAGES.map((p) => `${p}.html`), ...fs.readdirSync(path.join(root, "js"), { recursive: true }).filter((f) => f.endsWith(".js")).map((f) => `js/${f}`)];
   for (const f of files) assert.doesNotMatch(read(f), /START Zelen|Brtnice|Zadavatel projektu/i, f);
   assert.match(read("js/site/chrome.js"), /developer\.html/);
 });
