@@ -88,9 +88,9 @@ export const project = {
       hidden: true, // not offered in the views menu; still used for geometry and the compass
     },
     // terrain sections are no longer views – they belong to each plot's detail (see terrain below)
-    { id: "pano", label: "360° · dnes", kind: "panorama", interactive: true, menuMeta: "dronové panorama, stav před výstavbou", caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
+    { id: "pano", label: "360° · samotné pozemky", kind: "panorama", interactive: true, menuMeta: "dronové panorama, parcely před výstavbou", caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
     // TODO podklady: vizualizace zástavby do panoramat (stations[].future) a vizualizace z ulice
-    { id: "pano-future", label: "360° · vizualizace", kind: "panorama", interactive: true, pending: "Čeká na vizualizaci do panoramat" },
+    { id: "pano-future", label: "360° · vizualizace zastavěných pozemků", kind: "panorama", interactive: true, pending: "Čeká na vizualizaci zástavby do panoramat" },
     { id: "street", label: "Pohled z ulice · vizualizace", kind: "image", interactive: true, pending: "Čeká na vizualizace z ulice" },
   ],
   defaultView: "aerial",
