@@ -37,7 +37,8 @@ export class Explorer {
     this.root.classList.toggle("is-pano-view", view.kind === "panorama");
     this._renderViewsMenu();
     if (view.kind === "panorama") { this._enterPano(view); return; }
-    this.viewer.setContent({ size: view.size, sources: view.sources, alt: view.caption });
+    const intro = view.introSources && this.root.dataset.phase !== "explore" && !this.skipIntroImage;
+    this.viewer.setContent({ size: view.size, sources: intro ? view.introSources : view.sources, alt: view.caption });
     this.$("[data-scene]").querySelector(".viewer__overlay")?.remove();
     this.layer.render(view, this.project);
     this.root.dataset.view = view.id;
@@ -52,6 +53,13 @@ export class Explorer {
     this._renderViewsMenu();
     if (!keepCamera) this.frameAll(false);
     this.refresh();
+  }
+
+  /** intro → exploration: the built visualisation of the intro gives way to the empty plots */
+  useMainImage() {
+    const v = this.view; if (!v?.introSources || this.isPano) return;
+    if (this.viewer.content?.sources === v.sources) return;
+    this.viewer.setContent({ size: v.size, sources: v.sources, alt: v.caption });
   }
 
   // ---------- 360° panorama view ----------
@@ -284,10 +292,10 @@ export class Explorer {
   }
   _renderViewsMenu() {
     const menu = this.$("[data-views-menu]");
-    menu.innerHTML = `<p class="views-menu__title">Pohledy na lokalitu</p>` + this.project.views.map((v) => `
+    menu.innerHTML = `<p class="views-menu__title">Pohledy na lokalitu</p>` + this.project.views.filter((v) => !v.hidden).map((v) => `
       <button type="button" role="menuitemradio" aria-checked="${v.id === this.view?.id}" data-view-id="${v.id}" ${v.pending ? "disabled" : ""}>
         <span class="views-menu__name">${esc(v.label)}</span>
-        <span class="views-menu__meta">${v.pending ? esc(v.pending) : v.interactive ? "s výběrem parcel" : "pouze náhled"}</span>
+        <span class="views-menu__meta">${v.pending ? esc(v.pending) : esc(v.menuMeta || (v.interactive ? "s výběrem parcel" : "pouze náhled"))}</span>
       </button>`).join("");
     menu.onclick = (e) => {
       const b = e.target.closest("[data-view-id]"); if (!b || b.disabled) return;

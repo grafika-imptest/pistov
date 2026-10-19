@@ -192,6 +192,11 @@ Klient pracuje s verzí **Studio** (přepínač verzí je jen v menu a patičce,
    Do té doby se ukazuje ilustrační řez z katalogu s poznámkou.
 3. **Body zájmu v Jihlavě a okolí.** Mapa v sekci Lokalita už body umí (číslované značky + seznam se vzdáleností vzdušnou
    čarou). Zatím 5 ukázkových bodů – finální seznam dodá developer (`pois` v `js/projects/pistov/content.js`).
+5. **Pohledy na lokalitu:** (1) Letecký pohled – parcely bez domů (domy odstraněny z vizualizace přes Magnific,
+   `assets/img/aerial-empty-*`; úvod Ateliéru dál končí na vizualizaci s domy), po výběru domu se spustí animace právě
+   toho domu – **animace pro každý typ × materiál dodá Filip** (slot `timelapse` v `houseVariants.js`), do té doby
+   schematická stavba; (2) 360° · dnes; (3) **360° · vizualizace – čeká na vizualizace do panoramat**
+   (`panoramas[].future`); (4) **Pohled z ulice · vizualizace – čeká na podklady**. Situační plán už není v nabídce pohledů.
 4. **Šířka × délka parcely** se počítá ze situačního plánu (orientačně) – po dodání přesných rozměrů je doplnit do dat.
 
 ## Podklady, které ještě chybí

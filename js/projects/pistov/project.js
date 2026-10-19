@@ -71,8 +71,11 @@ export const project = {
     {
       id: "aerial", label: "Letecký pohled", kind: "image", interactive: true, geometryKey: "aerial",
       size: AERIAL_SIZE,
-      sources: [[800, IMG + "aerial-800.webp"], [1400, IMG + "aerial-1400.webp"], [2200, IMG + "aerial-2200.webp"], [3400, IMG + "aerial-3400.webp"]],
-      caption: "Vizualizace zástavby · hranice parcel promítnuty orientačně",
+      // empty plots (houses removed from the architects' visualisation with Magnific); the intro keeps the built one
+      sources: [[800, IMG + "aerial-empty-800.webp"], [1400, IMG + "aerial-empty-1400.webp"], [2200, IMG + "aerial-empty-2200.webp"], [3400, IMG + "aerial-empty-3400.webp"]],
+      introSources: [[800, IMG + "aerial-800.webp"], [1400, IMG + "aerial-1400.webp"], [2200, IMG + "aerial-2200.webp"], [3400, IMG + "aerial-3400.webp"]],
+      menuMeta: "s výběrem parcel · po výběru domu se spustí jeho animace",
+      caption: "Letecký pohled · parcely před výstavbou (upravená vizualizace) · hranice promítnuty orientačně",
       homography: AERIAL_HOMOGRAPHY, // plan px → this view px (used for compass + hero overlay)
       overlay: { src: IMG + "plan-cutout-1682.webp", scale: 3364 / 1682 },
     },
@@ -82,10 +85,13 @@ export const project = {
       sources: [[900, IMG + "plan-900.webp"], [1800, IMG + "plan-1800.webp"], [3364, IMG + "plan-3364.webp"]],
       caption: "Situační plán M 1 : 2000 · předběžná verze – plán se ještě upraví",
       north: 0,
+      hidden: true, // not offered in the views menu; still used for geometry and the compass
     },
     // terrain sections are no longer views – they belong to each plot's detail (see terrain below)
-    { id: "pano", label: "Panorama 360° · dnes", kind: "panorama", interactive: true, caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
-    { id: "street", label: "Pohled z ulice", kind: "image", interactive: true, pending: "Čeká na podklady" },
+    { id: "pano", label: "360° · dnes", kind: "panorama", interactive: true, menuMeta: "dronové panorama, stav před výstavbou", caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
+    // TODO podklady: vizualizace zástavby do panoramat (stations[].future) a vizualizace z ulice
+    { id: "pano-future", label: "360° · vizualizace", kind: "panorama", interactive: true, pending: "Čeká na vizualizaci do panoramat" },
+    { id: "street", label: "Pohled z ulice · vizualizace", kind: "image", interactive: true, pending: "Čeká na vizualizace z ulice" },
   ],
   defaultView: "aerial",
   // Intro film – AI illustration (Higgsfield, Kling 3.0) built from the architects' aerial visualisation:

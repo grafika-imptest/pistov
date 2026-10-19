@@ -304,6 +304,8 @@ bindSaveButtons(document.body, () => toast(`Porovnat lze nejvýše ${COMPARE_MAX
 collections.subscribe(() => syncSaveButtons());
 
 // ---------------- boot ----------------
+// deep links and the studio offer page skip the intro → start straight on the empty plots
+explorer.skipIntroImage = STUDIO || !!(url.plotNo || url.mode || url.detail || url.type || (url.view && url.view !== project.defaultView));
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 if (!location.hash) window.scrollTo(0, 0);
 render(store.get(), null, null);

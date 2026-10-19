@@ -211,6 +211,7 @@ export class Intro {
     root.querySelector(".viewer__overlay")?.remove();
     root.classList.remove("is-drawing", "is-transforming");
     root.dataset.phase = "explore";
+    ex.useMainImage?.();
     ex.viewer.interactive = true;
     ex.layer.traceIn(instant || reducedMotion());
     this._caption("");
