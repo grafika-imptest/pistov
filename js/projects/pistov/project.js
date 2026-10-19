@@ -101,7 +101,7 @@ export const project = {
     src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
     poster: "assets/video/intro-poster.webp",
     endBox: { x: 0, y: 58, w: 3419, h: 1923 },
-    caption: "Ilustrační vizualizace (AI) podle návrhu TAM architekti",
+    caption: "Ilustrační AI video animace podle návrhu TAM architekti",
   },
   img: (name, w) => `${IMG}${name}-${w}.webp`,
   imgSet: (name, widths) => widths.map((w) => `${IMG}${name}-${w}.webp ${w}w`).join(", "),
