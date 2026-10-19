@@ -102,6 +102,7 @@ export class Intro {
       try {
         const played = await this._playVideo(signal);
         if (played) {
+          ex.useMainImage({ fade: true });
           ex.heroFrame(true, 1900);
           await wait(1950, signal);
           this._caption("");
@@ -188,6 +189,7 @@ export class Intro {
   _settle() {
     const ex = this.explorer, root = this.root;
     this._removeVideo();
+    ex.useMainImage?.({ fade: true });
     root.querySelector(".viewer__overlay")?.remove();
     root.classList.remove("is-drawing", "is-transforming");
     root.classList.add("hero-in");

@@ -23,6 +23,8 @@ const count = (st) => plots.filter((p) => p.status === st).length;
   if (v && cfg && !reducedMotion() && !navigator.connection?.saveData) {
     v.src = innerWidth >= 900 ? cfg.src.hd : cfg.src.sd;
     v.addEventListener("playing", () => v.classList.add("is-on"), { once: true });
+    // the plots are what is for sale – after the film the houses fade away and bare plots stay
+    v.addEventListener("ended", () => $("[data-s-hero-empty]")?.classList.add("is-on"), { once: true });
     v.play().catch(() => v.remove());
   }
   $("[data-s-stats]").innerHTML = [

@@ -56,9 +56,15 @@ export class Explorer {
   }
 
   /** intro → exploration: the built visualisation of the intro gives way to the empty plots */
-  useMainImage() {
+  useMainImage({ fade = false } = {}) {
     const v = this.view; if (!v?.introSources || this.isPano) return;
     if (this.viewer.content?.sources === v.sources) return;
+    const old = this.viewer.img;
+    if (fade && old?.complete) { // the built visualisation stays on top for a moment and fades out
+      const ghost = old.cloneNode(); ghost.classList.add("viewer__ghost"); old.after(ghost);
+      requestAnimationFrame(() => requestAnimationFrame(() => ghost.classList.add("is-out")));
+      setTimeout(() => ghost.remove(), 2200);
+    }
     this.viewer.setContent({ size: v.size, sources: v.sources, alt: v.caption });
   }
 

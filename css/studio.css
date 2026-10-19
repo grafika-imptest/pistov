@@ -459,3 +459,6 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 @media (max-width: 999px) { .s-loc__pois { grid-column: 1 / -1; } .s-loc__map { grid-row: auto; } }
 .s-loc__pano .pano-teaser__gl { aspect-ratio: auto; height: 100%; width: 100%; }
 .s-loc__pano .s-loc__cap > span:nth-child(2) { padding: 6px 12px; border-radius: 999px; background: rgba(13, 14, 13, 0.55); color: #fff; font-family: var(--s-mono); font-size: 0.625rem; letter-spacing: 0.06em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+.s-hero__empty { opacity: 0; transition: opacity 1800ms var(--s-ease); }
+.s-hero__empty.is-on { opacity: 1; }
