@@ -24,3 +24,23 @@ export function northBearing(h, at) {
   return (Math.atan2(b[0] - a[0], -(b[1] - a[1])) * 180) / Math.PI;
 }
 export const polyArea = (p) => Math.abs(p.reduce((s, a, i) => { const b = p[(i + 1) % p.length]; return s + a[0] * b[1] - b[0] * a[1]; }, 0)) / 2;
+
+/** smallest enclosing rectangle of a polygon (rotating calipers over the convex hull) → { w, h } with w ≤ h */
+export function minRect(pts) {
+  const p = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], hi = [];
+  for (const q of p) { while (lo.length > 1 && cross(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); }
+  for (const q of [...p].reverse()) { while (hi.length > 1 && cross(hi[hi.length - 2], hi[hi.length - 1], q) <= 0) hi.pop(); hi.push(q); }
+  const hull = lo.slice(0, -1).concat(hi.slice(0, -1));
+  let best = null;
+  for (let i = 0; i < hull.length; i++) {
+    const a = hull[i], b = hull[(i + 1) % hull.length], len = Math.hypot(b[0] - a[0], b[1] - a[1]); if (!len) continue;
+    const ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
+    let minU = Infinity, maxU = -Infinity, minV = Infinity, maxV = -Infinity;
+    for (const q of hull) { const u = q[0] * ux + q[1] * uy, v = -q[0] * uy + q[1] * ux; minU = Math.min(minU, u); maxU = Math.max(maxU, u); minV = Math.min(minV, v); maxV = Math.max(maxV, v); }
+    const w = maxU - minU, h = maxV - minV;
+    if (!best || w * h < best.w * best.h) best = { w, h };
+  }
+  return best ? { w: Math.min(best.w, best.h), h: Math.max(best.w, best.h) } : null;
+}

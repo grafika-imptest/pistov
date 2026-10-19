@@ -16,7 +16,7 @@ function loadLeaflet() {
 }
 
 /** mount the map into `el` once it is near the viewport; options: { zoom, color } */
-export function mountLocationMap(el, { zoom = 16, color = "#c4372b" } = {}) {
+export function mountLocationMap(el, { zoom = 16, color = "#c4372b", pois = null } = {}) {
   if (!el) return;
   const { lat, lon } = site.location;
   new IntersectionObserver(([e], io) => {
@@ -31,6 +31,12 @@ export function mountLocationMap(el, { zoom = 16, color = "#c4372b" } = {}) {
       const icon = L.divIcon({ className: "mappin", html: PIN, iconSize: [44, 58], iconAnchor: [22, 56], popupAnchor: [0, -52] });
       L.marker([lat, lon], { icon, title: "Pístov", alt: "Pístov – lokalita" }).addTo(map)
         .bindPopup(`<b>Pístov</b><br>Pozemky a rodinné domy<br><a href="index.html#explorer">Prozkoumat lokalitu →</a>`);
+      // numbered points of interest; the view fits the site and all of them
+      if (pois?.length) {
+        pois.forEach((p, i) => L.marker([p.lat, p.lon], { icon: L.divIcon({ className: "mappoi", html: `<span>${i + 1}</span>`, iconSize: [28, 28], iconAnchor: [14, 14] }), title: p.name })
+          .addTo(map).bindPopup(`<b>${p.name}</b><br>${p.cat} · ${p.km.toLocaleString("cs-CZ")} km vzdušnou čarou`));
+        map.fitBounds(L.latLngBounds([[lat, lon], ...pois.map((p) => [p.lat, p.lon])]), { padding: [36, 36] });
+      }
     }).catch(() => { el.innerHTML = `<p class="muted contacts__mapfail">Mapu se nepodařilo načíst.</p>`; });
   }, { rootMargin: "200px" }).observe(el);
 }

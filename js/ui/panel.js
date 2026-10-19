@@ -1,7 +1,8 @@
 // Contextual panel (desktop side panel / mobile bottom sheet). Content follows the active mode.
 import { typesForPlot, canConfigure, plotsForType } from "../core/compat.js";
 import { priceSummary, formatPrice } from "../core/pricing.js";
-import { bbox, toPath } from "../core/geometry.js";
+import { bbox, toPath, minRect, polyArea } from "../core/geometry.js";
+import { lightbox, img } from "../site/ui.js";
 import { esc, m2, statusBadge, plural, STATUS } from "./format.js";
 import { arrowSVG, draw } from "./sketch.js";
 import { saveButtons } from "../site/collections.js";
@@ -112,7 +113,9 @@ export class Panel {
         <div><dt>Výměra</dt><dd>${m2(plot.area)}</dd></div>
         <div><dt>Cena pozemku</dt><dd>${price}<small>${plot.price ? "" : "bude doplněna developerem"}</small></dd></div>
         <div><dt>Stav</dt><dd>${STATUS[s].long}<small>${esc(plot.statusSource)}</small></dd></div>
+        <div><dt>Šířka × délka</dt><dd>${this._dims(plot)}</dd></div>
       </dl>
+      ${this._terrain(plot)}
       ${configurable ? `
       <section class="pn__block">
         <h3 class="pn__h3">Co zde můžete postavit</h3>
@@ -138,6 +141,31 @@ export class Panel {
         <button type="button" class="btn btn--ink btn--block" data-action="enquire">Mám zájem o podobnou parcelu</button>
         <button type="button" class="btn btn--ghost btn--block" data-action="filter-free">Zobrazit volné parcely</button>
       </section>`}`;
+  }
+
+  /** width × length of the plot: smallest enclosing rectangle of the traced outline, scaled to the stated area */
+  _dims(plot) {
+    if (!plot.geometry) return `<span class="muted">doplníme</span>`;
+    const r = minRect(plot.geometry.plan), k = this.project.planMetersPerPx;
+    const fix = Math.sqrt(plot.area / (polyArea(plot.geometry.plan) * k * k)); // the trace runs just inside the boundary lines
+    const m = (v) => (Math.round(v * k * fix * 2) / 2).toLocaleString("cs-CZ");
+    return `cca ${m(r.w)} × ${m(r.h)} m<small>orientačně, odečteno ze situačního plánu</small>`;
+  }
+
+  /** slope and terrain section of the plot (per-plot data from the architect; catalogue section until then) */
+  _terrain(plot) {
+    const T = this.project.terrain; if (!T) return "";
+    const t = T.perPlot[plot.no] || {};
+    const sheet = t.section || T.fallbackSections[plot.no % T.fallbackSections.length];
+    return `
+      <section class="pn__block terrain">
+        <h3 class="pn__h3">Svažitost</h3>
+        <p class="terrain__text">${t.slope ? `Sklon pozemku: <b>${esc(t.slope)}</b>. ` : ""}${esc(t.text || "Lokalita leží v mírně svažitém terénu a domy jsou do něj osazené podle řezů architekta.")}</p>
+        <button type="button" class="terrain__sheet" data-action="terrain" data-sheet="${sheet}" data-cap="${esc(t.section ? `Parcela č. ${plot.no} – řez terénem` : "Řez terénem – ilustrační řez z katalogu TAM architekti")}">
+          <img src="${img(sheet, "s")}" alt="" loading="lazy" decoding="async"><span class="terrain__zoom">Zvětšit řez</span>
+        </button>
+        ${t.section ? "" : `<p class="hint">${esc(T.note)}</p>`}
+      </section>`;
   }
 
   _locator(plot) {
@@ -268,6 +296,7 @@ export class Panel {
     else if (act === "detail") a.openDetail(t.dataset.typeId);
     else if (act === "try") a.tryType(t.dataset.typeId);
     else if (act === "pano-plot") a.openPanoForPlot(a.selection().plot);
+    else if (act === "terrain") lightbox([[t.dataset.sheet, t.dataset.cap]]).open(0);
     else if (act === "filter-free") { a.clearPlot(); a.store.set({ filters: { status: "available", area: null, type: null } }); }
   }
   _change() {}

@@ -53,6 +53,14 @@ export const project = {
   planGeoref: PLAN_GEOREF,
   defaultStation: "stred-60",
   heroNotes,
+  // Terrain per plot (slope + its own terrain section). TODO: the architect supplies a section and a slope
+  // figure for EVERY plot – until then the detail shows the catalogue sections as illustration.
+  terrain: {
+    perPlot: {},               // { 12: { slope: "mírný, cca 4 %", text: "…", section: "section-12" } }
+    fallbackSections: ["section-1", "section-2"],
+    note: "Ke každé parcele doplníme vlastní řez terénem a údaj o sklonu. Zatím ukazujeme ilustrační řez z katalogu.",
+  },
+  planNote: "Situační plán je předběžný – developer ho ještě upraví.",
   pricing: {
     plotPriceNote: "Cena pozemku bude doplněna",
     housePriceNote: "Orientační cena domu bude doplněna",
@@ -72,11 +80,10 @@ export const project = {
       id: "plan", label: "Situační plán", kind: "image", interactive: true, geometryKey: "plan",
       size: PLAN_SIZE,
       sources: [[900, IMG + "plan-900.webp"], [1800, IMG + "plan-1800.webp"], [3364, IMG + "plan-3364.webp"]],
-      caption: "Situační plán M 1 : 2000 · přesné hranice parcel",
+      caption: "Situační plán M 1 : 2000 · předběžná verze – plán se ještě upraví",
       north: 0,
     },
-    { id: "section-1", label: "Řez terénem 1", kind: "image", interactive: false, size: [4616, 3278], sources: [[1400, IMG + "section-1-1400.webp"], [2400, IMG + "section-1-2400.webp"]], caption: "Řez terénem 1 · M 1 : 200 · bez výběru parcel" },
-    { id: "section-2", label: "Řez terénem 2", kind: "image", interactive: false, size: [4615, 3273], sources: [[1400, IMG + "section-2-1400.webp"], [2400, IMG + "section-2-2400.webp"]], caption: "Řez terénem 2 · M 1 : 200 · bez výběru parcel" },
+    // terrain sections are no longer views – they belong to each plot's detail (see terrain below)
     { id: "pano", label: "Panorama 360° · dnes", kind: "panorama", interactive: true, caption: "Dronové panorama 13. 10. 2026 · stav před výstavbou · parcely promítnuty orientačně" },
     { id: "street", label: "Pohled z ulice", kind: "image", interactive: true, pending: "Čeká na podklady" },
   ],

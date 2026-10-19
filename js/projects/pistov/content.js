@@ -145,3 +145,16 @@ export const developer = {
   people: [["Ing. Pavel Vetchý", "+420 603 841 123"], ["Stanislav Horák", "+420 737 205 131"]],
   source: "Údaje, logo a fotografie z webu hvreality.cz, říjen 2026. Vizualizace projektů patří jejich developerům.",
 };
+
+// Points of interest in Jihlava and around. SAMPLE until the developer sends the final list (TODO).
+// Coordinates from OpenStreetMap; distances are computed as the crow flies from the site.
+export const pois = {
+  note: "Body zájmu jsou zatím ukázkové – finální seznam v Jihlavě a okolí doplní developer. Vzdálenosti vzdušnou čarou.",
+  items: [
+    { name: "Centrum Jihlavy – Masarykovo náměstí", cat: "Město", lat: 49.39605, lon: 15.59115 },
+    { name: "Nemocnice Jihlava", cat: "Zdraví", lat: 49.39859, lon: 15.5712 },
+    { name: "City Park Jihlava", cat: "Nákupy", lat: 49.39247, lon: 15.59366 },
+    { name: "ZOO Jihlava", cat: "Volný čas", lat: 49.398, lon: 15.59328 },
+    { name: "Vlakové nádraží Jihlava", cat: "Doprava", lat: 49.4145, lon: 15.59939 },
+  ],
+};

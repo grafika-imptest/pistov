@@ -180,6 +180,20 @@ Mapová data © přispěvatelé OpenStreetMap (ODbL) – použita jen ke kalibra
   (výběr se neztrácí), poptávka a validace, panorama 360° (stanoviště z mapy, výhled na parcelu, lišta stanovišť,
   Zpět v prohlížeči, mobil, ukázka v sekci Lokalita). Konzole bez chyb.
 
+## Úkoly ze zadání klienta (19. 10. 2026) – nezapomenout
+
+Klient pracuje s verzí **Studio** (přepínač verzí je jen v menu a patičce, ne v navigaci).
+
+1. **Situační plán se změní.** Na webu je označený jako předběžná verze (`project.planNote`, popisky). Po dodání nového plánu znovu
+   vyrobit podklady a hranice parcel (`npm run assets`, `npm run data`).
+2. **Řez terénem a svažitost pro KAŽDOU parcelu.** Detail parcely má blok *Svažitost* (krátký text o sklonu + náhled řezu s
+   tlačítkem *Zvětšit řez*). Ke každé parcele bude jiný řez – data patří do `project.terrain.perPlot`
+   (`{ 12: { slope: "…", text: "…", section: "section-12" } }`, obrázek do `assets/img/section-12-*.webp`).
+   Do té doby se ukazuje ilustrační řez z katalogu s poznámkou.
+3. **Body zájmu v Jihlavě a okolí.** Mapa v sekci Lokalita už body umí (číslované značky + seznam se vzdáleností vzdušnou
+   čarou). Zatím 5 ukázkových bodů – finální seznam dodá developer (`pois` v `js/projects/pistov/content.js`).
+4. **Šířka × délka parcely** se počítá ze situačního plánu (orientačně) – po dodání přesných rozměrů je doplnit do dat.
+
 ## Podklady, které ještě chybí
 
 1. Potvrzený seznam parcel a jejich aktuální stavy (katalog je z dubna 2026); jak se budou stavy aktualizovat (CMS, tabulka, API?).

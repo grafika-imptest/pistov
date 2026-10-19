@@ -63,7 +63,6 @@ export function renderChrome({ page = "", solid = false } = {}) {
       <a class="brand" href="${home ? "#explorer" : "index.html"}" aria-label="${site.name} – úvod"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">${site.name}</span></a>
       <nav class="topnav" aria-label="Hlavní navigace">${nav.map((n) => `<a href="${link(n.href)}" ${n.id === page ? 'aria-current="page"' : ""}>${n.label}</a>`).join("")}</nav>
       <div class="topbar__tools">
-        ${editionSwitch()}
         <a class="toolbtn" href="oblibene.html" aria-label="Oblíbené" title="Oblíbené">${icon.heart}<span class="toolbtn__count" data-count="fav" hidden></span></a>
         <a class="toolbtn" href="porovnani.html" aria-label="Porovnání" title="Porovnání">${icon.compare}<span class="toolbtn__count" data-count="cmp" hidden></span></a>
         <a class="btn btn--ink btn--sm topbar__cta" href="${EDITION === "studio" ? "index.html#explorer" : page ? "kontakty.html#formular" : "#poptavka"}" data-cta-global>${EDITION === "studio" ? "Vybrat parcelu" : "Poptat"}</a>
