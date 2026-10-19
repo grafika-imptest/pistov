@@ -77,7 +77,6 @@ export function renderChrome({ page = "", solid = false } = {}) {
       <div class="sitemenu__inner">
         <button class="toolbtn sitemenu__close" type="button" aria-label="Zavřít menu" data-menu-close>${icon.close}</button>
         <div class="sitemenu__cols">${MENU.map((c) => `<div><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></div>`).join("")}</div>
-        ${editionChoice()}
         <a class="btn btn--red btn--lg" href="${home ? "#poptavka" : "kontakty.html#formular"}">Poptat parcelu a dům <span aria-hidden="true">→</span></a>
       </div>`;
     document.body.append(m);
@@ -137,7 +136,6 @@ function renderFooter() {
     <div class="wrap footer__bottom">
       <p>© ${new Date().getFullYear()} ${site.name} · Vizualizace a výkresy: ${site.architect.name}</p>
       <nav aria-label="Právní informace"><a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a><button type="button" class="link" data-cookie-settings>Nastavení cookies</button></nav>
-      <p class="footer__ed">Vzhled webu: ${["atelier", "studio"].map((k) => k === EDITION ? `<b>${EDITIONS[k].label}</b>` : `<a href="${otherEditionHref()}" data-ed data-edition-switch>${EDITIONS[k].label}</a>`).join(" · ")}</p>
       <p class="footer__made">Web realizovalo <a href="${site.realisation.url}" target="_blank" rel="noopener">${site.realisation.label}</a></p>
     </div>`;
 }
