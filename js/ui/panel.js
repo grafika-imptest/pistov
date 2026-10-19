@@ -267,6 +267,8 @@ export class Panel {
       </section>
       <div class="pn__actions">
         <button type="button" class="btn btn--red btn--block" data-action="enquire">Poptat tuto kombinaci <span aria-hidden="true">→</span></button>
+        <button type="button" class="btn btn--ghost btn--block" data-action="enquire-plot">Poptat cenu jen pozemku č. ${plot.no}</button>
+        <p class="hint pn__plotonly">Dům je volitelný – parcelu můžete koupit i bez typového domu.</p>
         <button type="button" class="btn btn--ghost btn--block" data-action="detail" data-type-id="${type.id}">Detail domu ${type.id}</button>
       </div>
       <div class="savebar">${saveButtons({ kind: "combo", plot: plot.no, type: type.id, layout: layout?.id, material: variant?.id }, { what: `parcela ${plot.no} + ${type.name}` })}</div>` : `<p class="hint">Zvolte typový dům – na parcele se vám zobrazí jeho hmota a vizualizace.</p>`}`;
@@ -293,6 +295,7 @@ export class Panel {
     else if (act === "design") a.setMode("design");
     else if (act === "mode-plots") a.setMode("plots");
     else if (act === "enquire") a.goEnquiry();
+    else if (act === "enquire-plot") a.goEnquiry({ plotOnly: true });
     else if (act === "detail") a.openDetail(t.dataset.typeId);
     else if (act === "try") a.tryType(t.dataset.typeId);
     else if (act === "pano-plot") a.openPanoForPlot(a.selection().plot);

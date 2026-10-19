@@ -126,7 +126,8 @@ const app = {
     detailPushed = true;
   },
   closeDetail() { if (detailPushed) { detailPushed = false; history.back(); } else store.set({ detail: null }); },
-  goEnquiry() {
+  goEnquiry({ plotOnly = false } = {}) {
+    enquiry.plotOnly = plotOnly; enquiry.touched = false; enquiry.update();
     const el = $("#poptavka");
     smoothTo(el);
     setTimeout(() => $("#f-name").focus({ preventScroll: true }), reducedMotion() ? 0 : 700);
@@ -214,6 +215,7 @@ function render(st, prev, changed) {
 
   panel.render();
   if (!changed || ["mode", "plotNo"].some((k) => changed.has(k))) requestAnimationFrame(updateInsets);
+  if (changed && ["plotNo", "type", "layout", "material", "mode"].some((k) => changed.has(k))) enquiry.plotOnly = false;
   enquiry.update();
 
   // state-aware global CTA

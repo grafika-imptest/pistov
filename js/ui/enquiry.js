@@ -33,8 +33,11 @@ export class Enquiry {
   }
 
   /** text describing the current configuration */
+  /** the enquiry may be for the plot alone even while a house is configured ("Poptat jen pozemek") */
+  sel() { const s = this.app.selection(); return this.plotOnly && s.plot ? { plot: s.plot, type: null, layout: null, variant: null } : s; }
+
   configText() {
-    const { plot, type, layout, variant } = this.app.selection();
+    const { plot, type, layout, variant } = this.sel();
     const parts = [];
     if (plot) parts.push(`parcela č. ${plot.no} (${plot.area} m²)`);
     if (type) parts.push(`${type.name}${layout ? ` – ${layout.name}${layout.disposition ? ` ${layout.disposition}` : ""}` : ""}`);
@@ -43,13 +46,13 @@ export class Enquiry {
   }
 
   update() {
-    const P = this.app.project, sel = this.app.selection();
+    const P = this.app.project, sel = this.sel();
     const sum = priceSummary(P, sel);
     const cfg = this.configText();
     this.summary.innerHTML = cfg ? `
       <div class="ecard">
         ${sel.variant && sel.type ? `<img src="${P.img(sel.variant.images[0], 480)}" alt="" width="480" height="320" loading="lazy">` : ""}
-        <div><p class="eyebrow">Vaše kombinace</p>
+        <div><p class="eyebrow">${this.plotOnly ? "Jen pozemek, bez domu" : "Vaše kombinace"}</p>
         <p class="ecard__title">${sel.plot ? `Parcela ${sel.plot.no}` : ""}${sel.plot && sel.type ? " + " : ""}${sel.type ? esc(sel.type.name) : ""}</p>
         <p class="ecard__meta">${sel.plot ? m2(sel.plot.area) : ""}${sel.layout && sel.type ? ` · ${esc(sel.layout.name)}` : ""}${sel.variant && sel.type ? ` · ${esc(sel.variant.name)}` : ""}</p>
         <dl class="ecard__price">${sum.lines.filter((l) => (l.key === "plot" ? sel.plot : sel.type)).map((l) => `<div><dt>${esc(l.label)}</dt><dd>${l.value != null ? formatPrice(l.value) : esc(l.missing)}</dd></div>`).join("")}</dl>
@@ -57,9 +60,9 @@ export class Enquiry {
       </div>` : `<p class="muted">Zatím nemáte vybranou parcelu ani dům – poptávku můžete poslat i obecně, nebo si nejdřív <button type="button" class="link" data-edit-config>vyberte parcelu</button>.</p>`;
     this.summary.querySelector("[data-edit-config]")?.addEventListener("click", () => this.app.scrollToExplorer());
     const msg = this.form.elements.message;
-    if (!this.touched) msg.value = cfg ? `Dobrý den, mám zájem o kombinaci: ${cfg}. Prosím o informace o dostupnosti, ceně a dalším postupu.` : "";
+    if (!this.touched) msg.value = !cfg ? "" : this.plotOnly ? `Dobrý den, mám zájem pouze o pozemek: ${cfg}, bez typového domu. Prosím o cenu pozemku, informace o dostupnosti a dalším postupu.` : `Dobrý den, mám zájem o kombinaci: ${cfg}. Prosím o informace o dostupnosti, ceně a dalším postupu.`;
     const btn = this.form.querySelector("[data-submit]");
-    btn.textContent = sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot ? `Poptat parcelu č. ${sel.plot.no}` : "Odeslat poptávku";
+    btn.textContent = sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot && this.plotOnly ? `Poptat cenu pozemku č. ${sel.plot.no}` : sel.plot ? `Poptat parcelu č. ${sel.plot.no}` : "Odeslat poptávku";
   }
 
   submit() {
