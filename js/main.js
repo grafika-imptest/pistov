@@ -198,6 +198,7 @@ function render(st, prev, changed) {
   explorerRoot.dataset.mode = st.mode;
   for (const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-selected", String(b.dataset.mode === st.mode));
   document.querySelector("[data-modes]").dataset.on = st.mode;
+  placeModeInk();
 
   if (!changed || changed.has("view")) { explorer.setView(st.view, { keepCamera: false }); if (sel.plot && st.view !== "pano") explorer.framePlot(sel.plot.id, false); }
   else if (changed.has("station") && st.view === "pano") explorer.showStation(st.station);
@@ -247,6 +248,16 @@ window.addEventListener("popstate", () => {
   if (explorerRoot.dataset.phase !== "explore") return;
   if (sel.plot) explorer.framePlot(sel.plot.id); else explorer.frameAll(true);
 });
+
+/** the dark pill under the active mode follows that button (labels have different widths) */
+function placeModeInk() {
+  const box = document.querySelector("[data-modes]"), ink = box?.querySelector(".modes__ink"), btn = box?.querySelector('[aria-selected="true"]');
+  if (!ink || !btn) return;
+  ink.style.width = `${btn.offsetWidth}px`;
+  ink.style.transform = `translateX(${btn.offsetLeft - 4}px)`;
+}
+addEventListener("resize", placeModeInk);
+document.fonts?.ready.then(placeModeInk);
 
 // ---------------- chrome events ----------------
 document.querySelector("[data-modes]").addEventListener("click", (e) => {

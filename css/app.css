@@ -238,9 +238,8 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 .modes button { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 clamp(10px, 1.2vw, 18px); white-space: nowrap; font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--ink-2); border-radius: var(--r-xs); transition: color var(--dur-ui); }
 .modes button[aria-selected="true"] { color: var(--paper); }
 .modes__no { font-family: var(--hand); font-size: 1rem; letter-spacing: 0; font-weight: 400; opacity: 0.7; }
-.modes__ink { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 12px) / 3); background: var(--ink); border-radius: var(--r-xs); transition: transform var(--dur-panel) var(--ease-out); }
-.modes[data-on="houses"] .modes__ink { transform: translateX(calc(100% + 2px)); }
-.modes[data-on="design"] .modes__ink { transform: translateX(calc(200% + 4px)); }
+.modes__ink { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 12px) / 3); background: var(--ink); border-radius: var(--r-xs); transition: transform var(--dur-panel) var(--ease-out), width var(--dur-panel) var(--ease-out); }
+/* position and width are set from the active button in js/main.js (placeModeInk) */
 .modes button { flex: 1 1 0; justify-content: center; }
 
 .controls { position: absolute; z-index: var(--z-ui); left: var(--s4); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; }
