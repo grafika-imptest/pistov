@@ -777,3 +777,14 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 .plotrow__area small { display: block; font-size: var(--fs-xs); color: var(--pencil); }
 .filters__hint { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--pencil); margin-left: 6px; }
 .cfg__tag { margin-left: 6px; padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: none; color: var(--pencil); vertical-align: 2px; }
+/* enquiry: the chosen plot with crops of the aerial view and the site plan */
+.ecard--plot { display: block; padding: 0; overflow: hidden; }
+.ecard__crops { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.ecard__crop { position: relative; margin: 0; }
+.ecard__crop svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; background: #2b2d27; }
+.ecard__crop polygon, .ecard__crop circle { fill: rgba(196, 55, 43, 0.28); stroke: #fff; stroke-width: 4; vector-effect: non-scaling-stroke; }
+.ecard__crop figcaption { position: absolute; left: 8px; bottom: 8px; padding: 3px 8px; background: rgba(20, 20, 18, 0.7); color: #fff; font-size: var(--fs-xs); border-radius: var(--r-xs); }
+.ecard__body { padding: 18px 20px 20px; }
+.ecard__facts { display: flex; gap: 32px; margin: 8px 0 12px; }
+.ecard__facts dt { font-size: var(--fs-xs); color: rgba(244, 239, 227, 0.6); }
+.ecard__facts dd { margin: 2px 0 0; font-size: var(--fs-lg); }

@@ -32,6 +32,19 @@ export class Enquiry {
     form.addEventListener("change", (e) => this._clearErr(e.target.name));
   }
 
+  /** a crop of the aerial view / site plan centred on the plot, with its outline */
+  crop(plot, key, label) {
+    const P = this.app.project, view = P.views.find((v) => v.id === key);
+    const pts = plot.geometry ? plot.geometry[key] : [plot.label[key]];
+    const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+    const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+    const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 60) * 2.6;
+    const w = span, h = span * 0.75, src = view.sources[Math.min(2, view.sources.length - 1)][1];
+    const shape = plot.geometry ? `<polygon points="${pts.map((p) => p.join(",")).join(" ")}"/>` : `<circle cx="${pts[0][0]}" cy="${pts[0][1]}" r="40"/>`;
+    return `<figure class="ecard__crop"><svg viewBox="${(cx - w / 2).toFixed(0)} ${(cy - h / 2).toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}" role="img" aria-label="${label} – parcela č. ${plot.no}">
+      <image href="${src}" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}" preserveAspectRatio="none"/>${shape}</svg><figcaption>${label}</figcaption></figure>`;
+  }
+
   /** text describing the current configuration */
   /** the enquiry may be for the plot alone even while a house is configured ("Poptat jen pozemek") */
   // only plots are for sale – the house shown on the plot is inspiration and never part of the enquiry
@@ -51,13 +64,17 @@ export class Enquiry {
     const sum = priceSummary(P, sel);
     const cfg = this.configText();
     this.summary.innerHTML = cfg ? `
-      <div class="ecard">
-        ${sel.variant && sel.type ? `<img src="${P.img(sel.variant.images[0], 480)}" alt="" width="480" height="320" loading="lazy">` : ""}
-        <div><p class="eyebrow">Vybraná parcela</p>
-        <p class="ecard__title">${sel.plot ? `Parcela ${sel.plot.no}` : ""}${sel.plot && sel.type ? " + " : ""}${sel.type ? esc(sel.type.name) : ""}</p>
-        <p class="ecard__meta">${sel.plot ? m2(sel.plot.area) : ""}${sel.layout && sel.type ? ` · ${esc(sel.layout.name)}` : ""}${sel.variant && sel.type ? ` · ${esc(sel.variant.name)}` : ""}</p>
-        <dl class="ecard__price">${sum.lines.filter((l) => (l.key === "plot" ? sel.plot : sel.type)).map((l) => `<div><dt>${esc(l.label)}</dt><dd>${l.value != null ? formatPrice(l.value) : esc(l.missing)}</dd></div>`).join("")}</dl>
-        <button type="button" class="link" data-edit-config>Upravit výběr</button></div>
+      <div class="ecard ecard--plot">
+        <div class="ecard__crops">${this.crop(sel.plot, "aerial", "Letecký pohled")}${this.crop(sel.plot, "plan", "Situační plán")}</div>
+        <div class="ecard__body">
+          <p class="eyebrow">Vybraná parcela</p>
+          <p class="ecard__title">Parcela č. ${sel.plot.no}</p>
+          <dl class="ecard__facts">
+            <div><dt>Výměra</dt><dd>${m2(sel.plot.area)}</dd></div>
+            <div><dt>Cena</dt><dd>${sel.plot.price != null ? formatPrice(sel.plot.price) : esc(P.pricing.plotPriceNote)}</dd></div>
+          </dl>
+          <button type="button" class="link" data-edit-config>Upravit výběr</button>
+        </div>
       </div>` : `<p class="muted">Zatím nemáte vybranou parcelu – poptávku můžete poslat i obecně, nebo si nejdřív <button type="button" class="link" data-edit-config>vyberte parcelu</button>.</p>`;
     this.summary.querySelector("[data-edit-config]")?.addEventListener("click", () => this.app.scrollToExplorer());
     const msg = this.form.elements.message;
