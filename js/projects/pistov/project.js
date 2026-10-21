@@ -11,9 +11,10 @@ import { panoramas, PLAN_GEOREF } from "./panoramas.generated.js";
 const IMG = "assets/img/";
 
 // Plot records = traced geometry + business data. Prices are not part of the supplied documents.
+export const PRICE_PER_M2 = 6000; // Kč za m² pozemku (informace developera, 10/2026)
 const plots = plotsSource.map((p) => ({
   ...p,
-  price: null, // Kč incl. VAT – to be supplied by the developer
+  price: p.area * PRICE_PER_M2, // Kč – developer's price per m² (10/2026)
   statusSource: "Opravený situační plán, říjen 2026",
 }));
 
@@ -60,6 +61,7 @@ export const project = {
   },
   pricing: {
     plotPriceNote: "Cena pozemku bude doplněna",
+    perM2: PRICE_PER_M2,
     housePriceNote: "Orientační cena domu bude doplněna",
     disclaimer: "Ceny domů budou orientační; konečnou cenu stanoví vybraný dodavatel stavby.",
   },

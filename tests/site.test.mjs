@@ -79,7 +79,7 @@ test("content: FAQ facts match the plot data", () => {
 });
 
 test("content: no invented prices or terms – only the labelled calculator example", () => {
-  const text = JSON.stringify({ news, faq, steps: financing.steps, site });
+  const text = JSON.stringify({ news, faq, steps: financing.steps, site }).replace(/6 000 Kč za m²|3 600 000 Kč/g, "");
   assert.doesNotMatch(text, /\d[\d\s]*Kč/, "no prices in editorial content");
   assert.ok(financing.pending && financing.stepsNote);
   assert.match(read("js/pages/financovani.js"), /nejde o ceny projektu Pístov/);

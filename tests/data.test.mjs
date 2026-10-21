@@ -19,7 +19,7 @@ test("plots: corrected plan (10/2026) – 62 plots numbered 1–62, unique, all 
   for (const p of project.plots) {
     assert.equal(p.status, "available", `status of ${p.no}`);
     assert.ok(p.area >= 400 && p.area <= 1500, `area of ${p.no}`);
-    assert.equal(p.price, null, "no invented prices");
+    assert.equal(p.price, p.area * 6000, `price of ${p.no} = 6 000 Kč/m²`);
   }
   // spot checks against the printed labels of the corrected plan
   const a = Object.fromEntries(project.plots.map((p) => [p.no, p.area]));
@@ -98,12 +98,13 @@ test("configuration only on available plots", () => {
   assert.equal(canConfigure(project.plots.find((p) => p.no === 1)), true);
 });
 
-test("pricing: missing prices give an incomplete, explained summary", () => {
+test("pricing: plot priced per m², missing house price keeps the summary incomplete", () => {
   const plot = project.plots[0], type = project.houseTypes[0];
   const s = priceSummary(project, { plot, type, layout: type.layouts[0] });
   assert.equal(s.complete, false);
   assert.equal(s.total, null);
-  assert.ok(s.lines.every((l) => l.value === null && l.missing));
+  assert.equal(s.lines.find((l) => l.key === "plot").value, plot.area * 6000);
+  assert.ok(s.lines.find((l) => l.key === "house").value === null && s.lines.find((l) => l.key === "house").missing);
   const s2 = priceSummary(project, { plot: { ...plot, price: 2_000_000 }, type: { ...type, price: 6_000_000 }, layout: null });
   assert.equal(s2.complete, true);
   assert.equal(s2.total, 8_000_000);

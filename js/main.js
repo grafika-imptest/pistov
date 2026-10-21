@@ -44,7 +44,7 @@ const store = createStore({
   vis: url.vis || "plot",
   station: project.panoramas.some((s) => s.id === url.station) ? url.station : project.defaultStation,
   detail: project.houseTypes.some((t) => t.id === url.detail) ? url.detail : null,
-  filters: { status: "all", area: null, type: null },
+  filters: { status: "all", area: null, type: null, price: null },
   markers: true,
   labels: true,
 });
@@ -139,7 +139,7 @@ const app = {
     if (location.hash) history.replaceState(null, "", location.pathname + location.search);
     store.set({
       plotNo: null, type: null, layout: null, material: null, mode: "plots", view: project.defaultView, detail: null,
-      vis: "plot", station: project.defaultStation, filters: { status: "all", area: null, type: null },
+      vis: "plot", station: project.defaultStation, filters: { status: "all", area: null, type: null, price: null },
     }, { history: "push" });
     if (!desktop()) panel.setSheet("peek");
     intro.replay();
@@ -204,7 +204,7 @@ function render(st, prev, changed) {
   if (!changed || changed.has("view")) { explorer.setView(st.view, { keepCamera: false }); if (sel.plot && st.view !== "pano") explorer.framePlot(sel.plot.id, false); }
   else if (changed.has("station") && st.view === "pano") explorer.showStation(st.station);
   // which plots are emphasised on the map
-  const f = st.filters, filtering = f.status !== "all" || f.area || f.type;
+  const f = st.filters, filtering = f.status !== "all" || f.area || f.type || f.price;
   explorer.dimFn = st.mode === "plots" ? (filtering ? (p) => !matchesFilters(project, p, f, statusOf) : null)
     : st.type ? (p) => !isAllowed(project, p, st.type) || statusOf(p) !== "available" : null;
   explorer.refresh();

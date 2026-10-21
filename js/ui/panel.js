@@ -12,7 +12,13 @@ const AREA_BANDS = [
   { id: "m", label: "580–650 m²", test: (a) => a >= 580 && a <= 650 },
   { id: "l", label: "nad 650 m²", test: (a) => a > 650 },
 ];
+const PRICE_BANDS = [
+  { id: "p1", label: "do 3,5 mil. Kč", test: (v) => v < 3500000 },
+  { id: "p2", label: "3,5–4 mil. Kč", test: (v) => v >= 3500000 && v <= 4000000 },
+  { id: "p3", label: "nad 4 mil. Kč", test: (v) => v > 4000000 },
+];
 export const matchesFilters = (project, plot, f, statusOf) =>
+  (!f.price || PRICE_BANDS.find((b) => b.id === f.price).test(plot.price)) &&
   (f.status === "all" || statusOf(plot) === f.status) &&
   (!f.area || AREA_BANDS.find((b) => b.id === f.area).test(plot.area)) &&
   (!f.type || typesForPlot(project, plot).find((t) => t.type.id === f.type)?.allowed);
@@ -64,7 +70,7 @@ export class Panel {
     const list = P.plots.filter((p) => matchesFilters(P, p, f, this.app.statusOf));
     const free = P.plots.filter((p) => this.app.statusOf(p) === "available").length;
     const chip = (group, id, label, on) => `<button type="button" class="chip ${on ? "is-on" : ""}" data-filter="${group}" data-value="${id}" aria-pressed="${on}">${label}</button>`;
-    const active = f.status !== "all" || f.area || f.type;
+    const active = f.status !== "all" || f.area || f.type || f.price;
     return `
       <header class="pn__head">
         <p class="eyebrow">Pozemky</p>
@@ -76,6 +82,8 @@ export class Panel {
         <div class="chips">${chip("status", "all", "Vše", f.status === "all")}${chip("status", "available", "Volné", f.status === "available")}${P.plots.some((p) => this.app.statusOf(p) === "reserved") ? chip("status", "reserved", "Rezervované", f.status === "reserved") : ""}${this.app.demoStatus ? chip("status", "sold", "Prodané", f.status === "sold") : ""}</div>
         <p class="filters__label">Výměra</p>
         <div class="chips">${AREA_BANDS.map((b) => chip("area", b.id, b.label, f.area === b.id)).join("")}</div>
+        <p class="filters__label">Cena pozemku <span class="filters__hint">${P.pricing.perM2.toLocaleString("cs-CZ")} Kč/m²</span></p>
+        <div class="chips">${PRICE_BANDS.map((b) => chip("price", b.id, b.label, f.price === b.id)).join("")}</div>
         <p class="filters__label">Lze postavit dům</p>
         <div class="chips">${P.houseTypes.map((t) => chip("type", t.id, t.id, f.type === t.id)).join("")}</div>
         ${active ? `<button type="button" class="link filters__reset" data-action="reset-filters">Zrušit filtry</button>` : ""}
@@ -85,7 +93,7 @@ export class Panel {
         ${list.map((p) => {
           const s = this.app.statusOf(p);
           const types = s === "available" ? typesForPlot(P, p).filter((t) => t.allowed).map((t) => t.type.id).join(" ") : "";
-          return `<li><button type="button" class="plotrow" data-select="${p.no}"><span class="plotrow__no">${p.no}</span><span class="plotrow__area">${m2(p.area)}</span><span class="plotrow__status"><i class="sw sw--${s}" aria-hidden="true"></i>${STATUS[s].label}</span><span class="plotrow__types" aria-label="Typy domů">${types}</span></button></li>`;
+          return `<li><button type="button" class="plotrow" data-select="${p.no}"><span class="plotrow__no">${p.no}</span><span class="plotrow__area">${m2(p.area)}<small>${formatPrice(p.price)}</small></span><span class="plotrow__status"><i class="sw sw--${s}" aria-hidden="true"></i>${STATUS[s].label}</span><span class="plotrow__types" aria-label="Typy domů">${types}</span></button></li>`;
         }).join("") || `<li class="empty">Žádná parcela neodpovídá filtru.</li>`}
       </ul>`;
   }
@@ -111,7 +119,7 @@ export class Panel {
       <button type="button" class="pano-link" data-action="pano-plot"><span class="pano-link__icon" aria-hidden="true">360°</span><span><b>Výhled na parcelu dnes</b><small>dronové panorama, stav před výstavbou</small></span><span aria-hidden="true">→</span></button>
       <dl class="facts facts--panel">
         <div><dt>Výměra</dt><dd>${m2(plot.area)}</dd></div>
-        <div><dt>Cena pozemku</dt><dd>${price}<small>${plot.price ? "" : "bude doplněna developerem"}</small></dd></div>
+        <div><dt>Cena pozemku</dt><dd>${price}<small>${plot.price ? `${P.pricing.perM2.toLocaleString("cs-CZ")} Kč/m²` : "bude doplněna developerem"}</small></dd></div>
         <div><dt>Stav</dt><dd>${STATUS[s].long}<small>${esc(plot.statusSource)}</small></dd></div>
         <div><dt>Šířka × délka</dt><dd>${this._dims(plot)}</dd></div>
       </dl>
@@ -290,7 +298,7 @@ export class Panel {
     if (t.dataset.layout) return a.setLayout(t.dataset.layout);
     if (t.dataset.material) return a.setMaterial(t.dataset.material);
     const act = t.dataset.action;
-    if (act === "reset-filters") a.store.set({ filters: { status: "all", area: null, type: null } });
+    if (act === "reset-filters") a.store.set({ filters: { status: "all", area: null, type: null, price: null } });
     else if (act === "clear-plot") a.clearPlot();
     else if (act === "design") a.setMode("design");
     else if (act === "mode-plots") a.setMode("plots");
@@ -300,7 +308,7 @@ export class Panel {
     else if (act === "try") a.tryType(t.dataset.typeId);
     else if (act === "pano-plot") a.openPanoForPlot(a.selection().plot);
     else if (act === "terrain") lightbox([[t.dataset.sheet, t.dataset.cap]]).open(0);
-    else if (act === "filter-free") { a.clearPlot(); a.store.set({ filters: { status: "available", area: null, type: null } }); }
+    else if (act === "filter-free") { a.clearPlot(); a.store.set({ filters: { status: "available", area: null, type: null, price: null } }); }
   }
   _change() {}
 }
