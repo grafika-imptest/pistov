@@ -140,8 +140,8 @@ export class Panel {
         ${!P.compatibility.confirmed ? `<p class="hint">${esc(P.compatibility.note)}</p>` : ""}
       </section>
       <div class="pn__actions">
-        <button type="button" class="btn btn--ink btn--block" data-action="design">Prohlédnout dům na parcele <span aria-hidden="true">→</span></button>
-        <button type="button" class="btn btn--ghost btn--block" data-action="enquire">Poptat parcelu č. ${plot.no}</button>
+        <button type="button" class="btn btn--red btn--block" data-action="enquire-plot">Mám zájem o parcelu č. ${plot.no} <span aria-hidden="true">→</span></button>
+        <button type="button" class="btn btn--ghost btn--block" data-action="design">Prohlédnout dům na parcele</button>
       </div>
       <div class="pn__note">${arrowSVG({ w: 90, h: 56, from: [8, 8], to: [70, 48], bend: -0.3 })}<span class="note">a dům vyroste<br>přímo na parcele</span></div>` : `
       <section class="pn__block">
@@ -275,7 +275,7 @@ export class Panel {
       </section>
       <div class="pn__actions">
         <button type="button" class="btn btn--red btn--block" data-action="enquire">Poptat tuto kombinaci <span aria-hidden="true">→</span></button>
-        <button type="button" class="btn btn--ghost btn--block" data-action="enquire-plot">Poptat cenu jen pozemku č. ${plot.no}</button>
+        <button type="button" class="btn btn--ghost btn--block" data-action="enquire-plot">Mám zájem jen o pozemek č. ${plot.no}</button>
         <p class="hint pn__plotonly">Dům je volitelný – parcelu můžete koupit i bez typového domu.</p>
         <button type="button" class="btn btn--ghost btn--block" data-action="detail" data-type-id="${type.id}">Detail domu ${type.id}</button>
       </div>

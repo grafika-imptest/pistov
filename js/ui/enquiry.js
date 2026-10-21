@@ -60,9 +60,9 @@ export class Enquiry {
       </div>` : `<p class="muted">Zatím nemáte vybranou parcelu ani dům – poptávku můžete poslat i obecně, nebo si nejdřív <button type="button" class="link" data-edit-config>vyberte parcelu</button>.</p>`;
     this.summary.querySelector("[data-edit-config]")?.addEventListener("click", () => this.app.scrollToExplorer());
     const msg = this.form.elements.message;
-    if (!this.touched) msg.value = !cfg ? "" : this.plotOnly ? `Dobrý den, mám zájem pouze o pozemek: ${cfg}, bez typového domu. Prosím o cenu pozemku, informace o dostupnosti a dalším postupu.` : `Dobrý den, mám zájem o kombinaci: ${cfg}. Prosím o informace o dostupnosti, ceně a dalším postupu.`;
+    if (!this.touched) msg.value = !cfg ? "" : this.plotOnly ? `Dobrý den, mám zájem o pozemek: ${cfg}${sel.plot.price ? `, cena ${sel.plot.price.toLocaleString("cs-CZ")} Kč` : ""}, zatím bez typového domu. Prosím o informace o dostupnosti a dalším postupu.` : `Dobrý den, mám zájem o kombinaci: ${cfg}. Prosím o informace o dostupnosti, ceně a dalším postupu.`;
     const btn = this.form.querySelector("[data-submit]");
-    btn.textContent = sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot && this.plotOnly ? `Poptat cenu pozemku č. ${sel.plot.no}` : sel.plot ? `Poptat parcelu č. ${sel.plot.no}` : "Odeslat poptávku";
+    btn.textContent = sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot && this.plotOnly ? `Mám zájem o parcelu č. ${sel.plot.no}` : sel.plot ? `Poptat parcelu č. ${sel.plot.no}` : "Odeslat poptávku";
   }
 
   submit() {
