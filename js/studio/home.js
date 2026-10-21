@@ -92,12 +92,24 @@ $("[data-s-specs]").innerHTML = [
     ? `<polygon points="${p.geometry.aerial.map((q) => q.map((n) => n.toFixed(1)).join(",")).join(" ")}"/>`
     : `<circle cx="${p.label.aerial[0]}" cy="${p.label.aerial[1]}" r="26"/>`;
   fig.insertAdjacentHTML("afterbegin", `
-    <svg class="s-plotmap" viewBox="${vb.join(" ")}" role="group" aria-label="Parcely v mapě">
+    <svg class="s-plotmap" viewBox="${vb.join(" ")}" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Parcely v mapě">
       <image href="${view.sources[2][1]}" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}" preserveAspectRatio="none"/>
-      <rect class="s-plotmap__dim" x="${vb[0]}" y="${vb[1]}" width="${vb[2]}" height="${vb[3]}"/>
+      <rect class="s-plotmap__dim" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}"/>
       ${plots.map((p) => `<a href="index.html?parcela=${p.no}" class="s-plot s-plot--${p.status}" data-no="${p.no}" aria-label="Parcela ${p.no}, ${m2(p.area)}, ${STATUS[p.status].label}">${shape(p)}</a>`).join("")}
     </svg>
     <div class="s-plottip" role="status" aria-live="polite" hidden></div>`);
+  // the map fills its box edge to edge: grow the plot bounds to the box's aspect ratio (within the image)
+  const svgEl = fig.querySelector(".s-plotmap");
+  const fitBox = () => {
+    const r = fig.getBoundingClientRect(); if (!r.width || !r.height) return;
+    const a = r.width / r.height, [IW, IH] = view.size;
+    let [x, y, w, h] = vb;
+    if (w / h > a) { const nh = w / a; y -= (nh - h) / 2; h = nh; } else { const nw = h * a; x -= (nw - w) / 2; w = nw; }
+    if (w > IW) { h *= IW / w; w = IW; } if (h > IH) { w *= IH / h; h = IH; }
+    x = Math.min(Math.max(0, x), IW - w); y = Math.min(Math.max(0, y), IH - h);
+    svgEl.setAttribute("viewBox", [x, y, w, h].map((n) => n.toFixed(1)).join(" "));
+  };
+  new ResizeObserver(fitBox).observe(fig); fitBox();
   const tip = fig.querySelector(".s-plottip"), byNo = new Map(plots.map((p) => [String(p.no), p]));
   const show = (a, e) => {
     const p = byNo.get(a.dataset.no), t = types(p), r = fig.getBoundingClientRect();
