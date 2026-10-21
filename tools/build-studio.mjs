@@ -86,7 +86,7 @@ write("domy.html", page({
       <div class="wrap pagehero__grid">
         <div><nav class="crumbs" aria-label="Drobečková navigace"><a href="index.html">Pístov</a><span aria-hidden="true">/</span><span>Typové domy</span></nav>
         <p class="eyebrow">Typové domy · TAM architekti</p><h1 class="pagehero__title">Čtyři domy, jedna architektonická řeč</h1></div>
-        <p class="lead">Dům A až D s dispozičními a materiálovými variantami. U každého uvidíte obestavěnou plochu, půdorysy a parcely, na které ho lze postavit.</p>
+        <p class="lead">Inspirace pro váš dům: typy A až D s dispozičními a materiálovými variantami. Na parcele si ale můžete postavit jakýkoli dům podle svého – vlastní projekt nebo dům od libovolného dodavatele.</p>
       </div>
     </section>
     <div data-s-houses></div>`,

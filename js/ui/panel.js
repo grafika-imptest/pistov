@@ -84,7 +84,7 @@ export class Panel {
         <div class="chips">${AREA_BANDS.map((b) => chip("area", b.id, b.label, f.area === b.id)).join("")}</div>
         <p class="filters__label">Cena pozemku <span class="filters__hint">${P.pricing.perM2.toLocaleString("cs-CZ")} Kč/m²</span></p>
         <div class="chips">${PRICE_BANDS.map((b) => chip("price", b.id, b.label, f.price === b.id)).join("")}</div>
-        <p class="filters__label">Lze postavit dům</p>
+        <p class="filters__label">Vejde se typový dům</p>
         <div class="chips">${P.houseTypes.map((t) => chip("type", t.id, t.id, f.type === t.id)).join("")}</div>
         ${active ? `<button type="button" class="link filters__reset" data-action="reset-filters">Zrušit filtry</button>` : ""}
       </div>
@@ -126,7 +126,8 @@ export class Panel {
       ${this._terrain(plot)}
       ${configurable ? `
       <section class="pn__block">
-        <h3 class="pn__h3">Co zde můžete postavit</h3>
+        <h3 class="pn__h3">Inspirace: typové domy pro tuto parcelu</h3>
+        <p class="pn__free">Na parcele si můžete postavit jakýkoli dům podle svého – vlastní projekt i dům od jiného dodavatele, v souladu s regulativy lokality. Typové domy A–D jsou jen inspirace.</p>
         <div class="typepick">
           ${types.map(({ type, allowed, reason }) => `
             <button type="button" class="typecard ${allowed ? "" : "is-disabled"}" ${allowed ? `data-try="${type.id}"` : `aria-disabled="true"`} aria-describedby="why-${type.id}">
@@ -134,7 +135,7 @@ export class Panel {
               <span class="typecard__letter">${type.id}</span>
               <span class="typecard__name">${esc(type.tagline)}</span>
               <span class="typecard__meta">${type.builtUpArea} m² obestavěná</span>
-              <span class="typecard__why" id="why-${type.id}">${allowed ? "Lze umístit" : esc(reason)}</span>
+              <span class="typecard__why" id="why-${type.id}">${allowed ? "Vejde se" : esc(reason)}</span>
             </button>`).join("")}
         </div>
         ${!P.compatibility.confirmed ? `<p class="hint">${esc(P.compatibility.note)}</p>` : ""}
@@ -236,7 +237,7 @@ export class Panel {
       <header class="pn__head"><p class="eyebrow">Můj návrh</p><h2 class="pn__title">Začněte parcelou</h2>
       <p class="pn__sub">Návrh vždy stojí na konkrétním místě. Vyberte parcelu v mapě nebo ze seznamu.</p></header>
       <button type="button" class="btn btn--ink btn--block" data-action="mode-plots">Vybrat parcelu</button>
-      ${type ? `<p class="hint">Vybraný dům: ${esc(type.name)} – mapa zvýrazňuje parcely, kam ho lze umístit.</p>` : ""}`;
+      ${type ? `<p class="hint">Vybraný dům: ${esc(type.name)} – mapa zvýrazňuje parcely, kam se vejde. Postavit si můžete i jakýkoli jiný dům.</p>` : ""}`;
     const s = this.app.statusOf(plot);
     if (!canConfigure({ ...plot, status: s })) return `
       <header class="pn__head"><p class="eyebrow">Můj návrh</p><h2 class="pn__title">Parcela č. ${plot.no} není volná</h2></header>

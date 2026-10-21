@@ -23,7 +23,7 @@ export const news = [
     title: "Spouštíme interaktivní prezentaci Pístova",
     perex: "Vyberte si parcelu, typový dům i materiál a podívejte se, jak by mohl dům na konkrétním místě stát.",
     body: [
-      "Nová prezentace propojuje situační plán lokality s katalogem typových domů. U každé parcely uvidíte její výměru, stav a domy, které na ni lze umístit.",
+      "Nová prezentace propojuje situační plán lokality s katalogem typových domů. U každé parcely uvidíte její výměru, cenu a stav a pro inspiraci i typové domy, které se na ni vejdou. Postavit si můžete jakýkoli dům podle svého.",
       "V režimu Můj návrh se pro inspiraci na parcele „postaví“ vybraný typový dům – od obrysu přes hmotu domu až po vizualizaci architektů. Prodáváme pouze pozemky; typové domy ukazují, jak může zástavba vypadat.",
       "Pozemky stojí 6 000 Kč za m², cenu každé parcely uvidíte přímo v nabídce.",
     ],
@@ -59,7 +59,7 @@ export const faq = [
   { cat: "Parcely", q: "Co ukazují dronová panoramata?", a: "Dnešní stav lokality z 13. 10. 2026, tedy před výstavbou. Hranice parcel jsou do panoramat promítnuté podle situačního plánu – jde o orientační zobrazení." },
   { cat: "Typové domy", q: "Jaké domy si mohu vybrat?", a: "Katalog nabízí čtyři typologie: A – základní typologie s garáží, B – kratší varianta, C – minimalistická varianta (včetně podvarianty C2) a D – varianta s plochou střechou, také v přízemních variantách." },
   { cat: "Typové domy", q: "Jsou uvedené plochy užitné?", a: "Ne. U domů uvádíme obestavěnou plochu podle katalogu. Plochy jednotlivých místností najdete v půdorysech v detailu domu." },
-  { cat: "Typové domy", q: "Mohu si na každou parcelu postavit libovolný dům?", a: "Ke každé parcele zobrazujeme typy domů, které na ni lze umístit. Současná pravidla přiřazení jsou ukázková – finální vazbu domů na parcely potvrdí developer s architektem." },
+  { cat: "Typové domy", q: "Musím stavět jeden z typových domů?", a: "Ne. Na parcele si můžete postavit jakýkoli rodinný dům podle svého – vlastní projekt nebo dům od libovolného dodavatele, v souladu s regulativy lokality. Typové domy A–D jsou jen inspirace; u každé parcely ukazujeme, které z nich se na ni vejdou." },
   { cat: "Typové domy", q: "Mohu si vybrat fasádu a střechu?", a: "Katalog ukazuje u každého domu několik materiálových řešení – světlou omítku, režnou nebo světlou cihlu, dřevěný obklad, pálenou tašku nebo plechovou krytinu. Konkrétní možnosti potvrdí dodavatel stavby." },
   { cat: "Ceny a financování", q: "Kolik stojí parcela?", a: "Pozemky stojí 6 000 Kč za m² – například parcela o výměře 600 m² vyjde na 3 600 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě." },
   { cat: "Typové domy", q: "Mohu si u vás objednat i dům?", a: "Ne, prodáváme pouze pozemky. Typové domy slouží jako inspirace – ukazují, jak může dům na konkrétní parcele vypadat." },

@@ -474,3 +474,4 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-offer__text { padding: 48px var(--s-margin) 72px; }
   .s-offer__map { min-height: 0; aspect-ratio: 4 / 3; }
 }
+.s-types__free { margin: 20px 0 0; }

@@ -46,7 +46,7 @@ root.innerHTML = `
         <div><dt>Střecha</dt><dd>${esc(t.roof)}</dd></div>
         <div><dt>Parkování</dt><dd>${esc(t.parking)}</dd></div>
         <div><dt>Materiálová řešení</dt><dd>${variants.length}</dd></div>
-        <div><dt>Vhodný pro*</dt><dd>${nFree} ${plural(nFree, "volnou parcelu", "volné parcely", "volných parcel")}</dd></div>
+        <div><dt>Vejde se na*</dt><dd>${nFree} ${plural(nFree, "volnou parcelu", "volné parcely", "volných parcel")}</dd></div>
       </dl>
       <div class="s-house__layouts">
         <h3 class="s-h3">Dispozice</h3>
