@@ -22,7 +22,6 @@ const ROWS = [
   ["Materiál", (x) => (x.generic ? `${x.variantCount} materiálová řešení` : x.type && x.variant ? `<span class="cmp__sw">${x.variant.swatches.map((c) => `<i style="background:${c}"></i>`).join("")}</span>${esc(x.variant.name)}` : dash)],
   ["Parkování", (x) => (x.type ? esc(x.type.parking) : dash)],
   ["Cena pozemku", (x) => (x.plot ? (x.plot.price != null ? formatPrice(x.plot.price) : pending) : dash)],
-  ["Orientační cena domu", (x) => (x.type ? pending : dash)],
 ];
 
 function render() {

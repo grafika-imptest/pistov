@@ -17,11 +17,11 @@ document.querySelector("[data-financing]").innerHTML = `
       <div>
         <p class="eyebrow">Hypoteční kalkulačka</p>
         <h2 class="h2">Kolik budete <em>měsíčně splácet?</em></h2>
-        <p class="lead">Zadejte cenu pozemku a domu, vlastní zdroje a úrokovou sazbu. Výpočet je orientační (anuitní splátka) a nezahrnuje poplatky ani pojištění.</p>
-        <p class="hint">Předvyplněné hodnoty jsou jen příklad – nejde o ceny projektu Pístov.</p>
+        <p class="lead">Zadejte cenu pozemku, vlastní zdroje a úrokovou sazbu. Výpočet je orientační (anuitní splátka) a nezahrnuje poplatky ani pojištění.</p>
+        <p class="hint">Předvyplněno pro parcelu 600 m² za 6 000 Kč/m².</p>
       </div>
       <form class="calc__form" data-calc novalidate>
-        <div class="field"><label for="c-price">Cena pozemku a domu</label><div class="field__unit"><input id="c-price" name="price" inputmode="numeric" value="${fmt(ex.price)}"><span>Kč</span></div></div>
+        <div class="field"><label for="c-price">Cena pozemku</label><div class="field__unit"><input id="c-price" name="price" inputmode="numeric" value="${fmt(ex.price)}"><span>Kč</span></div></div>
         <div class="field"><label for="c-own">Vlastní zdroje</label><div class="field__unit"><input id="c-own" name="own" inputmode="numeric" value="${fmt(ex.own)}"><span>Kč</span></div></div>
         <div class="field-row">
           <div class="field"><label for="c-rate">Úroková sazba</label><div class="field__unit"><input id="c-rate" name="rate" inputmode="decimal" value="${String(ex.rate).replace(".", ",")}"><span>% p. a.</span></div></div>

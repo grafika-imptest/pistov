@@ -60,13 +60,12 @@ root.innerHTML = `
       </div>
       <div class="s-house__cta">
         <a class="s-btn s-btn--accent" href="index.html?dum=${t.id}&rezim=domy">Vybrat parcelu pro dům ${t.id} <span aria-hidden="true">→</span></a>
-        <a class="s-btn s-btn--line" href="kontakty.html#formular">Poptat dům ${t.id}</a>
         <span class="savebar">${saveButtons({ kind: "house", type: t.id }, { what: t.name })}</span>
       </div>
     </div>
   </section>`;
   }).join("")}
-  <p class="wrap s-source">Fakta podle katalogu Pístov – katalog rodinných domů, TAM architekti, duben 2026. Obestavěná plocha není užitná plocha. Vizualizace jsou ilustrační. * Přiřazení domů k parcelám je zatím ukázkové – finální vazbu potvrdí developer s architektem.</p>`;
+  <p class="wrap s-source">Fakta podle katalogu Pístov – katalog rodinných domů, TAM architekti, duben 2026. Obestavěná plocha není užitná plocha. Vizualizace jsou ilustrační. Prodáváme pouze pozemky – typové domy jsou inspirace, objednat je nelze. * Přiřazení domů k parcelám je zatím ukázkové – finální vazbu potvrdí developer s architektem.</p>`;
 
 // gallery: thumbnails switch the main picture, the main picture opens the lightbox
 for (const sec of root.querySelectorAll(".s-house")) {

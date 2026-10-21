@@ -244,14 +244,13 @@ export class Panel {
       <button type="button" class="btn btn--ink btn--block" data-action="mode-plots">Zpět na parcely</button>`;
     const types = typesForPlot(P, plot);
     const variants = type ? P.houseVariants.filter((v) => v.type === type.id) : [];
-    const sum = priceSummary(P, { plot, type, layout });
     return `
       <header class="pn__head"><p class="eyebrow">Můj návrh</p><h2 class="pn__title">Parcela ${plot.no}${type ? ` + ${esc(type.name)}` : ""}</h2></header>
       <ol class="cfg">
         <li class="cfg__step"><span class="cfg__no">1</span><div class="cfg__body"><h3>Parcela</h3>
           <p class="cfg__val">č. ${plot.no} · ${m2(plot.area)} · ${STATUS[s].label}</p>
           <button type="button" class="link" data-action="mode-plots">Změnit parcelu</button></div></li>
-        <li class="cfg__step"><span class="cfg__no">2</span><div class="cfg__body"><h3 id="cfg-type">Typový dům</h3>
+        <li class="cfg__step"><span class="cfg__no">2</span><div class="cfg__body"><h3 id="cfg-type">Typový dům <small class="cfg__tag">inspirace</small></h3>
           <div class="seg" role="radiogroup" aria-labelledby="cfg-type">${types.map(({ type: t, allowed, reason }) => `
             <button type="button" role="radio" aria-checked="${type?.id === t.id}" class="seg__opt ${type?.id === t.id ? "is-on" : ""}" ${allowed ? `data-type="${t.id}"` : `aria-disabled="true" title="${esc(reason)}"`}>
               <span class="seg__big">${t.id}</span><span class="seg__small">${t.builtUpArea} m²</span></button>`).join("")}</div>
@@ -267,16 +266,12 @@ export class Panel {
           <p class="hint">Podle vizualizací v katalogu architektů.</p></div></li>` : ""}
       </ol>
       ${type ? `
-      <section class="price" aria-label="Orientační souhrn">
-        <h3 class="pn__h3">Orientační souhrn</h3>
-        <dl>${sum.lines.map((l) => `<div><dt>${esc(l.label)}</dt><dd>${l.value != null ? formatPrice(l.value) : `<span class="muted">${esc(l.missing)}</span>`}</dd></div>`).join("")}
-        <div class="price__total"><dt>Celkem</dt><dd>${sum.total != null ? formatPrice(sum.total) : `<span class="muted">bude doplněno</span>`}</dd></div></dl>
-        <p class="hint">${esc(sum.note)}</p>
+      <section class="price" aria-label="Cena pozemku">
+        <dl><div class="price__total"><dt>Pozemek č. ${plot.no} · ${m2(plot.area)}</dt><dd>${plot.price != null ? formatPrice(plot.price) : `<span class="muted">${esc(P.pricing.plotPriceNote)}</span>`}</dd></div></dl>
+        <p class="hint">Prodáváme pouze pozemky. Typové domy jsou inspirace – ukázka, jak může dům na parcele vypadat; dům u nás objednat nelze.</p>
       </section>
       <div class="pn__actions">
-        <button type="button" class="btn btn--red btn--block" data-action="enquire">Poptat tuto kombinaci <span aria-hidden="true">→</span></button>
-        <button type="button" class="btn btn--ghost btn--block" data-action="enquire-plot">Mám zájem jen o pozemek č. ${plot.no}</button>
-        <p class="hint pn__plotonly">Dům je volitelný – parcelu můžete koupit i bez typového domu.</p>
+        <button type="button" class="btn btn--red btn--block" data-action="enquire-plot">Mám zájem o parcelu č. ${plot.no} <span aria-hidden="true">→</span></button>
         <button type="button" class="btn btn--ghost btn--block" data-action="detail" data-type-id="${type.id}">Detail domu ${type.id}</button>
       </div>
       <div class="savebar">${saveButtons({ kind: "combo", plot: plot.no, type: type.id, layout: layout?.id, material: variant?.id }, { what: `parcela ${plot.no} + ${type.name}` })}</div>` : `<p class="hint">Zvolte typový dům – na parcele se vám zobrazí jeho hmota a vizualizace.</p>`}`;

@@ -220,8 +220,8 @@ function render(st, prev, changed) {
 
   // state-aware global CTA
   const cta = STUDIO ? null : $("[data-cta-global]");
-  if (cta) cta.textContent = !desktop() ? "Poptat" : sel.plot && sel.type ? "Poptat vybranou kombinaci" : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat";
-  cta?.setAttribute("aria-label", sel.plot && sel.type ? `Poptat vybranou kombinaci: parcela ${sel.plot.no}, ${sel.type.name}` : sel.plot ? `Poptat parcelu ${sel.plot.no}` : "Poptat");
+  if (cta) cta.textContent = !desktop() ? "Poptat" : sel.plot ? `Mám zájem o parcelu ${sel.plot.no}` : "Poptat";
+  cta?.setAttribute("aria-label", sel.plot ? `Mám zájem o parcelu ${sel.plot.no}` : "Poptat");
 
   // detail dialog
   if (st.detail) detail.open(st.detail); else detail.close();

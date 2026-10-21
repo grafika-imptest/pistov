@@ -24,8 +24,8 @@ export const news = [
     perex: "Vyberte si parcelu, typový dům i materiál a podívejte se, jak by mohl dům na konkrétním místě stát.",
     body: [
       "Nová prezentace propojuje situační plán lokality s katalogem typových domů. U každé parcely uvidíte její výměru, stav a domy, které na ni lze umístit.",
-      "V režimu Můj návrh se vybraný dům na parcele „postaví“ – od obrysu přes hmotu domu až po vizualizaci architektů. Hotovou kombinaci můžete rovnou poptat.",
-      "Ceny pozemků a orientační ceny domů doplníme, jakmile je developer zveřejní.",
+      "V režimu Můj návrh se pro inspiraci na parcele „postaví“ vybraný typový dům – od obrysu přes hmotu domu až po vizualizaci architektů. Prodáváme pouze pozemky; typové domy ukazují, jak může zástavba vypadat.",
+      "Pozemky stojí 6 000 Kč za m², cenu každé parcely uvidíte přímo v nabídce.",
     ],
     image: "aerial", cta: { label: "Prozkoumat lokalitu", href: "index.html#explorer" },
   },
@@ -61,10 +61,11 @@ export const faq = [
   { cat: "Typové domy", q: "Jsou uvedené plochy užitné?", a: "Ne. U domů uvádíme obestavěnou plochu podle katalogu. Plochy jednotlivých místností najdete v půdorysech v detailu domu." },
   { cat: "Typové domy", q: "Mohu si na každou parcelu postavit libovolný dům?", a: "Ke každé parcele zobrazujeme typy domů, které na ni lze umístit. Současná pravidla přiřazení jsou ukázková – finální vazbu domů na parcely potvrdí developer s architektem." },
   { cat: "Typové domy", q: "Mohu si vybrat fasádu a střechu?", a: "Katalog ukazuje u každého domu několik materiálových řešení – světlou omítku, režnou nebo světlou cihlu, dřevěný obklad, pálenou tašku nebo plechovou krytinu. Konkrétní možnosti potvrdí dodavatel stavby." },
-  { cat: "Ceny a financování", q: "Kolik stojí pozemek a dům?", a: "Pozemky stojí 6 000 Kč za m² – například parcela o výměře 600 m² vyjde na 3 600 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě. Orientační ceny typových domů zatím nejsou zveřejněné, sdělíme vám je v odpovědi na poptávku." },
+  { cat: "Ceny a financování", q: "Kolik stojí parcela?", a: "Pozemky stojí 6 000 Kč za m² – například parcela o výměře 600 m² vyjde na 3 600 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě." },
+  { cat: "Typové domy", q: "Mohu si u vás objednat i dům?", a: "Ne, prodáváme pouze pozemky. Typové domy od TAM architekti slouží jako inspirace – ukazují, jak může dům na konkrétní parcele vypadat." },
   { cat: "Ceny a financování", q: "Pomůžete mi s financováním?", a: "Podmínky financování a partnery developer teprve připravuje. Orientační splátku si můžete spočítat na stránce Financování." },
   { cat: "Postup a termíny", q: "Kdy začne výstavba?", a: "Termíny přípravy a výstavby developer zatím nezveřejnil. Nové informace budeme průběžně uvádět v aktualitách." },
-  { cat: "Postup a termíny", q: "Jak pošlu poptávku?", a: "Vyberte parcelu a dům v interaktivní lokalitě a klikněte na „Poptat tuto kombinaci“. Vaši volbu doplníme do formuláře za vás. Napsat nám můžete i obecně přes stránku Kontakty." },
+  { cat: "Postup a termíny", q: "Jak pošlu poptávku?", a: "Vyberte parcelu v interaktivní lokalitě a klikněte na „Mám zájem o parcelu“. Číslo parcely doplníme do formuláře za vás. Napsat nám můžete i obecně přes stránku Kontakty." },
   { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem Pístova je Horák & Vetchý s.r.o. – realitní a developerská společnost z Jihlavy s pobočkami v Jihlavě, Brně, Praze, Olomouci, Ostravě, Znojmě a ve Žďáru nad Sázavou. Urbanistický návrh a typové domy připravili TAM architekti." },
   { cat: "Vizualizace", q: "Je vizualizace domu na parcele přesná?", a: "Jde o ilustraci. Hmota domu vychází z rozměrů v katalogu a umístění ze situačního plánu, fotorealistické obrázky jsou vizualizace architektů. Úvodní film na hlavní stránce je ilustrační vizualizace vytvořená pomocí AI." },
 ];
@@ -72,7 +73,7 @@ export const faq = [
 export const financing = {
   pending: "Konkrétní podmínky prodeje, platební kalendář a partnery financování doplní developer.",
   steps: [
-    { title: "Výběr parcely a domu", text: "V interaktivní lokalitě si vyberete parcelu, typový dům, dispozici a materiál a pošlete poptávku." },
+    { title: "Výběr parcely", text: "V interaktivní lokalitě si vyberete parcelu, pro inspiraci si na ní můžete prohlédnout typový dům, a pošlete poptávku." },
     { title: "Rezervace", text: "Rezervaci parcely a její podmínky stanoví developer." },
     { title: "Financování", text: "Pozemek i stavbu lze obvykle financovat hypotečním úvěrem; peníze na stavbu se čerpají postupně podle jejího průběhu." },
     { title: "Smlouvy", text: "Kupní smlouva na pozemek a smlouva o dílo s dodavatelem stavby." },
@@ -81,7 +82,7 @@ export const financing = {
   ],
   stepsNote: "Obecný postup při koupi pozemku se stavbou rodinného domu – nejde o podmínky projektu Pístov.",
   // example values for the calculator – explicitly NOT prices of Pístov
-  calculator: { example: { price: 9000000, own: 1800000, rate: 4.9, years: 30 } },
+  calculator: { example: { price: 3600000, own: 720000, rate: 4.9, years: 30 } },
 };
 
 // Gallery collections – all images exist in assets/img

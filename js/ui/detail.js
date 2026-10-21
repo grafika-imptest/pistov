@@ -42,7 +42,6 @@ export class Detail {
     const shot = variant.images.includes(this.shot) ? this.shot : variant.images[0];
     const plot = sel.plot;
     const fit = plot ? typesForPlot(P, plot).find((t) => t.type.id === type.id) : null;
-    const sum = priceSummary(P, { plot: fit?.allowed ? plot : null, type, layout });
     const area = layout.builtUpArea !== undefined ? layout.builtUpArea : type.builtUpArea;
     const tabs = [["plans", "Půdorysy"], ["site", "Situace"], ...(type.sheets.elevations ? [["elev", "Pohledy"]] : [])];
     const sheet = this.tab === "site" ? [layout.site || type.sheets.site] : this.tab === "elev" ? type.sheets.elevations : [layout.sheet];
@@ -80,18 +79,12 @@ export class Detail {
             <h3 class="pn__h3">Parkování a pozemek</h3>
             <p class="detail__small">${esc(type.parking)}${type.suitability ? `. ${esc(type.suitability)}` : ""}</p>
             <ul class="rules">${P.siteRules.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
-            <section class="price price--detail">
-              <h3 class="pn__h3">Orientační cena kombinace</h3>
-              <dl>${sum.lines.map((l) => `<div><dt>${esc(l.label)}</dt><dd>${l.value != null ? formatPrice(l.value) : `<span class="muted">${esc(l.missing)}</span>`}</dd></div>`).join("")}
-              <div class="price__total"><dt>Celkem</dt><dd>${sum.total != null ? formatPrice(sum.total) : `<span class="muted">bude doplněno</span>`}</dd></div></dl>
-              <p class="hint">${esc(sum.note)}</p>
-            </section>
+            <p class="hint detail__note">Prodáváme pouze pozemky. Typové domy jsou inspirace – ukázka, jak může dům na parcele vypadat; dům u nás objednat nelze.</p>
             <div class="pn__actions">
-              ${plot && fit?.allowed ? `<button type="button" class="btn btn--red btn--block" data-d-action="enquire">Poptat tuto kombinaci <span aria-hidden="true">→</span></button>
+              ${plot && fit?.allowed ? `<button type="button" class="btn btn--red btn--block" data-d-action="enquire">Mám zájem o parcelu č. ${plot.no} <span aria-hidden="true">→</span></button>
                 <button type="button" class="btn btn--ghost btn--block" data-d-action="onplot">Zobrazit dům na parcele č. ${plot.no}</button>`
               : `<button type="button" class="btn btn--ink btn--block" data-d-action="pickplot">Vybrat parcelu pro dům ${type.id}</button>
-                ${plot && fit && !fit.allowed ? `<p class="hint">Na parcelu č. ${plot.no} tento typ umístit nelze: ${esc(fit.reason)}</p>` : ""}
-                <button type="button" class="btn btn--ghost btn--block" data-d-action="enquire">Poptat dům ${type.id}</button>`}
+                ${plot && fit && !fit.allowed ? `<p class="hint">Na parcelu č. ${plot.no} tento typ umístit nelze: ${esc(fit.reason)}</p>` : ""}`}
             </div>
           </div>
         </div>

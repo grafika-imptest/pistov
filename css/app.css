@@ -776,3 +776,4 @@ body:has(.explorer:is([data-view="plan"], .is-static-view)) .topbar:not(.is-soli
 .viewer__ghost.is-out { opacity: 0; }
 .plotrow__area small { display: block; font-size: var(--fs-xs); color: var(--pencil); }
 .filters__hint { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--pencil); margin-left: 6px; }
+.cfg__tag { margin-left: 6px; padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: none; color: var(--pencil); vertical-align: 2px; }

@@ -78,11 +78,13 @@ test("content: FAQ facts match the plot data", () => {
   for (const t of project.houseTypes) assert.ok(read("js/projects/pistov/content.js").includes(`${t.builtUpArea} m²`), `area of ${t.id} in content`);
 });
 
-test("content: no invented prices or terms – only the labelled calculator example", () => {
+test("content: only the published plot price (6 000 Kč/m²), no house prices or orders", () => {
   const text = JSON.stringify({ news, faq, steps: financing.steps, site }).replace(/6 000 Kč za m²|3 600 000 Kč/g, "");
+  assert.match(JSON.stringify(faq), /prodáváme pouze pozemky/i);
   assert.doesNotMatch(text, /\d[\d\s]*Kč/, "no prices in editorial content");
   assert.ok(financing.pending && financing.stepsNote);
-  assert.match(read("js/pages/financovani.js"), /nejde o ceny projektu Pístov/);
+  assert.match(read("js/pages/financovani.js"), /6 000 Kč\/m²/);
+  for (const f of ["js/ui/panel.js", "js/ui/detail.js", "js/ui/enquiry.js", "js/studio/domy.js"]) assert.doesNotMatch(read(f), /Poptat (tuto kombinaci|dům|vybranou kombinaci)/, f);
   assert.ok(site.salesContact.pending);
 });
 
