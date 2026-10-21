@@ -79,7 +79,7 @@ export class Stage {
     badge.innerHTML = `<span class="tl__badge-no">${sel.plot.no}</span><span>${m2(sel.plot.area)}${sel.type && vis === "house" ? ` · ${esc(sel.type.name)}<span class="tl__badge-var"> · ${esc(sel.variant.name)}</span>` : ""}</span>`;
     if (vis === "plot") cap.textContent = `Parcela č. ${sel.plot.no} podle situačního plánu · orientační rozměry stran odvozené z měřítka M 1 : 2000`;
     else if (tl) cap.textContent = "Animace výstavby";
-    else cap.textContent = `Schéma hmoty podle rozměrů z katalogu, umístění podle situačního plánu · vizualizace: TAM architekti${sel.layout?.renderNote ? ` · ${sel.layout.renderNote}` : ""}`;
+    else cap.textContent = `Schéma hmoty podle rozměrů z katalogu, umístění podle situačního plánu${sel.layout?.renderNote ? ` · ${sel.layout.renderNote}` : ""}`;
     this.root.querySelector("[data-tl-note]").classList.toggle("is-on", vis === "plot" && !!sel.type);
     if (vis === "plot" && sel.type) draw(this.root.querySelector("[data-tl-note]"));
   }

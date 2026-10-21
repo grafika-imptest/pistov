@@ -60,7 +60,7 @@ $("[data-s-specs]").innerHTML = [
           <div><dt>Střecha</dt><dd>${esc(t.roof)}</dd></div>
           <div><dt>Vhodný pro*</dt><dd>${nFree} ${plural(nFree, "volnou parcelu", "volné parcely", "volných parcel")}</dd></div>
         </dl>
-        <figure class="s-type__img">${(() => { const v = mainVariant(t); return `<img src="${img(v.images[0], "m")}" srcset="${srcset(v.images[0])}" sizes="100vw" alt="${esc(t.name)} – ${esc(v.name)}, vizualizace TAM architekti" loading="lazy" decoding="async">`; })()}</figure>
+        <figure class="s-type__img">${(() => { const v = mainVariant(t); return `<img src="${img(v.images[0], "m")}" srcset="${srcset(v.images[0])}" sizes="100vw" alt="${esc(t.name)} – ${esc(v.name)}, vizualizace" loading="lazy" decoding="async">`; })()}</figure>
         <p class="s-type__links"><a class="s-btn s-btn--dark s-btn--sm" href="domy.html#dum-${t.id.toLowerCase()}">Detail domu ${t.id}</a><a class="s-link" href="index.html?dum=${t.id}&rezim=domy">Parcely pro dům ${t.id} →</a></p>
       </div>
     </li>`;

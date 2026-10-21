@@ -43,9 +43,9 @@ export const news = [
   {
     slug: "katalog-rodinnych-domu", date: "2026-04", dateLabel: "duben 2026", category: "Projekt",
     title: "Architekti připravili katalog typových domů",
-    perex: "Čtyři typologie A–D s dispozičními a materiálovými variantami od TAM architekti.",
+    perex: "Čtyři typologie A–D s dispozičními a materiálovými variantami.",
     body: [
-      "Katalog rodinných domů pro Pístov zpracovali TAM architekti. Obsahuje situační plán lokality, řezy terénem a čtyři typové domy.",
+      "Katalog rodinných domů pro Pístov obsahuje situační plán lokality, řezy terénem a čtyři typové domy.",
       "Dům A je základní typologie s garáží (170 m² obestavěné plochy), dům B kratší varianta (143 m²), dům C minimalistická varianta (107 m², podvarianta C2 106 m²) a dům D varianta s plochou střechou (156 m²).",
       "Každý typ má několik materiálových řešení – omítku, cihlu i dřevo, pálenou tašku nebo plechovou krytinu.",
     ],
@@ -62,11 +62,11 @@ export const faq = [
   { cat: "Typové domy", q: "Mohu si na každou parcelu postavit libovolný dům?", a: "Ke každé parcele zobrazujeme typy domů, které na ni lze umístit. Současná pravidla přiřazení jsou ukázková – finální vazbu domů na parcely potvrdí developer s architektem." },
   { cat: "Typové domy", q: "Mohu si vybrat fasádu a střechu?", a: "Katalog ukazuje u každého domu několik materiálových řešení – světlou omítku, režnou nebo světlou cihlu, dřevěný obklad, pálenou tašku nebo plechovou krytinu. Konkrétní možnosti potvrdí dodavatel stavby." },
   { cat: "Ceny a financování", q: "Kolik stojí parcela?", a: "Pozemky stojí 6 000 Kč za m² – například parcela o výměře 600 m² vyjde na 3 600 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě." },
-  { cat: "Typové domy", q: "Mohu si u vás objednat i dům?", a: "Ne, prodáváme pouze pozemky. Typové domy od TAM architekti slouží jako inspirace – ukazují, jak může dům na konkrétní parcele vypadat." },
+  { cat: "Typové domy", q: "Mohu si u vás objednat i dům?", a: "Ne, prodáváme pouze pozemky. Typové domy slouží jako inspirace – ukazují, jak může dům na konkrétní parcele vypadat." },
   { cat: "Ceny a financování", q: "Pomůžete mi s financováním?", a: "Podmínky financování a partnery developer teprve připravuje. Orientační splátku si můžete spočítat na stránce Financování." },
   { cat: "Postup a termíny", q: "Kdy začne výstavba?", a: "Termíny přípravy a výstavby developer zatím nezveřejnil. Nové informace budeme průběžně uvádět v aktualitách." },
   { cat: "Postup a termíny", q: "Jak pošlu poptávku?", a: "Vyberte parcelu v interaktivní lokalitě a klikněte na „Mám zájem o parcelu“. Číslo parcely doplníme do formuláře za vás. Napsat nám můžete i obecně přes stránku Kontakty." },
-  { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem Pístova je Horák & Vetchý s.r.o. – realitní a developerská společnost z Jihlavy s pobočkami v Jihlavě, Brně, Praze, Olomouci, Ostravě, Znojmě a ve Žďáru nad Sázavou. Urbanistický návrh a typové domy připravili TAM architekti." },
+  { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem Pístova je Horák & Vetchý s.r.o. – realitní a developerská společnost z Jihlavy s pobočkami v Jihlavě, Brně, Praze, Olomouci, Ostravě, Znojmě a ve Žďáru nad Sázavou." },
   { cat: "Vizualizace", q: "Je vizualizace domu na parcele přesná?", a: "Jde o ilustraci. Hmota domu vychází z rozměrů v katalogu a umístění ze situačního plánu, fotorealistické obrázky jsou vizualizace architektů. Úvodní film na hlavní stránce je ilustrační vizualizace vytvořená pomocí AI." },
 ];
 

@@ -121,7 +121,7 @@ export class Intro {
     root.classList.add("is-drawing");
     // Scene 1: close over the northern streets
     v.cover({ x: all.x + all.w * 0.12, y: all.y + all.h * 0.02, w: all.w * 0.7, h: all.h * 0.6 }, { animate: false });
-    this._caption("Situační plán · TAM architekti");
+    this._caption("Situační plán");
     try {
       await wait(350, signal);
       root.classList.add("hero-in");
@@ -133,7 +133,7 @@ export class Intro {
       v.cover({ x: all.x + all.w * 0.22, y: all.y + all.h * 0.28, w: all.w * 0.85, h: all.h * 0.72 }, { animate: true, duration: 3600, easing: "cubic-bezier(.45,.05,.35,1)" });
       await wait(1500, signal);
       root.classList.remove("is-drawing");
-      this._caption("Vizualizace budoucí zástavby · TAM architekti");
+      this._caption("Vizualizace budoucí zástavby");
       await wait(2300, signal);
       // Scene 3 (part 1): rise to the overview and stop
       ex.heroFrame(true, 1900);

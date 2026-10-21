@@ -28,7 +28,7 @@ const heroNotes = [
   { lines: ["největší volná parcela", `č. ${biggestFree.no} · ${nf(biggestFree.area)} m²`], at: { plot: biggestFree.no } },
   { lines: ["odsud jsme fotili", "panorama 360°"], at: { station: "stred-60" } },
   { lines: ["stávající", "zástavba obce"], at: [1480, 228] },
-  { lines: ["čtyři typy domů", "od TAM architekti"], at: { plot: 14 } },
+  { lines: ["čtyři typy domů", "pro inspiraci"], at: { plot: 14 } },
   { lines: ["pole a krajina", "kolem lokality"], at: [2900, 1760] },
 ];
 
@@ -100,7 +100,7 @@ export const project = {
     src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
     poster: "assets/video/intro-poster.webp",
     endBox: { x: 0, y: 58, w: 3419, h: 1923 },
-    caption: "Ilustrační AI video animace podle návrhu TAM architekti",
+    caption: "Ilustrační AI video animace",
   },
   img: (name, w) => `${IMG}${name}-${w}.webp`,
   imgSet: (name, widths) => widths.map((w) => `${IMG}${name}-${w}.webp ${w}w`).join(", "),
