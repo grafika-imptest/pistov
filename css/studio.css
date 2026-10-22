@@ -163,7 +163,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-hero__video.is-on { opacity: 1; }
 .s-hero__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 14, 13, 0.45) 0%, rgba(13, 14, 13, 0) 26%, rgba(13, 14, 13, 0) 44%, rgba(13, 14, 13, 0.72) 100%); }
 .s-hero__content { position: relative; align-self: end; padding-top: calc(var(--topbar-h) + 40px); padding-bottom: clamp(28px, 4vw, 48px); }
-.s-hero__title { margin: 0 0 clamp(24px, 3vw, 40px); font-family: var(--s-display); font-weight: 500; font-size: var(--s-fs-hero); line-height: 0.92; letter-spacing: -0.05em; max-width: 12ch; }
+.s-hero__title { margin: 0 0 clamp(24px, 3vw, 40px); font-family: var(--s-display); font-weight: 500; font-size: clamp(2.6rem, 1rem + 5vw, 6.5rem); line-height: 0.95; letter-spacing: -0.05em; white-space: nowrap; }
 .s-hero__row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; }
 .s-hero__lead { max-width: 44ch; margin: 0; font-size: var(--s-fs-lead); line-height: 1.5; color: rgba(255, 255, 255, 0.88); }
 .s-hero__stats { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }

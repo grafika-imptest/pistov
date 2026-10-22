@@ -7,10 +7,11 @@ const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">"
 /** headlines: wrap words so they can rise line by line (keeps the text readable for assistive tech) */
 export function splitLines(root = document) {
   for (const el of root.querySelectorAll("[data-s-lines]:not(.is-split)")) {
-    // one-letter prepositions stay with the next word (Czech typography)
-    const words = el.textContent.trim().replace(/(^|\s)([vkszouaiVKSZOUAI])\s+/g, "$1$2 ").split(/[ \t\n]+/);
-    el.setAttribute("aria-label", el.textContent.trim());
-    el.innerHTML = words.map((w, i) => `<span class="s-w" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(" ");
+    // one-letter prepositions stay with the next word (Czech typography); an explicit <br> keeps its line break
+    const tmp = document.createElement("div"); let i = 0;
+    const lines = el.innerHTML.split(/<br\s*\/?>/i).map((h) => { tmp.innerHTML = h; return tmp.textContent.trim().replace(/(^|\s)([vkszouaiVKSZOUAI])\s+/g, "$1$2 ").split(/[ \t\n]+/).filter(Boolean); });
+    el.setAttribute("aria-label", lines.map((l) => l.join(" ")).join(" "));
+    el.innerHTML = lines.map((words) => words.map((w) => `<span class="s-w" aria-hidden="true"><span style="--i:${i++}">${esc(w)}</span></span>`).join(" ")).join("<br>");
     el.classList.add("is-split");
   }
 }
