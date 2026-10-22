@@ -150,12 +150,20 @@ export const developer = {
 // Points of interest in Jihlava and around. SAMPLE until the developer sends the final list (TODO).
 // Coordinates from OpenStreetMap; distances are computed as the crow flies from the site.
 export const pois = {
-  note: "Body zájmu jsou zatím ukázkové – finální seznam v Jihlavě a okolí doplní developer. Vzdálenosti vzdušnou čarou.",
+  note: "Výběr míst v Jihlavě a okolí podle OpenStreetMap, finální seznam potvrdí developer. Vzdálenosti vzdušnou čarou.",
   items: [
-    { name: "Centrum Jihlavy – Masarykovo náměstí", cat: "Město", lat: 49.39605, lon: 15.59115 },
-    { name: "Nemocnice Jihlava", cat: "Zdraví", lat: 49.39859, lon: 15.5712 },
-    { name: "City Park Jihlava", cat: "Nákupy", lat: 49.39247, lon: 15.59366 },
-    { name: "ZOO Jihlava", cat: "Volný čas", lat: 49.398, lon: 15.59328 },
-    { name: "Vlakové nádraží Jihlava", cat: "Doprava", lat: 49.4145, lon: 15.59939 },
+    { name: "Centrum Jihlavy – Masarykovo náměstí", cat: "Město", icon: "city", lat: 49.39605, lon: 15.59115 },
+    { name: "Nemocnice Jihlava", cat: "Zdraví", icon: "health", lat: 49.39859, lon: 15.5712 },
+    { name: "Lékárna Dr. Max, Pelhřimovská", cat: "Zdraví", icon: "health", lat: 49.39378, lon: 15.55404 },
+    { name: "MŠ Mozaika", cat: "Školka", icon: "kids", lat: 49.39198, lon: 15.57547 },
+    { name: "ZŠ Evžena Rošického", cat: "Škola", icon: "school", lat: 49.40114, lon: 15.57393 },
+    { name: "Terno, Rantířovská", cat: "Nákupy", icon: "shop", lat: 49.39518, lon: 15.56697 },
+    { name: "Lidl, Jiráskova", cat: "Nákupy", icon: "shop", lat: 49.40252, lon: 15.57599 },
+    { name: "Kaufland, Romana Havelky", cat: "Nákupy", icon: "shop", lat: 49.40652, lon: 15.58261 },
+    { name: "City Park Jihlava", cat: "Nákupy", icon: "shop", lat: 49.39247, lon: 15.59366 },
+    { name: "Autobusové nádraží Jihlava", cat: "Doprava", icon: "bus", lat: 49.39962, lon: 15.58115 },
+    { name: "Vlakové nádraží Jihlava", cat: "Doprava", icon: "train", lat: 49.4145, lon: 15.59939 },
+    { name: "Bazén Evžena Rošického", cat: "Sport", icon: "swim", lat: 49.4021, lon: 15.5714 },
+    { name: "ZOO Jihlava", cat: "Volný čas", icon: "zoo", lat: 49.398, lon: 15.59328 },
   ],
 };

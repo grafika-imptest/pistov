@@ -26,7 +26,16 @@ html.has-menu { overflow: hidden; }
 .sitemenu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .sitemenu li a { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.6rem); font-weight: 300; line-height: 1.25; text-decoration: none; letter-spacing: -0.01em; transition: color var(--dur-fast); }
 .sitemenu li a:hover { color: var(--clay); }
-.sitemenu .btn { align-self: flex-start; margin-top: auto; }
+.sitemenu__logo { display: block; align-self: flex-start; margin-top: calc(-1 * var(--s5)); color: #fff; }
+.sitemenu__logo .brand__logo { height: 34px; width: auto; display: block; }
+.sitemenu__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s6); flex-wrap: wrap; padding-top: var(--s5); border-top: 1px solid rgba(255, 255, 255, 0.14); }
+.sitemenu__info { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--s6); max-width: 760px; }
+.sitemenu__about { margin: 0; font-size: 1.05rem; line-height: 1.5; color: rgba(255, 255, 255, 0.78); }
+.sitemenu__contact p { margin: 0 0 6px; line-height: 1.6; }
+.sitemenu__contact a { color: #fff; text-decoration: none; }
+.sitemenu__contact a:hover { color: var(--clay); }
+.sitemenu__small { font-size: 0.8125rem; color: rgba(255, 255, 255, 0.5); }
+@media (max-width: 760px) { .sitemenu__info { grid-template-columns: 1fr; gap: var(--s4); } .sitemenu__foot { flex-direction: column-reverse; align-items: flex-start; } }
 @media (max-width: 760px) { .sitemenu__cols { grid-template-columns: 1fr; gap: var(--s5); } }
 
 /* ---------------- footer ---------------- */
@@ -252,7 +261,7 @@ html.has-menu { overflow: hidden; }
 .mappin { background: none; border: 0; }
 .mappin svg { width: 44px; height: 58px; display: block; filter: drop-shadow(0 4px 6px rgba(20, 20, 18, 0.35)); transform-origin: 50% 100%; animation: pin-drop 700ms var(--ease-out) both; }
 .mappin__body { fill: var(--red); stroke: #fff; stroke-width: 2; }
-.mappin__mark rect { fill: none; stroke: #fff; stroke-width: 1.8; }
+.mappin__mark { fill: #fff; }
 @keyframes pin-drop { from { transform: translateY(-18px) scale(0.9); opacity: 0; } to { transform: none; opacity: 1; } }
 .leaflet-popup-content { font-size: var(--fs-sm); line-height: 1.5; }
 .leaflet-popup-content a { color: var(--red); }
