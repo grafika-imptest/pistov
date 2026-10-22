@@ -21,22 +21,23 @@
       <p class="s-hero__cap" data-s-hero-cap>Ilustrační AI video animace</p>
     </section>
 
-    <!-- ============ 01 OFFER: plot map ============ -->
-    <section class="s-section s-offer s-dark" id="nabidka" aria-labelledby="s-offer-title">
-      <div class="s-wrap s-offer__grid">
-        <div class="s-offer__text">
+    <!-- ============ 01 OFFER: the map is the stage – filter by price, pick a plot ============ -->
+    <section class="s-plots" id="nabidka" aria-labelledby="s-offer-title">
+      <figure class="s-plots__map" data-s-plotmap>
+        <figcaption class="s-sr">Mapa parcel – letecký pohled s vyznačenými hranicemi parcel</figcaption>
+      </figure>
+      <div class="s-plots__shade" aria-hidden="true"></div>
+      <div class="s-wrap s-plots__ui">
+        <div class="s-plots__intro">
           <p class="s-label s-label--light">01 — Nabídka</p>
           <h2 class="s-h2" id="s-offer-title" data-s-lines>Vyberte si parcelu.</h2>
-          <p class="s-lead" data-s-in>Najeďte na parcelu v mapě – uvidíte výměru, cenu a stav. Kliknutím ji otevřete v nabídce.</p>
-          <ul class="s-legend" data-s-legend></ul>
-          <ul class="s-bands" data-s-bands></ul>
-          <div class="s-actions"><a class="s-btn s-btn--accent" href="index.html#explorer">Otevřít nabídku <span aria-hidden="true">→</span></a><a class="s-btn s-btn--line-light" href="index.html?pohled=pano">Panorama 360°</a></div>
-          <p class="s-source s-source--light">Parcely podle opraveného situačního plánu z října 2026. Aktuální dostupnost potvrdíme v odpovědi na poptávku.</p>
+          <p class="s-plots__count"><b data-s-count-free></b><span>volných parcel<br>od <em data-s-price-from></em></span></p>
+          <div class="s-plots__filter" role="group" aria-label="Filtr podle ceny" data-s-pricebands></div>
+          <div class="s-actions"><a class="s-btn s-btn--accent" href="index.html#explorer">Otevřít nabídku <span aria-hidden="true">→</span></a><a class="s-btn s-btn--glass" href="index.html?pohled=pano">Panorama 360°</a></div>
         </div>
-        <figure class="s-offer__map" data-s-plotmap>
-          <figcaption class="s-sr">Mapa parcel – letecká vizualizace s vyznačenými hranicemi parcel</figcaption>
-        </figure>
+        <aside class="s-plots__card" aria-live="polite" data-s-plotcard></aside>
       </div>
+      <p class="s-plots__note">Parcely podle opraveného situačního plánu, říjen 2026 · 6 000 Kč/m² · hranice v leteckém pohledu orientačně</p>
     </section>
 
     <!-- ============ 02 PROJECT ============ -->

@@ -475,3 +475,48 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-offer__map { min-height: 0; aspect-ratio: 4 / 3; }
 }
 .s-types__free { margin: 20px 0 0; }
+
+/* ================= 01 Nabídka – the map is the stage ================= */
+.s-plots { position: relative; min-height: min(100svh, 960px); display: grid; align-items: center; overflow: hidden; background: var(--s-dark); color: var(--s-on-dark); }
+.s-plots__map { position: absolute; inset: 0; margin: 0; }
+.s-plots__map .s-plotmap { width: 100%; height: 100%; display: block; }
+.s-plots__shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(13, 14, 13, 0.92) 0%, rgba(13, 14, 13, 0.7) 26%, rgba(13, 14, 13, 0.15) 52%, rgba(13, 14, 13, 0) 100%), linear-gradient(0deg, rgba(13, 14, 13, 0.5) 0%, rgba(13, 14, 13, 0) 20%); }
+.s-plots__ui { position: relative; z-index: 1; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; padding-top: var(--s-pad); padding-bottom: var(--s-pad); pointer-events: none; }
+.s-plots__ui > * { pointer-events: auto; }
+.s-plots__intro { max-width: 460px; }
+.s-plots .s-h2 { margin-bottom: 28px; }
+.s-plots__count { display: flex; align-items: center; gap: 16px; margin: 0 0 28px; }
+.s-plots__count b { font-family: var(--s-display); font-size: clamp(3.5rem, 2.4rem + 3vw, 5.5rem); font-weight: 500; line-height: 0.9; letter-spacing: -0.05em; }
+.s-plots__count span { color: var(--s-on-dark-2); line-height: 1.35; }
+.s-plots__count em { font-style: normal; color: var(--s-on-dark); font-weight: 500; }
+.s-plots__filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 32px; }
+.s-chip { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 8px 0 16px; border: 1px solid var(--s-line-dark); border-radius: 999px; background: rgba(13, 14, 13, 0.35); color: var(--s-on-dark); font-size: 0.875rem; font-weight: 500; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background-color 200ms, border-color 200ms, color 200ms; }
+.s-chip b { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px; background: rgba(243, 242, 238, 0.14); font-family: var(--s-mono); font-size: 0.75rem; font-weight: 500; }
+.s-chip:hover { border-color: var(--s-on-dark); }
+.s-chip[aria-pressed="true"] { background: var(--s-on-dark); color: var(--s-ink); border-color: var(--s-on-dark); }
+.s-chip[aria-pressed="true"] b { background: var(--s-accent); color: #fff; }
+/* plots: quiet outlines and numbers, the active plot in the accent */
+.s-plots .s-plot polygon, .s-plots .s-plot circle { fill: rgba(243, 242, 238, 0.06); stroke: rgba(243, 242, 238, 0.75); stroke-width: 1.4; vector-effect: non-scaling-stroke; transition: fill 250ms, stroke 250ms; }
+.s-plots .s-plot text { fill: rgba(243, 242, 238, 0.92); font-family: var(--s-mono); font-size: 22px; font-weight: 500; text-anchor: middle; dominant-baseline: central; pointer-events: none; paint-order: stroke; stroke: rgba(13, 14, 13, 0.55); stroke-width: 4px; transition: opacity 300ms; }
+.s-plots .s-plot:hover polygon, .s-plots .s-plot.is-active polygon, .s-plots .s-plot:focus-visible polygon { fill: rgba(185, 74, 40, 0.62); stroke: #fff; stroke-width: 2.4; }
+.s-plots .s-plot:focus-visible { outline: none; }
+.s-plots__map.is-filtered .s-plot:not(.is-match) polygon { fill: transparent; stroke: rgba(243, 242, 238, 0.22); }
+.s-plots__map.is-filtered .s-plot:not(.is-match) text { opacity: 0.3; }
+.s-plots__map.is-filtered .s-plot.is-match:not(.is-active):not(:hover) polygon { fill: rgba(243, 242, 238, 0.3); stroke: #fff; stroke-width: 2; }
+/* live plot card */
+.s-plots__card { width: 260px; padding: 20px 22px 18px; background: rgba(243, 242, 238, 0.94); color: var(--s-ink); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: var(--shadow-2); }
+.s-plots__cardlabel { margin: 0; font-family: var(--s-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--s-mute); }
+.s-plots__no { margin: 2px 0 12px; font-family: var(--s-display); font-size: 4rem; font-weight: 500; line-height: 1; letter-spacing: -0.05em; color: var(--s-accent); }
+.s-plots__card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; padding-top: 12px; border-top: 1px solid var(--s-line); }
+.s-plots__card dt { font-family: var(--s-mono); font-size: 0.6875rem; color: var(--s-mute); }
+.s-plots__card dd { margin: 2px 0 0; font-family: var(--s-display); font-size: 1.15rem; font-weight: 500; }
+.s-plots__note { position: absolute; z-index: 1; left: var(--s-margin); bottom: 18px; margin: 0; font-family: var(--s-mono); font-size: 0.625rem; letter-spacing: 0.04em; color: rgba(243, 242, 238, 0.55); }
+@media (max-width: 999px) {
+  .s-plots { min-height: 0; display: block; }
+  .s-plots__map { position: relative; height: 78vw; min-height: 300px; }
+  .s-plots__shade { display: none; }
+  .s-plots__ui { flex-direction: column; align-items: stretch; padding-top: 40px; padding-bottom: 56px; }
+  .s-plots__card { display: none; }
+  .s-plots__note { position: static; padding: 0 var(--s-margin) 24px; }
+}
+.s-plots__card { align-self: flex-start; }

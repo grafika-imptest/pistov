@@ -81,50 +81,66 @@ $("[data-s-specs]").innerHTML = [
   items[0]?.classList.add("is-active");
 }
 
-// ---------- offer: plot map over the aerial visualisation ----------
+// ---------- offer: full-bleed plot map, price filter and a live plot card ----------
 {
-  const fig = $("[data-s-plotmap]"), view = P.views.find((v) => v.id === "aerial");
+  const fig = $("[data-s-plotmap]"), view = P.views.find((v) => v.id === "aerial"), card = $("[data-s-plotcard]");
+  const price = (v) => `${(v / 1e6).toLocaleString("cs-CZ", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mil. Kč`;
+  const byNo = new Map(plots.map((p) => [String(p.no), p]));
   const pts = plots.flatMap((p) => (p.geometry ? p.geometry.aerial : [p.label.aerial]));
-  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]), pad = 120;
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]), pad = 90;
   const vb = [Math.min(...xs) - pad, Math.min(...ys) - pad, Math.max(...xs) - Math.min(...xs) + pad * 2, Math.max(...ys) - Math.min(...ys) + pad * 2];
-  const types = (p) => (p.status === "available" ? typesForPlot(P, p).filter((t) => t.allowed).map((t) => t.type.id).join(" ") : "");
   const shape = (p) => p.geometry
     ? `<polygon points="${p.geometry.aerial.map((q) => q.map((n) => n.toFixed(1)).join(",")).join(" ")}"/>`
     : `<circle cx="${p.label.aerial[0]}" cy="${p.label.aerial[1]}" r="26"/>`;
   fig.insertAdjacentHTML("afterbegin", `
-    <svg class="s-plotmap" viewBox="${vb.join(" ")}" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Parcely v mapě">
-      <image href="${view.sources[2][1]}" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}" preserveAspectRatio="none"/>
-      <rect class="s-plotmap__dim" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}"/>
-      ${plots.map((p) => `<a href="index.html?parcela=${p.no}" class="s-plot s-plot--${p.status}" data-no="${p.no}" aria-label="Parcela ${p.no}, ${m2(p.area)}, ${STATUS[p.status].label}">${shape(p)}</a>`).join("")}
-    </svg>
-    <div class="s-plottip" role="status" aria-live="polite" hidden></div>`);
-  // the map fills its box edge to edge: grow the plot bounds to the box's aspect ratio (within the image)
+    <svg class="s-plotmap" preserveAspectRatio="xMidYMid slice" role="group" aria-label="Parcely v mapě">
+      <image href="${(view.sources[3] || view.sources[2])[1]}" x="0" y="0" width="${view.size[0]}" height="${view.size[1]}" preserveAspectRatio="none"/>
+      ${plots.map((p) => `<a href="index.html?parcela=${p.no}" class="s-plot s-plot--${p.status}" data-no="${p.no}" aria-label="Parcela ${p.no}, ${m2(p.area)}, ${price(p.price)}">${shape(p)}<text x="${p.label.aerial[0]}" y="${p.label.aerial[1]}">${p.no}</text></a>`).join("")}
+    </svg>`);
+
+  // on wide screens the plots sit to the right of the intro text; on small screens they fill the frame
   const svgEl = fig.querySelector(".s-plotmap");
   const fitBox = () => {
     const r = fig.getBoundingClientRect(); if (!r.width || !r.height) return;
-    const a = r.width / r.height, [IW, IH] = view.size;
-    let [x, y, w, h] = vb;
-    if (w / h > a) { const nh = w / a; y -= (nh - h) / 2; h = nh; } else { const nw = h * a; x -= (nw - w) / 2; w = nw; }
-    if (w > IW) { h *= IW / w; w = IW; } if (h > IH) { w *= IH / h; h = IH; }
-    x = Math.min(Math.max(0, x), IW - w); y = Math.min(Math.max(0, y), IH - h);
+    const wide = r.width >= 1000, [IW, IH] = view.size;
+    const area = wide ? { w: r.width * 0.44, h: r.height * 0.8 } : { w: r.width * 0.96, h: r.height * 0.96 };
+    let k = Math.min(area.w / vb[2], area.h / vb[3]);         // screen px per image px
+    k = Math.max(k, r.width / IW, r.height / IH);              // never show beyond the image
+    const w = r.width / k, h = r.height / k;
+    const cx = vb[0] + vb[2] / 2 - (wide ? (r.width * 0.07) / k : 0), cy = vb[1] + vb[3] / 2;
+    const x = Math.min(Math.max(0, cx - w / 2), IW - w), y = Math.min(Math.max(0, cy - h / 2), IH - h);
     svgEl.setAttribute("viewBox", [x, y, w, h].map((n) => n.toFixed(1)).join(" "));
   };
   new ResizeObserver(fitBox).observe(fig); fitBox();
-  const tip = fig.querySelector(".s-plottip"), byNo = new Map(plots.map((p) => [String(p.no), p]));
-  const show = (a, e) => {
-    const p = byNo.get(a.dataset.no), t = types(p), r = fig.getBoundingClientRect();
-    tip.innerHTML = `<b>Parcela ${p.no}</b><span>${m2(p.area)}</span><span class="s-dot s-dot--${p.status}">${STATUS[p.status].long}</span>${t ? `<span>Domy ${t.split(" ").join(" · ")}</span>` : ""}`;
-    tip.hidden = false;
-    const ar = a.getBoundingClientRect(), x = e?.clientX ?? ar.left + ar.width / 2, y = e?.clientY ?? ar.top;
-    tip.style.left = `${Math.min(r.width - 180, Math.max(8, x - r.left + 14))}px`; tip.style.top = `${Math.max(8, y - r.top - 70)}px`;
+
+  // price bands – a click highlights the matching plots on the map
+  const BANDS = [["do 3,5 mil.", (v) => v < 3.5e6], ["3,5–4 mil.", (v) => v >= 3.5e6 && v <= 4e6], ["nad 4 mil.", (v) => v > 4e6]];
+  const bandBox = $("[data-s-pricebands]"); let band = -1;
+  bandBox.innerHTML = BANDS.map(([l, f], i) => `<button type="button" class="s-chip" data-band="${i}" aria-pressed="false">${l} Kč<b>${free.filter((p) => f(p.price)).length}</b></button>`).join("");
+  bandBox.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-band]"); if (!b) return;
+    band = band === +b.dataset.band ? -1 : +b.dataset.band;
+    bandBox.querySelectorAll("[data-band]").forEach((x) => x.setAttribute("aria-pressed", String(+x.dataset.band === band)));
+    fig.classList.toggle("is-filtered", band >= 0);
+    fig.querySelectorAll(".s-plot").forEach((a) => a.classList.toggle("is-match", band >= 0 && BANDS[band][1](byNo.get(a.dataset.no).price)));
+  });
+
+  // live plot card (hover / focus); starts on the most affordable plot
+  const cheapest = [...free].sort((a, b) => a.price - b.price)[0];
+  $("[data-s-count-free]").textContent = free.length;
+  $("[data-s-price-from]").textContent = price(cheapest.price);
+  const showCard = (p, hint) => {
+    card.innerHTML = `<p class="s-plots__cardlabel">${hint}</p>
+      <p class="s-plots__no">${p.no}</p>
+      <dl><div><dt>Výměra</dt><dd>${m2(p.area)}</dd></div><div><dt>Cena</dt><dd>${price(p.price)}</dd></div></dl>
+      <a class="s-link" href="index.html?parcela=${p.no}">Detail parcely →</a>`;
+    fig.querySelectorAll(".s-plot.is-active").forEach((a) => a.classList.remove("is-active"));
+    fig.querySelector(`.s-plot[data-no="${p.no}"]`)?.classList.add("is-active");
   };
-  fig.addEventListener("pointermove", (e) => { const a = e.target.closest(".s-plot"); if (a) show(a, e); else tip.hidden = true; });
-  fig.addEventListener("pointerleave", () => (tip.hidden = true));
-  fig.addEventListener("focusin", (e) => { const a = e.target.closest(".s-plot"); if (a) show(a); });
-  fig.addEventListener("focusout", () => (tip.hidden = true));
-  $("[data-s-legend]").innerHTML = ["available", "reserved"].filter((s) => s === "available" || count(s)).map((s) => `<li><i class="s-dot s-dot--${s}"></i><b>${count(s)}</b> ${STATUS[s].label === "volná" ? "volných" : "rezervovaných"}</li>`).join("");
-  const bands = [["do 580 m²", (a) => a < 580], ["580–650 m²", (a) => a >= 580 && a <= 650], ["nad 650 m²", (a) => a > 650]];
-  $("[data-s-bands]").innerHTML = bands.map(([l, f]) => `<li><span>${l}</span><b>${free.filter((p) => f(p.area)).length}</b></li>`).join("");
+  showCard(cheapest, "Nejdostupnější parcela");
+  const onPlot = (e) => { const a = e.target.closest(".s-plot"); if (a) showCard(byNo.get(a.dataset.no), "Parcela"); };
+  fig.addEventListener("pointerover", onPlot);
+  fig.addEventListener("focusin", onPlot);
 }
 
 // ---------- developer, contact ----------
