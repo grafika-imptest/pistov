@@ -18,7 +18,7 @@ export const NAV = [
 export const NAV_STUDIO = [
   { href: "index.html#explorer", label: "Nabídka", id: "nabidka" },
   { href: "index.html#domy", label: "Domy", id: "domy" },
-  { href: "index.html#lokalita", label: "Lokalita", id: "lokalita" },
+  { href: "lokalita.html", label: "Lokalita", id: "lokalita" },
   { href: "financovani.html", label: "Financování", id: "financovani" },
   { href: "developer.html", label: "Developer", id: "developer" },
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
