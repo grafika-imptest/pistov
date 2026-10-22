@@ -49,8 +49,9 @@ export class PlotLayer {
     }
     svg.append(shapes, el("g", { class: "plots__selection", "aria-hidden": "true" }), labels);
 
-    // 360° panorama stations (one marker per position; the 60 m shot is the default at a shared spot)
-    if (project.panoramas?.length) {
+    // 360° panorama stations (one marker per position; the 60 m shot is the default at a shared spot).
+    // Not drawn over the aerial view: there the panorama is reached from the plot panel teaser only.
+    if (project.panoramas?.length && key !== "aerial") {
       const g = el("g", { class: "plots__stations" });
       const seen = [];
       for (const s of [...project.panoramas].sort((a, b) => b.altitude - a.altitude)) {
