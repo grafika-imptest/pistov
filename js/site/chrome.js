@@ -24,7 +24,7 @@ export const NAV_STUDIO = [
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
 ];
 export const MENU = [
-  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["index.html#lokalita", "Lokalita"], ["galerie.html", "Galerie"], ["developer.html", "Developer"]] },
+  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["lokalita.html", "Lokalita"], ["galerie.html", "Galerie"], ["developer.html", "Developer"]] },
   { title: "Nákup", items: [["financovani.html", "Financování"], ["faq.html", "Časté otázky"], ["aktuality.html", "Aktuality"], ["kontakty.html", "Kontakty"]] },
   { title: "Nástroje", items: [["oblibene.html", "Oblíbené"], ["porovnani.html", "Porovnání"], ["index.html?rezim=navrh", "Můj návrh"]] },
 ];

@@ -448,7 +448,8 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-loc__drag { padding: 6px 12px; border-radius: 999px; background: rgba(13, 14, 13, 0.55); color: #fff; font-family: var(--s-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .s-loc__pois { grid-column: 1 / span 5; }
 .s-pois { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--s-line); }
-.s-pois li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--s-line); }
+.s-pois li { border-bottom: 1px solid var(--s-line); }
+.s-pois li a { color: inherit; text-decoration: none; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--s-line); }
 .s-pois__ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(185, 74, 40, 0.1); color: var(--s-accent); }
 .s-pois__ic svg { width: 19px; height: 19px; }
 .mappoi span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--s-accent); color: #fff; }
@@ -579,3 +580,6 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-life__text { margin: 0; padding: 40px 0 0; }
   .s-life__second { margin: 8px 0 0; }
 }
+.s-pois li a { border-bottom: 0; transition: color 200ms; }
+.s-pois li a:hover b { color: var(--s-accent); }
+.s-pois__all { margin-top: 24px; }

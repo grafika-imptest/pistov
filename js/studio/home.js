@@ -3,6 +3,7 @@ import { renderChrome } from "../site/chrome.js";
 import { project } from "../projects/pistov/project.js";
 import { site, developer, pois } from "../projects/pistov/content.js";
 import { poiIcon } from "../site/poi-icons.js";
+import { poiList, poiHref, kmLabel } from "../site/pois.js";
 import { PanoTeaser } from "../ui/panoTeaser.js";
 import { plotsForType, typesForPlot } from "../core/compat.js";
 import { renderHomeTeasers } from "../site/teasers.js";
@@ -155,11 +156,8 @@ $("[data-s-devfacts]").innerHTML = developer.facts.map(([b, s]) => `<div><dt>${e
 {
   const toNabidka = (q) => (location.href = new URL(`studio/nabidka.html${q}`, document.baseURI).href);
   new PanoTeaser($("[data-pano-teaser]"), { project: P, statusOf: (p) => p.status, scrollToExplorer() {}, openPano: (id) => toNabidka(`?pohled=pano&stanoviste=${id}`) });
-  const R = 6371, rad = (d) => (d * Math.PI) / 180, { lat, lon } = site.location;
-  const km = (p) => { const a = Math.sin(rad(p.lat - lat) / 2) ** 2 + Math.cos(rad(lat)) * Math.cos(rad(p.lat)) * Math.sin(rad(p.lon - lon) / 2) ** 2; return Math.round(2 * R * Math.asin(Math.sqrt(a)) * 10) / 10; };
-  const list = pois.items.map((p) => ({ ...p, km: km(p) })).sort((a, b) => a.km - b.km);
-  $("[data-s-pois]").innerHTML = list.map((p, i) => `<li><span class="s-pois__ic">${poiIcon(p.icon)}</span><span><b>${esc(p.name)}</b><small>${esc(p.cat)}</small></span><span class="s-pois__km">${p.km.toLocaleString("cs-CZ")} km</span></li>`).join("");
-  $("[data-s-pois-note]").textContent = pois.note;
+  const list = poiList().filter((p) => p.featured);
+  $("[data-s-pois]").innerHTML = list.map((p) => `<li><a href="${poiHref(p)}"><span class="s-pois__ic">${poiIcon(p.icon)}</span><span><b>${esc(p.name)}</b><small>${esc(p.cat)}</small></span><span class="s-pois__km">${kmLabel(p.km)}</span></a></li>`).join("");
   mountLocationMap($("[data-s-map]"), { zoom: 15.5, color: "#b94a28", pois: list });
 }
 renderHomeTeasers();

@@ -66,7 +66,7 @@ ${p.heroImage ? `      <div class="pagehero__media pagehero__media--${p.heroImag
 // ---- home
 write("index.html", page({
   id: "home", title: "Pístov — parcely a rodinné domy u Jihlavy", bodyClass: "s-homepage",
-  desc: "72 parcel pro rodinné domy v Pístově u Jihlavy a čtyři typové domy od TAM architekti. Vyberte si parcelu a podívejte se, jaký dům na ní může stát.",
+  desc: "62 parcel pro rodinné domy v Pístově u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.",
   preload: `  <link rel="preload" as="image" href="assets/video/intro-poster.webp" fetchpriority="high">\n`,
   main: fs.readFileSync("studio/home.html", "utf8"), script: "js/studio/home.js",
 }));
@@ -74,7 +74,7 @@ write("index.html", page({
 // ---- offer: the explorer app of the home page, enquiry and house detail dialog
 write("nabidka.html", page({
   id: "nabidka", title: "Nabídka parcel — Pístov", bodyClass: "s-app", defs: true,
-  desc: "Interaktivní mapa 72 parcel v Pístově: výměry, stav, typové domy, které lze na parcelu postavit, a vizualizace domu přímo na parcele.",
+  desc: "Interaktivní mapa 62 parcel v Pístově: výměry, stav, typové domy, které lze na parcelu postavit, a vizualizace domu přímo na parcele.",
   main: `    <h1 class="sr-only">Nabídka parcel a domů</h1>\n${explorer}${enquiry}`, after: `  ${dialog}\n`, script: "js/main.js",
 }));
 

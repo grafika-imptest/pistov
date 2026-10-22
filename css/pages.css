@@ -487,3 +487,39 @@ a.edchoice__opt:hover { background: rgba(244, 239, 227, 0.08); }
 /* small screens: the edition switch lives in the menu and the footer */
 @media (max-width: 639px) { .topbar .edswitch { display: none; } }
 @media (max-width: 380px) { .topbar { gap: 6px; } .topbar__cta { padding: 0 10px; } .toolbtn { width: 32px; } .brand__name { letter-spacing: 0.2em; } .brand { gap: 8px; } }
+
+/* ---------- Lokalita: places around Pístov (cards, place page) ---------- */
+.poigrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: var(--s6) var(--s5); margin-bottom: var(--s6); }
+.poicard { display: flex; flex-direction: column; gap: 8px; color: inherit; text-decoration: none; }
+.poicard__media { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; background: #f4f5f6; margin-bottom: 8px; }
+.poicard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms var(--ease-out); }
+.poicard:hover .poicard__media img { transform: scale(1.04); }
+.poicard__ph { position: absolute; inset: 0; display: grid; place-items: center; color: #b94a28; background: linear-gradient(135deg, #f4f5f6, #e8eaec); }
+.poicard__ph svg { width: 56px; height: 56px; opacity: 0.85; }
+.poicard__meta { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--ink-3, #6b6f73); }
+.poicard__meta b { margin-left: auto; font-weight: 600; color: var(--ink); }
+.poicard__ic { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(185, 74, 40, 0.1); color: #b94a28; }
+.poicard__ic svg { width: 15px; height: 15px; }
+.poicard__name { font-size: 1.3rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
+.poicard:hover .poicard__name { color: #b94a28; }
+.poicard__perex { color: var(--ink-2); line-height: 1.5; }
+.poimap { height: min(70svh, 620px); margin-bottom: var(--s3); }
+.place__meta { display: flex; align-items: center; gap: 10px; color: #b94a28; }
+.place__ic { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(185, 74, 40, 0.1); }
+.place__ic svg { width: 18px; height: 18px; }
+.place__hero button, .place__gallery button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.place__hero img { aspect-ratio: 16 / 9; object-fit: cover; }
+.article__img figcaption, .place__gallery figcaption { margin-top: 8px; font-size: 0.75rem; color: var(--ink-3, #6b6f73); }
+.article__img figcaption a, .place__gallery figcaption a { color: inherit; }
+.place__nophoto { display: grid; place-content: center; justify-items: center; gap: 12px; aspect-ratio: 3 / 1; margin: var(--s6) 0; background: linear-gradient(135deg, #f4f5f6, #e8eaec); color: #b94a28; text-align: center; }
+.place__nophoto span svg { width: 64px; height: 64px; }
+.place__nophoto p { margin: 0; color: var(--ink-2); }
+.place__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s6); align-items: start; }
+.place__grid .article__body { max-width: none; }
+.place__map { height: 420px; position: sticky; top: calc(var(--topbar-h) + 16px); }
+.place__gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); margin: var(--s5) 0; }
+.place__gallery figure { margin: 0; }
+.place__gallery img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.place__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s5); margin-top: var(--s5); }
+.place.article { max-width: 1200px; }
+@media (max-width: 860px) { .place__grid { grid-template-columns: 1fr; } .place__map { position: static; height: 320px; } }
