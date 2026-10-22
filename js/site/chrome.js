@@ -3,6 +3,7 @@ import { site } from "../projects/pistov/content.js";
 import { collections } from "./collections.js";
 import { EDITION, EDITIONS, otherEditionHref, keepLinksInEdition } from "./edition.js";
 import { initSmoothScroll } from "./smooth.js";
+import { LOGO } from "./logo.js";
 
 export const NAV = [
   { href: "index.html#explorer", label: "Lokalita", id: "lokalita" },
@@ -60,7 +61,7 @@ export function renderChrome({ page = "", solid = false } = {}) {
     header.classList.toggle("is-solid", solid);
     if (solid) header.dataset.alwaysSolid = "";
     header.innerHTML = `
-      <a class="brand" href="${home ? "#explorer" : "index.html"}" aria-label="${site.name} – úvod"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">${site.name}</span></a>
+      <a class="brand" href="${home ? "#explorer" : "index.html"}" aria-label="${site.name} – úvod">${LOGO}<span class="brand__name">${site.name}</span></a>
       <nav class="topnav" aria-label="Hlavní navigace">${nav.map((n) => `<a href="${link(n.href)}" ${n.id === page ? 'aria-current="page"' : ""}>${n.label}</a>`).join("")}</nav>
       <div class="topbar__tools">
         <a class="toolbtn" href="oblibene.html" aria-label="Oblíbené" title="Oblíbené">${icon.heart}<span class="toolbtn__count" data-count="fav" hidden></span></a>
@@ -120,8 +121,8 @@ function renderFooter() {
   f.innerHTML = `
     <div class="wrap footer__top">
       <div class="footer__brand">
-        <p class="brand brand--footer"><span class="brand__mark" aria-hidden="true"></span><span class="brand__name">${site.name}</span></p>
-        <p class="footer__claim">${site.claim} u Jihlavy. Vyberte si parcelu, typový dům a podívejte se, jak by vaše bydlení mohlo vypadat.</p>
+        <p class="brand brand--footer">${LOGO}<span class="brand__name">${site.name}</span></p>
+        <p class="footer__claim">${site.claim} u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
         <a class="btn btn--paper btn--sm" href="${link("index.html#explorer")}">Prozkoumat lokalitu <span aria-hidden="true">→</span></a>
       </div>
       ${MENU.map((c) => `<nav class="footer__col" aria-label="${c.title}"><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></nav>`).join("")}

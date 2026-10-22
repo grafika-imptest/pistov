@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/pages.css">
   <link rel="stylesheet" href="css/studio.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0e0d'/%3E%3Cpath d='M9 23V9h7a4.5 4.5 0 0 1 0 9H9' fill='none' stroke='%23b94a28' stroke-width='2.6'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
 </head>
 <body class="s-homepage studio" data-page="home">
   <a class="skip-link" href="#obsah">Přeskočit na obsah</a>
@@ -63,21 +63,23 @@
       <p class="s-plots__note">Parcely podle opraveného situačního plánu, říjen 2026 · 6 000 Kč/m² · hranice v leteckém pohledu orientačně</p>
     </section>
 
-    <!-- ============ 02 PROJECT ============ -->
-    <section class="s-section s-intro" id="projekt" aria-labelledby="s-intro-title">
-      <figure class="s-intro__map">
-        <img src="assets/img/plan-wide-1600.webp" srcset="assets/img/plan-wide-1600.webp 1600w, assets/img/plan-wide-2800.webp 2800w" sizes="100vw" width="2800" height="1978" alt="Situační plán lokality Pístov s parcelami 1–62" loading="lazy" decoding="async">
-        <figcaption class="s-caption">Situační plán · opravená verze, říjen 2026</figcaption>
+    <!-- ============ 02 LIFE: emotion first (lifestyle visualisations are placeholders for the 3D studio) ============ -->
+    <section class="s-section s-life" id="projekt" aria-labelledby="s-intro-title">
+      <figure class="s-life__main" data-s-reveal>
+        <img src="assets/img/life-garden-1600.webp" srcset="assets/img/life-garden-960.webp 960w, assets/img/life-garden-1600.webp 1600w, assets/img/life-garden-2048.webp 2048w" sizes="(min-width: 1000px) 62vw, 100vw" width="2048" height="1152" alt="Sousedské grilování na zahradě rodinného domu v Pístově" loading="lazy" decoding="async">
+        <figcaption class="s-caption">Ilustrační vizualizace</figcaption>
       </figure>
-      <div class="s-wrap s-grid">
-        <p class="s-label s-intro__label">02 — Projekt</p>
-        <h2 class="s-h2 s-intro__title" id="s-intro-title" data-s-lines>Vyberete si místo. Typový dům vám ukáže, co na něm může stát.</h2>
-        <div class="s-intro__body" data-s-in>
-          <p class="s-lead">Prodáváme pozemky pro rodinné domy. Postavit si na nich můžete jakýkoli dům podle svého – vlastní projekt nebo dům od libovolného dodavatele. Pro inspiraci si na každé parcele můžete prohlédnout jeden ze čtyř typových domů.</p>
-          <dl class="s-specs" data-s-specs></dl>
-          <p class="s-source">Zdroj: Pístov – katalog rodinných domů, TAM architekti, duben 2026.</p>
+      <div class="s-wrap s-life__grid">
+        <div class="s-life__text">
+          <p class="s-label">02 — Život v Pístově</p>
+          <h2 class="s-h2 s-life__title" id="s-intro-title" data-s-lines>Večery na vlastní zahradě.</h2>
+          <p class="s-lead" data-s-in>Na kraji obce, mezi poli a rybníky. Děti si hrají venku, v létě se griluje na terase a ráno vás probudí ticho místo dopravy. Jihlava je přitom pár minut autem.</p>
+          <p class="s-life__quote" data-s-in>Pozemek je váš. Dům na něm postavíte podle svých představ.</p>
         </div>
-
+        <figure class="s-life__second" data-s-reveal>
+          <img src="assets/img/life-street-960.webp" srcset="assets/img/life-street-960.webp 960w, assets/img/life-street-1600.webp 1600w" sizes="(min-width: 1000px) 34vw, 100vw" width="2048" height="1152" alt="Procházka s kočárkem novou ulicí v Pístově" loading="lazy" decoding="async">
+          <figcaption class="s-caption">Procházka po nové ulici · ilustrační vizualizace</figcaption>
+        </figure>
       </div>
     </section>
 

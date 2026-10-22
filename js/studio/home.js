@@ -36,7 +36,7 @@ const count = (st) => plots.filter((p) => p.status === st).length;
 }
 
 // ---------- intro specs ----------
-$("[data-s-specs]").innerHTML = [
+if ($("[data-s-specs]")) $("[data-s-specs]").innerHTML = [
   ["Parcel v plánu", plots.length], ["Volných k prodeji", free.length], ["Rezervovaných", count("reserved")],
   ["Výměry parcel", `${m2(Math.min(...areas))} – ${m2(Math.max(...areas))}`], ["Typové domy", `${P.houseTypes.length} typy · ${P.houseVariants.length} vizualizací`],
 ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");

@@ -136,7 +136,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .ed-studio .topbar.is-hidden { transform: translateY(-101%); }
 .ed-studio .s-homepage .topbar:not(.is-solid) { color: #fff; }
 .ed-studio .brand { gap: 10px; }
-.ed-studio .brand__mark { width: 18px; height: 18px; border-width: 1.6px; color: var(--s-accent); }
+.ed-studio .brand__logo { height: 28px; }
 .ed-studio .brand__name { font-family: var(--s-display); font-weight: 600; font-size: 1.3rem; letter-spacing: -0.03em; text-transform: none; }
 .ed-studio .topnav { gap: clamp(16px, 2vw, 30px); }
 .ed-studio .topnav a { font-family: var(--s-text); font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.005em; text-transform: none; opacity: 0.86; padding: 6px 0; }
@@ -149,7 +149,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .ed-studio .sitemenu li a { font-family: var(--s-display); font-weight: 500; letter-spacing: -0.03em; }
 .ed-studio .sitemenu li a:hover { color: var(--s-accent); }
 .ed-studio .footer { background: var(--s-dark); }
-.ed-studio .footer .brand__name { font-size: 2rem; }
+.ed-studio .footer .brand__logo { height: 48px; }
 .ed-studio .footer__claim { font-family: var(--s-display); font-weight: 400; letter-spacing: -0.02em; }
 .ed-studio .footer .eyebrow { font-family: var(--s-mono); }
 .ed-studio .cookies { border-radius: 2px; }
@@ -434,7 +434,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 /* grids never grow wider than the screen because of a long child (thumbnail rows, tables) */
 .s-house__grid > *, .s-types__grid > *, .s-offer__grid > *, .s-help__grid > *, .s-dev__grid > *, .s-loc__grid > *, .s-arch__grid > * { min-width: 0; }
 @media (max-width: 760px) { .s-hero__cap { top: calc(var(--topbar-h) + 10px); bottom: auto; left: var(--s-margin); right: auto; } }
-@media (max-width: 420px) { .ed-studio .topbar__cta { font-size: 0.8125rem; padding: 0 14px; } .ed-studio .brand__name { font-size: 1.15rem; } }
+@media (max-width: 420px) { .ed-studio .topbar__cta { font-size: 0.8125rem; padding: 0 14px; } .ed-studio .brand__logo { height: 24px; } }
 [data-s-reveal] { overflow: hidden; } /* the zoomed image inside a reveal must not widen the page */
 
 /* location: draggable drone panorama + points of interest */
@@ -558,3 +558,21 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-intro__title, .s-intro__body { grid-column: 1 / -1; }
 }
 @media (max-width: 999px) { .s-intro__map figcaption { display: none; } }
+
+/* ================= 02 Život v Pístově – lifestyle ================= */
+.s-life { position: relative; overflow: hidden; padding-top: 0; }
+.s-life__main { position: relative; margin: 0 0 0 auto; width: 100%; height: min(78svh, 820px); overflow: hidden; }
+.s-life__main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.s-life__main figcaption { position: absolute; right: var(--s-margin); bottom: 16px; margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); }
+.s-life__grid { position: relative; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 112px); align-items: start; margin-top: calc(-1 * clamp(120px, 14vw, 220px)); }
+.s-life__text { background: #fff; padding: clamp(32px, 4vw, 64px) clamp(28px, 4vw, 64px) 0 0; margin-left: calc(-1 * var(--s-margin)); padding-left: var(--s-margin); }
+.s-life__title { font-size: clamp(2.4rem, 1.2rem + 4vw, 5.6rem); line-height: 0.95; margin-bottom: 28px; max-width: 11ch; }
+.s-life__quote { margin: 0; padding-top: 24px; border-top: 1px solid var(--s-line); font-family: var(--s-display); font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; max-width: 24ch; }
+.s-life__second { margin: clamp(160px, 18vw, 280px) 0 0; }
+.s-life__second img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+@media (max-width: 999px) {
+  .s-life__main { height: 62vw; }
+  .s-life__grid { grid-template-columns: 1fr; margin-top: 0; }
+  .s-life__text { margin: 0; padding: 40px 0 0; }
+  .s-life__second { margin: 8px 0 0; }
+}
