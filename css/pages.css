@@ -524,3 +524,4 @@ a.edchoice__opt:hover { background: rgba(244, 239, 227, 0.08); }
 .place__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s5); margin-top: var(--s5); }
 .place.article { max-width: 1200px; }
 @media (max-width: 860px) { .place__grid { grid-template-columns: 1fr; } .place__map { position: static; height: 320px; } }
+.pagehero__grid--map .pagehero__map { min-height: 360px; }

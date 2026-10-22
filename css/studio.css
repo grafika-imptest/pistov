@@ -606,3 +606,10 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-why__list .s-why__no { margin-bottom: 16px; }
 @media (prefers-reduced-motion: reduce) { .wi__fill, .wi__line { transition: none; animation: none !important; } }
 .wi__txt { fill: var(--s-ink); stroke: none; font-family: var(--s-display); font-size: 17px; font-weight: 600; text-anchor: middle; }
+
+/* subpage hero with a map on the right (Lokalita) */
+.ed-studio .pagehero__grid--map { align-items: stretch; }
+.ed-studio .pagehero__grid--map > div:first-child { grid-column: 1 / span 5; }
+.ed-studio .pagehero__grid--map .lead { margin-top: clamp(20px, 2.5vw, 32px); }
+.ed-studio .pagehero__grid--map > .pagehero__map { grid-column: 7 / -1; min-height: clamp(320px, 34vw, 520px); }
+@media (max-width: 899px) { .ed-studio .pagehero__grid--map > div:first-child, .ed-studio .pagehero__grid--map > .pagehero__map { grid-column: 1 / -1; } .ed-studio .pagehero__grid--map > .pagehero__map { margin-top: 32px; min-height: 340px; } }

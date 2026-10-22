@@ -50,10 +50,10 @@ fs.mkdirSync("../studio", { recursive: true });
 // ---- subpages: identical containers, studio page hero
 for (const p of pages) {
   const hero = p.noHero ? "" : `    <section class="pagehero">
-      <div class="wrap pagehero__grid">
+      <div class="wrap pagehero__grid${p.heroMap ? " pagehero__grid--map" : ""}">
         <div><nav class="crumbs" aria-label="Drobečková navigace"><a href="index.html">Pístov</a><span aria-hidden="true">/</span><span>${p.h1}</span></nav>
-        <p class="eyebrow">${p.eyebrow}</p><h1 class="pagehero__title">${p.h1}</h1></div>
-        <p class="lead">${p.lead}</p>
+        <p class="eyebrow">${p.eyebrow}</p><h1 class="pagehero__title">${p.h1}</h1>${p.heroMap ? `<p class="lead">${p.lead}</p>` : ""}</div>
+        ${p.heroMap ? `<div class="pagehero__map" ${p.heroMap}></div>` : `<p class="lead">${p.lead}</p>`}
       </div>
 ${p.heroImage ? `      <div class="pagehero__media pagehero__media--${p.heroImage}" aria-hidden="true"></div>\n` : ""}    </section>
 `;
