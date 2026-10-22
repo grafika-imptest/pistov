@@ -26,6 +26,14 @@ export class Viewer {
     if (!img) { img = document.createElement("img"); img.className = "viewer__img"; img.decoding = "async"; img.draggable = false; this.scene.prepend(img); }
     img.alt = content.alt || "";
     img.width = content.size[0]; img.height = content.size[1];
+    // optional wider surroundings behind the image, so zooming out never shows an empty backdrop
+    let sur = this.scene.querySelector("img.viewer__surround");
+    if (content.surround) {
+      if (!sur) { sur = document.createElement("img"); sur.className = "viewer__surround"; sur.alt = ""; sur.decoding = "async"; sur.draggable = false; this.scene.prepend(sur); }
+      const [x, y, w, h] = content.surround.box;
+      Object.assign(sur.style, { left: `${x}px`, top: `${y}px`, width: `${w}px`, height: `${h}px` });
+      if (sur.getAttribute("src") !== content.surround.src) sur.src = content.surround.src;
+    } else sur?.remove();
     this.img = img; this._srcW = 0;
     this._pickSource(true);
   }
@@ -34,7 +42,11 @@ export class Viewer {
   get vh() { return this.vp.clientHeight; }
   /** viewport area not covered by panels */
   get free() { const i = this.insets; return { x: i.left, y: i.top, w: Math.max(80, this.vw - i.left - i.right), h: Math.max(80, this.vh - i.top - i.bottom) }; }
-  get minScale() { const f = this.free; return Math.min(f.w / this.size[0], f.h / this.size[1]) * 0.85; }
+  get minScale() {
+    const f = this.free, s = Math.min(f.w / this.size[0], f.h / this.size[1]) * 0.85, b = this.content?.surround?.box;
+    // with surroundings: never zoom out past them (the whole viewport stays covered)
+    return b ? Math.max(s, this.vw / b[2], this.vh / b[3]) : s;
+  }
   get maxScale() { return Math.max(2.6 * (window.devicePixelRatio > 1 ? 1 : 1.2), this.minScale * 4); }
 
   toScreen([x, y]) { return [x * this.s + this.tx, y * this.s + this.ty]; }
@@ -80,6 +92,11 @@ export class Viewer {
     const minTx = cx - W, maxTx = cx, minTy = cy - H, maxTy = cy;
     if (W <= f.w) this.tx = Math.min(Math.max(this.tx, f.x), f.x + f.w - W); else this.tx = Math.min(maxTx, Math.max(minTx, this.tx));
     if (H <= f.h) this.ty = Math.min(Math.max(this.ty, f.y), f.y + f.h - H); else this.ty = Math.min(maxTy, Math.max(minTy, this.ty));
+    const b = this.content?.surround?.box;
+    if (b) { // keep the surroundings under the whole viewport
+      this.tx = Math.min(-b[0] * this.s, Math.max(this.vw - (b[0] + b[2]) * this.s, this.tx));
+      this.ty = Math.min(-b[1] * this.s, Math.max(this.vh - (b[1] + b[3]) * this.s, this.ty));
+    }
   }
 
   _emit(settleMs) {

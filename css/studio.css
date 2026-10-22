@@ -583,3 +583,26 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-pois li a { border-bottom: 0; transition: color 200ms; }
 .s-pois li a:hover b { color: var(--s-accent); }
 .s-pois__all { margin-top: 24px; }
+.ed-studio .modes__no { display: none; }
+
+/* 05 Proč Pístov – line icons with an offset accent shape, animated on hover */
+.s-why__ic { display: block; width: 88px; height: 88px; margin: 8px 0 24px -6px; overflow: visible; }
+.wi__fill { fill: var(--s-accent); transform: translate(6px, 6px); transition: transform 500ms var(--s-ease); }
+.wi__line { fill: none; stroke: var(--s-ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform 500ms var(--s-ease); }
+.wi__line > path:first-child, .wi__line > circle:first-child { fill: #fff; }
+.wi--coins .wi__line:not(.wi__coin) > path:first-child { fill: #fff; }
+.s-why__list li:hover .wi__fill { transform: translate(10px, 10px); }
+.s-why__list li:hover .wi__line { transform: translate(-2px, -2px); }
+.wi__pencil { transform-box: fill-box; transform-origin: 0% 100%; }
+.s-why__list li:hover .wi__pencil { animation: wi-sketch 900ms var(--s-ease); }
+@keyframes wi-sketch { 0%, 100% { transform: translate(-2px, -2px) rotate(0); } 30% { transform: translate(-8px, 4px) rotate(-8deg); } 60% { transform: translate(2px, -4px) rotate(6deg); } }
+.wi__tri { transform-box: fill-box; transform-origin: 0% 100%; }
+.s-why__list li:hover .wi__tri { transform: translate(-2px, -2px) rotate(-6deg); }
+.wi__orbit { transform-origin: 48px 50px; }
+.s-why__list li:hover .wi__orbit { animation: wi-orbit 1200ms var(--s-ease); }
+@keyframes wi-orbit { from { transform: translate(-2px, -2px) rotate(0); } to { transform: translate(-2px, -2px) rotate(360deg); } }
+.s-why__list li:hover .wi__coin { animation: wi-coin 800ms var(--s-ease); }
+@keyframes wi-coin { 0% { transform: translate(-2px, -2px); } 40% { transform: translate(-2px, -14px); } 100% { transform: translate(-2px, -2px); } }
+.s-why__list .s-why__no { margin-bottom: 16px; }
+@media (prefers-reduced-motion: reduce) { .wi__fill, .wi__line { transition: none; animation: none !important; } }
+.wi__txt { fill: var(--s-ink); stroke: none; font-family: var(--s-display); font-size: 17px; font-weight: 600; text-anchor: middle; }

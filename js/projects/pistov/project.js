@@ -72,6 +72,8 @@ export const project = {
       size: AERIAL_SIZE,
       // empty plots (houses removed from the architects' visualisation with Magnific); the intro keeps the built one
       sources: [[800, IMG + "aerial-empty-800.webp"], [1400, IMG + "aerial-empty-1400.webp"], [2200, IMG + "aerial-empty-2200.webp"], [3400, IMG + "aerial-empty-3400.webp"]],
+      // surroundings outpainted in Adobe Firefly, registered to this view (scene px), shown when zoomed out
+      surround: { src: IMG + "aerial-surround-2000.webp", box: [-853.5, -420.3, 5126, 2876] },
       introSources: [[800, IMG + "aerial-800.webp"], [1400, IMG + "aerial-1400.webp"], [2200, IMG + "aerial-2200.webp"], [3400, IMG + "aerial-3400.webp"]],
       menuMeta: "s výběrem parcel · po výběru domu se spustí jeho animace",
       caption: "Letecký pohled · parcely před výstavbou (upravená vizualizace) · hranice promítnuty orientačně",

@@ -38,7 +38,7 @@ export class Explorer {
     this._renderViewsMenu();
     if (view.kind === "panorama") { this._enterPano(view); return; }
     const intro = view.introSources && this.root.dataset.phase !== "explore" && !this.skipIntroImage;
-    this.viewer.setContent({ size: view.size, sources: intro ? view.introSources : view.sources, alt: view.caption });
+    this.viewer.setContent({ size: view.size, sources: intro ? view.introSources : view.sources, alt: view.caption, surround: view.surround });
     this.$("[data-scene]").querySelector(".viewer__overlay")?.remove();
     this.layer.render(view, this.project);
     this.root.dataset.view = view.id;
@@ -65,7 +65,7 @@ export class Explorer {
       requestAnimationFrame(() => requestAnimationFrame(() => ghost.classList.add("is-out")));
       setTimeout(() => ghost.remove(), 2200);
     }
-    this.viewer.setContent({ size: v.size, sources: v.sources, alt: v.caption });
+    this.viewer.setContent({ size: v.size, sources: v.sources, alt: v.caption, surround: v.surround });
   }
 
   // ---------- 360° panorama view ----------
