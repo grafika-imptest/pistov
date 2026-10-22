@@ -498,14 +498,14 @@ a.edchoice__opt:hover { background: rgba(244, 239, 227, 0.08); }
 .poicard__ph svg { width: 56px; height: 56px; opacity: 0.85; }
 .poicard__meta { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--ink-3, #6b6f73); }
 .poicard__meta b { margin-left: auto; font-weight: 600; color: var(--ink); }
-.poicard__ic { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(185, 74, 40, 0.1); color: #b94a28; }
+.poicard__ic { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #b94a28; color: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25); }
 .poicard__ic svg { width: 15px; height: 15px; }
 .poicard__name { font-size: 1.3rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
 .poicard:hover .poicard__name { color: #b94a28; }
 .poicard__perex { color: var(--ink-2); line-height: 1.5; }
 .poimap { height: min(70svh, 620px); margin-bottom: var(--s3); }
 .place__meta { display: flex; align-items: center; gap: 10px; color: #b94a28; }
-.place__ic { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(185, 74, 40, 0.1); }
+.place__ic { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #b94a28; color: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25); }
 .place__ic svg { width: 18px; height: 18px; }
 .place__hero button, .place__gallery button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .place__hero img { aspect-ratio: 16 / 9; object-fit: cover; }
