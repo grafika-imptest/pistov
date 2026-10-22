@@ -26,12 +26,12 @@ html.has-menu { overflow: hidden; }
 .sitemenu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .sitemenu li a { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.6rem); font-weight: 300; line-height: 1.25; text-decoration: none; letter-spacing: -0.01em; transition: color var(--dur-fast); }
 .sitemenu li a:hover { color: var(--clay); }
-.sitemenu__brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s5); }
 .sitemenu__logo { display: block; color: #fff; }
 .sitemenu__logo .brand__logo { height: 44px; width: auto; display: block; }
 .sitemenu__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s6); flex-wrap: wrap; padding-top: var(--s5); border-top: 1px solid rgba(255, 255, 255, 0.14); }
 .sitemenu__info { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--s6); max-width: 760px; }
-.sitemenu__about { margin: 0; font-size: 1.05rem; line-height: 1.5; color: rgba(255, 255, 255, 0.78); }
+.sitemenu__about .sitemenu__logo { margin-bottom: var(--s4); }
+.sitemenu__about p { margin: 0; font-size: 1.05rem; line-height: 1.5; color: rgba(255, 255, 255, 0.78); }
 .sitemenu__contact p { margin: 0 0 6px; line-height: 1.6; }
 .sitemenu__contact a { color: #fff; text-decoration: none; }
 .sitemenu__contact a:hover { color: var(--clay); }

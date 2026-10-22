@@ -79,15 +79,15 @@ export function renderChrome({ page = "", solid = false } = {}) {
         <button class="toolbtn sitemenu__close" type="button" aria-label="Zavřít menu" data-menu-close>${icon.close}</button>
         <div class="sitemenu__cols">${MENU.map((c) => `<div><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></div>`).join("")}</div>
         <div class="sitemenu__foot">
-          <div class="sitemenu__brand">
-            <a class="sitemenu__logo" href="${link("index.html")}" aria-label="${site.name} – úvod">${LOGO}</a>
-            <a class="btn btn--red btn--lg" href="${home ? "#poptavka" : "kontakty.html#formular"}">Mám zájem o parcelu <span aria-hidden="true">→</span></a>
-          </div>
+          <a class="btn btn--red btn--lg" href="${home ? "#poptavka" : "kontakty.html#formular"}">Mám zájem o parcelu <span aria-hidden="true">→</span></a>
           <div class="sitemenu__info">
-            <p class="sitemenu__about">Stavební parcely na kraji Pístova u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
+            <div class="sitemenu__about">
+              <a class="sitemenu__logo" href="${link("index.html")}" aria-label="${site.name} – úvod">${LOGO}</a>
+              <p>Stavební parcely na kraji Pístova u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
+            </div>
             <div class="sitemenu__contact">
               <p class="eyebrow">Prodej parcel</p>
-              <p><b>${site.developer.brand}</b><br><a href="tel:${site.developer.phone.replace(/s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
+              <p><b>${site.developer.brand}</b><br><a href="tel:${site.developer.phone.replace(/\s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
               ${site.salesContact?.pending ? '<p class="sitemenu__small">Jméno makléře pro Pístov doplníme.</p>' : ""}
             </div>
           </div>
@@ -142,7 +142,7 @@ function renderFooter() {
       <div class="footer__col">
         <p class="eyebrow">Kontakt</p>
         <p class="footer__small"><span class="muted">${site.developer.role}</span><br><b>${site.developer.brand}</b><br>${site.developer.address}</p>
-        <p class="footer__small"><a href="tel:${site.developer.phone.replace(/s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
+        <p class="footer__small"><a href="tel:${site.developer.phone.replace(/\s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
         <p class="footer__small"><a class="link" href="developer.html">O developerovi</a> · <a class="link" href="kontakty.html">Všechny kontakty</a></p>
       </div>
     </div>
