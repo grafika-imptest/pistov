@@ -36,6 +36,8 @@ const SOCIAL = {
   instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>',
 };
 /** links to the seller's Facebook / Instagram */
+/** the seller's logo (light, for the dark menu) next to the Pístov logo */
+const partnerLogo = () => `<a class="logopair__partner" href="${site.seller.web}" target="_blank" rel="noopener" aria-label="${site.seller.brand} – web prodejce"><img src="${site.seller.logo.lightTrim}" alt="" width="636" height="267"></a>`;
 export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => {
   const label = `${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}`;
   return u ? `<a href="${u}" target="_blank" rel="noopener" aria-label="${label}">${SOCIAL[k]}</a>` : `<span role="img" aria-label="${label}">${SOCIAL[k]}</span>`;
@@ -97,7 +99,7 @@ export function renderChrome({ page = "", solid = false } = {}) {
           <a class="btn btn--red btn--lg" href="${home ? "#poptavka" : "kontakty.html#formular"}">Mám zájem o parcelu <span aria-hidden="true">→</span></a>
           <div class="sitemenu__info">
             <div class="sitemenu__about">
-              <a class="sitemenu__logo" href="${link("index.html")}" aria-label="${site.name} – úvod">${LOGO}</a>
+              <div class="logopair sitemenu__logo"><a href="${link("index.html")}" aria-label="${site.name} – úvod">${LOGO}</a>${partnerLogo()}</div>
               <p>Stavební parcely na kraji Pístova u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
             </div>
             <div class="sitemenu__contact">

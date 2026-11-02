@@ -760,3 +760,9 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .sitemenu__people a { color: #fff; text-decoration: none; }
 @media (max-width: 760px) { .sitemenu__people { grid-template-columns: 1fr; } }
 .sechead + .plan { margin-top: clamp(24px, 3vw, 40px); }
+
+/* Pístov logo + seller logo divided by a centred line (menu) */
+.logopair, .logopair.sitemenu__logo { display: flex; align-items: center; gap: 20px; }
+.logopair__partner { display: flex; align-items: center; padding-left: 20px; border-left: 1px solid rgba(255, 255, 255, 0.28); height: 40px; }
+.logopair__partner img { height: 34px; width: auto; display: block; transition: opacity 200ms; }
+.logopair__partner:hover img { opacity: 0.75; }
