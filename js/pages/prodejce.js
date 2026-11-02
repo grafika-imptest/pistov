@@ -1,7 +1,7 @@
 import { renderChrome, socialLinks } from "../site/chrome.js";
 import { site, seller as D } from "../projects/pistov/content.js";
 import { esc, img, srcset } from "../site/ui.js";
-import { peopleCards } from "../site/people.js";
+import { peopleCards, socialIcons } from "../site/people.js";
 
 renderChrome({ page: "prodejce", solid: true });
 const dev = site.seller, tel = (p) => `<a href="tel:${p.replace(/\s/g, "")}">${esc(p)}</a>`;
@@ -72,7 +72,7 @@ document.querySelector("[data-seller]").innerHTML = `
         <img class="devcontact__logo" src="${D.logo.light}" alt="${esc(D.logo.alt)}" width="900" height="529" loading="lazy">
         <h2 class="sr-only" id="dev-contact">Kontakt na ${esc(dev.brand)}</h2>
         <p class="lead">${esc(dev.address)}<br>${tel(dev.phone)} · <a href="mailto:${dev.email}">${dev.email}</a></p>
-        <p class="devcontact__people">${site.contacts.map((p) => `<span><b>${esc(p.name)}</b> ${tel(p.phone)}</span>`).join("")}</p>
+        <p class="devcontact__people">${site.contacts.map((p) => `<span><b>${esc(p.name)}</b> ${tel(p.phone)}${socialIcons(p.social, p.name, "social social--sm social--inline social--light")}</span>`).join("")}</p>
         <p class="hp-more"><a class="btn btn--red" href="kontakty.html#formular">Poptat parcelu v Pístově <span aria-hidden="true">→</span></a><a class="btn btn--ghost" href="${dev.web}" target="_blank" rel="noopener">Web hvreality.cz ↗</a></p>
       </div>
       <dl class="devcontact__company">

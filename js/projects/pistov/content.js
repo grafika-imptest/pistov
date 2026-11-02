@@ -22,9 +22,10 @@ export const site = {
     web: "https://www.zeleny.cz",
   },
   // Kontaktní osoby prodeje (zadání klienta 11/2026; tituly podle viladomy-dobrovodska.cz)
+  // social: icons only until the client fills the profile URLs in the CMS
   contacts: [
-    { name: "Monika Zelená", role: "Hlavní makléřka · pomoc s financováním", phone: "+420 731 984 866", email: "zelena@hvreality.cz", photo: "person-zelena" },
-    { name: "Ing. Pavel Vetchý", role: "Makléř · jednatel Horák & Vetchý", phone: "+420 603 841 123", email: "vetchy@hvreality.cz", photo: "person-vetchy" },
+    { name: "Monika Zelená", role: "Hlavní makléřka · pomoc s financováním", phone: "+420 731 984 866", email: "zelena@hvreality.cz", photo: "person-zelena", social: { facebook: "", instagram: "" } },
+    { name: "Ing. Pavel Vetchý", role: "Makléř · jednatel Horák & Vetchý", phone: "+420 603 841 123", email: "vetchy@hvreality.cz", photo: "person-vetchy", social: { facebook: "", instagram: "" } },
   ],
   architect: { name: "TAM architekti s.r.o.", address: "Fibichova 23, 586 01 Jihlava", role: "Autoři urbanistického návrhu a typových domů" },
   location: { lat: 49.38015, lon: 15.567753, label: "Pístov u Jihlavy" },

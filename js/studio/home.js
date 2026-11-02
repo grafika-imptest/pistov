@@ -3,7 +3,7 @@ import { renderChrome } from "../site/chrome.js";
 import { project } from "../projects/pistov/project.js";
 import { site, pois, access } from "../projects/pistov/content.js";
 import { poiList, poiPicto } from "../site/pois.js";
-import { peopleCards, scheduleItems, pictoItem } from "../site/people.js";
+import { peopleCards, scheduleItems, pictoItem, socialIcons } from "../site/people.js";
 import { PanoTeaser } from "../ui/panoTeaser.js";
 import { renderHomeTeasers } from "../site/teasers.js";
 import { mountLocationMap } from "../site/map.js";
@@ -109,7 +109,7 @@ $("[data-s-schedule]").innerHTML = scheduleItems();
 
 // ---------- developer + seller, contact: the sales people ----------
 $("[data-s-people]").innerHTML = peopleCards("person person--dark");
-$("[data-s-contact]").innerHTML = site.contacts.map((p) => `<span><b>${esc(p.name)}</b> <a href="tel:${p.phone.replace(/\s/g, "")}">${p.phone}</a> <a href="mailto:${p.email}">${p.email}</a></span>`).join("");
+$("[data-s-contact]").innerHTML = site.contacts.map((p) => `<span><b>${esc(p.name)}</b> <a href="tel:${p.phone.replace(/\s/g, "")}">${p.phone}</a> <a href="mailto:${p.email}">${p.email}</a>${socialIcons(p.social, p.name, "social social--sm social--inline social--light")}</span>`).join("");
 
 // ---------- location: draggable 360° drone panorama + points of interest ----------
 {

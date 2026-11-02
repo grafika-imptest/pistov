@@ -4,6 +4,7 @@ import { collections } from "./collections.js";
 import { EDITION, EDITIONS, otherEditionHref, keepLinksInEdition } from "./edition.js";
 import { initSmoothScroll } from "./smooth.js";
 import { LOGO } from "./logo.js";
+import { socialIcons } from "./people.js";
 
 export const NAV = [
   { href: "index.html#explorer", label: "Lokalita", id: "lokalita" },
@@ -31,19 +32,12 @@ export const MENU = [
   { title: "Nástroje", items: [["oblibene.html", "Oblíbené"], ["porovnani.html", "Porovnání"], ["index.html?rezim=navrh", "Můj návrh"]] },
 ];
 const tel = (p) => `<a href="tel:${p.replace(/\s/g, "")}">${p}</a>`;
-const SOCIAL = {
-  facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v6h4v-6H16l.6-4h-3.1V8.9c0-.6.3-.9.9-.9Z"/></svg>',
-  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>',
-};
-/** links to the seller's Facebook / Instagram */
 /** the seller's logo (light, for the dark menu and footer) next to the Pístov logo */
 const partnerLogo = () => `<a class="logopair__partner" href="${site.seller.web}" target="_blank" rel="noopener" aria-label="${site.seller.brand} – web prodejce"><img src="${site.seller.logo.lightTrim}" alt="" width="636" height="267"></a>`;
-export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => {
-  const label = `${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}`;
-  return u ? `<a href="${u}" target="_blank" rel="noopener" aria-label="${label}">${SOCIAL[k]}</a>` : `<span role="img" aria-label="${label}">${SOCIAL[k]}</span>`;
-}).join("")}</p>`;
+/** the seller's Facebook / Instagram */
+export const socialLinks = (cls = "social") => socialIcons(site.seller.social, site.seller.brand, cls);
 /** compact contact lines of the sales people */
-export const peopleLines = () => site.contacts.map((p) => `<p><b>${p.name}</b><br><span class="muted">${p.role}</span><br>${tel(p.phone)}<br><a href="mailto:${p.email}">${p.email}</a></p>`).join("");
+export const peopleLines = () => site.contacts.map((p) => `<p><b>${p.name}</b><br><span class="muted">${p.role}</span><br>${tel(p.phone)}<br><a href="mailto:${p.email}">${p.email}</a></p>${socialIcons(p.social, p.name, "social social--sm social--light")}`).join("");
 const icon = {
   heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.3 8.4 3.2 5 6.6 5c2 0 3.4 1.1 4.1 2.3h2.6C14 6.1 15.4 5 17.4 5c3.4 0 5.3 3.4 3.8 6.4C19 15.6 12 20 12 20Z"/></svg>',
   compare: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M17 4v16M3 8h8M13 16h8"/></svg>',
