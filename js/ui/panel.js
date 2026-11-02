@@ -13,10 +13,18 @@ const AREA_BANDS = [
   { id: "l", label: "nad 650 m²", test: (a) => a > 650 },
 ];
 const PRICE_BANDS = [
-  { id: "p1", label: "do 3,5 mil. Kč", test: (v) => v < 3500000 },
-  { id: "p2", label: "3,5–4 mil. Kč", test: (v) => v >= 3500000 && v <= 4000000 },
-  { id: "p3", label: "nad 4 mil. Kč", test: (v) => v > 4000000 },
+  { id: "p1", label: "do 3,75 mil. Kč", test: (v) => v < 3750000 },
+  { id: "p2", label: "3,75–4,25 mil. Kč", test: (v) => v >= 3750000 && v <= 4250000 },
+  { id: "p3", label: "nad 4,25 mil. Kč", test: (v) => v > 4250000 },
 ];
+/** "20,5 × 26,5" – smallest enclosing rectangle of the traced outline, scaled to the stated area */
+export function plotDims(project, plot) {
+  if (!plot.geometry) return null;
+  const r = minRect(plot.geometry.plan), k = project.planMetersPerPx;
+  const fix = Math.sqrt(plot.area / (polyArea(plot.geometry.plan) * k * k)); // the trace runs just inside the boundary lines
+  const m = (v) => (Math.round(v * k * fix * 2) / 2).toLocaleString("cs-CZ");
+  return `${m(r.w)} × ${m(r.h)}`;
+}
 export const matchesFilters = (project, plot, f, statusOf) =>
   (!f.price || PRICE_BANDS.find((b) => b.id === f.price).test(plot.price)) &&
   (f.status === "all" || statusOf(plot) === f.status) &&
@@ -77,9 +85,10 @@ export class Panel {
         <h2 class="pn__title">${free} volných parcel</h2>
         <p class="pn__sub">z ${P.plots.length} v lokalitě · podle opraveného situačního plánu, říjen 2026</p>
       </header>
+      ${this._statusbar(f)}
       <div class="filters" role="group" aria-label="Filtr parcel">
         <p class="filters__label">Stav</p>
-        <div class="chips">${chip("status", "all", "Vše", f.status === "all")}${chip("status", "available", "Volné", f.status === "available")}${P.plots.some((p) => this.app.statusOf(p) === "reserved") ? chip("status", "reserved", "Rezervované", f.status === "reserved") : ""}${this.app.demoStatus ? chip("status", "sold", "Prodané", f.status === "sold") : ""}</div>
+        <div class="chips">${chip("status", "all", "Vše", f.status === "all")}${chip("status", "available", "Volné", f.status === "available")}${chip("status", "reserved", "Rezervované", f.status === "reserved")}${chip("status", "sold", "Prodané", f.status === "sold")}</div>
         <p class="filters__label">Výměra</p>
         <div class="chips">${AREA_BANDS.map((b) => chip("area", b.id, b.label, f.area === b.id)).join("")}</div>
         <p class="filters__label">Cena pozemku <span class="filters__hint">${P.pricing.perM2.toLocaleString("cs-CZ")} Kč/m²</span></p>
@@ -98,6 +107,17 @@ export class Panel {
       </ul>`;
   }
 
+  /** stav parcel: volné / rezervované / prodané – počty, poměrový pruh, klik filtruje */
+  _statusbar(f) {
+    const P = this.project, n = P.plots.length;
+    const c = Object.fromEntries(Object.keys(STATUS).map((k) => [k, P.plots.filter((p) => this.app.statusOf(p) === k).length]));
+    return `<section class="statusbar" aria-label="Stav parcel">
+        <div class="statusbar__bar" aria-hidden="true">${Object.keys(STATUS).map((k) => c[k] ? `<i class="sw--${k}" style="flex:${c[k]}"></i>` : "").join("")}</div>
+        <div class="statusbar__items">${Object.keys(STATUS).map((k) => `<button type="button" class="statusbar__item ${f.status === k ? "is-on" : ""}" data-filter="status" data-value="${k}" aria-pressed="${f.status === k}"><i class="sw sw--${k}" aria-hidden="true"></i><b>${c[k]}</b><span>${{ available: "volné", reserved: "rezervované", sold: "prodané" }[k]}</span></button>`).join("")}</div>
+        <p class="statusbar__hint">Po najetí na parcelu v mapě uvidíte její stav barevně: volná zeleně, rezervovaná šrafovaně, prodaná tmavě.</p>
+      </section>`;
+  }
+
   _plotDetail({ plot }) {
     const P = this.project, s = this.app.statusOf(plot);
     const types = typesForPlot(P, plot);
@@ -114,7 +134,7 @@ export class Panel {
         </div>
         ${plot.geometry?.approx ? `<p class="hint">Hranice této parcely je v podkladu jen částečně čitelná – zobrazení je orientační.</p>` : ""}
         ${!plot.geometry ? `<p class="hint">${esc(plot.geometryNote)}</p>` : ""}
-        <div class="savebar">${saveButtons({ kind: "plot", no: plot.no }, { what: `parcela ${plot.no}` })}</div>
+        <div class="savebar">${saveButtons({ kind: "plot", no: plot.no }, { what: `parcela ${plot.no}` })}<a class="savebtn savebtn--pdf" href="tisk.html?parcela=${plot.no}" target="_blank" rel="noopener" title="Exportovat do PDF" aria-label="Exportovat parcelu ${plot.no} do PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4M9 13h6M12 10v7M9.5 14.5 12 17l2.5-2.5"/></svg><span>Exportovat do PDF</span></a></div>
       </header>
       <button type="button" class="pano-link" data-action="pano-plot"><span class="pano-link__icon" aria-hidden="true">360°</span><span><b>Výhled na parcelu dnes</b><small>dronové panorama, stav před výstavbou</small></span><span aria-hidden="true">→</span></button>
       <dl class="facts facts--panel">
@@ -154,11 +174,8 @@ export class Panel {
 
   /** width × length of the plot: smallest enclosing rectangle of the traced outline, scaled to the stated area */
   _dims(plot) {
-    if (!plot.geometry) return `<span class="muted">doplníme</span>`;
-    const r = minRect(plot.geometry.plan), k = this.project.planMetersPerPx;
-    const fix = Math.sqrt(plot.area / (polyArea(plot.geometry.plan) * k * k)); // the trace runs just inside the boundary lines
-    const m = (v) => (Math.round(v * k * fix * 2) / 2).toLocaleString("cs-CZ");
-    return `cca ${m(r.w)} × ${m(r.h)} m<small>orientačně, odečteno ze situačního plánu</small>`;
+    const d = plotDims(this.project, plot);
+    return d ? `cca ${d} m<small>orientačně, odečteno ze situačního plánu</small>` : `<span class="muted">doplníme</span>`;
   }
 
   /** slope and terrain section of the plot (per-plot data from the architect; catalogue section until then) */
@@ -286,7 +303,7 @@ export class Panel {
     if (t.dataset.select) return a.selectPlot(Number(t.dataset.select), "list");
     if (t.dataset.filter) {
       const f = a.store.get().filters, g = t.dataset.filter, v = t.dataset.value;
-      const next = g === "status" ? v : f[g] === v ? null : v;
+      const next = g === "status" ? (f.status === v && v !== "all" ? "all" : v) : f[g] === v ? null : v;
       return a.store.set({ filters: { ...f, [g]: next } });
     }
     if (t.dataset.try) return a.tryType(t.dataset.try);

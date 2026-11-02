@@ -19,7 +19,7 @@ test("plots: corrected plan (10/2026) – 62 plots numbered 1–62, unique, all 
   for (const p of project.plots) {
     assert.equal(p.status, "available", `status of ${p.no}`);
     assert.ok(p.area >= 400 && p.area <= 1500, `area of ${p.no}`);
-    assert.equal(p.price, p.area * 6000, `price of ${p.no} = 6 000 Kč/m²`);
+    assert.equal(p.price, p.area * 6500, `price of ${p.no} = 6 500 Kč/m²`);
   }
   // spot checks against the printed labels of the corrected plan
   const a = Object.fromEntries(project.plots.map((p) => [p.no, p.area]));
@@ -103,7 +103,7 @@ test("pricing: plot priced per m², missing house price keeps the summary incomp
   const s = priceSummary(project, { plot, type, layout: type.layouts[0] });
   assert.equal(s.complete, false);
   assert.equal(s.total, null);
-  assert.equal(s.lines.find((l) => l.key === "plot").value, plot.area * 6000);
+  assert.equal(s.lines.find((l) => l.key === "plot").value, plot.area * 6500);
   assert.ok(s.lines.find((l) => l.key === "house").value === null && s.lines.find((l) => l.key === "house").missing);
   const s2 = priceSummary(project, { plot: { ...plot, price: 2_000_000 }, type: { ...type, price: 6_000_000 }, layout: null });
   assert.equal(s2.complete, true);

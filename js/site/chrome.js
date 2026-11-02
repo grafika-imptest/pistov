@@ -12,6 +12,7 @@ export const NAV = [
   { href: "aktuality.html", label: "Aktuality", id: "aktuality" },
   { href: "financovani.html", label: "Financování", id: "financovani" },
   { href: "developer.html", label: "Developer", id: "developer" },
+  { href: "prodejce.html", label: "Prodejce", id: "prodejce" },
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
 ];
 // studio navigation (written in ateliér terms, mapped to /studio/ by edition.js)
@@ -21,13 +22,23 @@ export const NAV_STUDIO = [
   { href: "lokalita.html", label: "Lokalita", id: "lokalita" },
   { href: "financovani.html", label: "Financování", id: "financovani" },
   { href: "developer.html", label: "Developer", id: "developer" },
+  { href: "prodejce.html", label: "Prodejce", id: "prodejce" },
   { href: "kontakty.html", label: "Kontakt", id: "kontakty" },
 ];
 export const MENU = [
-  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["lokalita.html", "Lokalita"], ["galerie.html", "Galerie"], ["developer.html", "Developer"]] },
-  { title: "Nákup", items: [["financovani.html", "Financování"], ["faq.html", "Časté otázky"], ["aktuality.html", "Aktuality"], ["kontakty.html", "Kontakty"]] },
+  { title: "Projekt", items: [["index.html#explorer", "Interaktivní lokalita"], ["index.html?pohled=pano", "Panorama 360°"], ["index.html#domy", "Typové domy"], ["index.html#projekt", "O projektu"], ["lokalita.html", "Lokalita"], ["galerie.html", "Galerie"]] },
+  { title: "Nákup", items: [["index.html#harmonogram", "Harmonogram"], ["financovani.html", "Financování"], ["faq.html", "Časté otázky"], ["aktuality.html", "Aktuality"], ["developer.html", "Developer"], ["prodejce.html", "Prodejce"], ["kontakty.html", "Kontakty"]] },
   { title: "Nástroje", items: [["oblibene.html", "Oblíbené"], ["porovnani.html", "Porovnání"], ["index.html?rezim=navrh", "Můj návrh"]] },
 ];
+const tel = (p) => `<a href="tel:${p.replace(/\s/g, "")}">${p}</a>`;
+const SOCIAL = {
+  facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v6h4v-6H16l.6-4h-3.1V8.9c0-.6.3-.9.9-.9Z"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>',
+};
+/** links to the seller's Facebook / Instagram */
+export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => `<a href="${u}" target="_blank" rel="noopener" aria-label="${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}">${SOCIAL[k]}</a>`).join("")}</p>`;
+/** compact contact lines of the sales people */
+export const peopleLines = () => site.contacts.map((p) => `<p><b>${p.name}</b><br><span class="muted">${p.role}</span><br>${tel(p.phone)}<br><a href="mailto:${p.email}">${p.email}</a></p>`).join("");
 const icon = {
   heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.6C1.3 8.4 3.2 5 6.6 5c2 0 3.4 1.1 4.1 2.3h2.6C14 6.1 15.4 5 17.4 5c3.4 0 5.3 3.4 3.8 6.4C19 15.6 12 20 12 20Z"/></svg>',
   compare: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M17 4v16M3 8h8M13 16h8"/></svg>',
@@ -62,6 +73,7 @@ export function renderChrome({ page = "", solid = false } = {}) {
     if (solid) header.dataset.alwaysSolid = "";
     header.innerHTML = `
       <a class="brand" href="${home ? "#explorer" : "index.html"}" aria-label="${site.name} – úvod">${LOGO}<span class="brand__name">${site.name}</span></a>
+      <a class="topbar__partner" href="${site.seller.web}" target="_blank" rel="noopener" title="Prodej zajišťuje ${site.seller.brand}" aria-label="${site.seller.brand} – web prodejce"><img class="topbar__partner-light" src="${site.seller.logo.lightTrim}" alt="" width="636" height="267"><img class="topbar__partner-dark" src="${site.seller.logo.darkTrim}" alt="" width="636" height="267"></a>
       <nav class="topnav" aria-label="Hlavní navigace">${nav.map((n) => `<a href="${link(n.href)}" ${n.id === page ? 'aria-current="page"' : ""}>${n.label}</a>`).join("")}</nav>
       <div class="topbar__tools">
         <a class="toolbtn" href="oblibene.html" aria-label="Oblíbené" title="Oblíbené">${icon.heart}<span class="toolbtn__count" data-count="fav" hidden></span></a>
@@ -86,9 +98,9 @@ export function renderChrome({ page = "", solid = false } = {}) {
               <p>Stavební parcely na kraji Pístova u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
             </div>
             <div class="sitemenu__contact">
-              <p class="eyebrow">Prodej parcel</p>
-              <p><b>${site.developer.brand}</b><br><a href="tel:${site.developer.phone.replace(/\s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
-              ${site.salesContact?.pending ? '<p class="sitemenu__small">Jméno makléře pro Pístov doplníme.</p>' : ""}
+              <p class="eyebrow">Prodej parcel · ${site.seller.brand}</p>
+              <div class="sitemenu__people">${peopleLines()}</div>
+              ${socialLinks("social social--light")}
             </div>
           </div>
         </div>
@@ -141,12 +153,13 @@ function renderFooter() {
       ${MENU.map((c) => `<nav class="footer__col" aria-label="${c.title}"><p class="eyebrow">${c.title}</p><ul>${c.items.map(([h, l]) => `<li><a href="${link(h)}">${l}</a></li>`).join("")}</ul></nav>`).join("")}
       <div class="footer__col">
         <p class="eyebrow">Kontakt</p>
-        <p class="footer__small"><span class="muted">${site.developer.role}</span><br><b>${site.developer.brand}</b><br>${site.developer.address}</p>
-        <p class="footer__small"><a href="tel:${site.developer.phone.replace(/\s/g, "")}">${site.developer.phone}</a><br><a href="mailto:${site.developer.email}">${site.developer.email}</a></p>
-        <p class="footer__small"><a class="link" href="developer.html">O developerovi</a> · <a class="link" href="kontakty.html">Všechny kontakty</a></p>
+        <div class="footer__small footer__people">${peopleLines()}</div>
+        <p class="footer__small"><span class="muted">Prodejce</span> <b>${site.seller.brand}</b><br><span class="muted">Developer</span> <b>${site.developer.name}</b></p>
+        ${socialLinks("social social--light")}
+        <p class="footer__small"><a class="link" href="prodejce.html">O prodejci</a> · <a class="link" href="developer.html">O developerovi</a> · <a class="link" href="kontakty.html">Kontakty</a></p>
       </div>
     </div>
-    <div class="wrap"><p class="footer__disclaimer">Vizualizace jsou ilustrační. Ceny, dostupnost parcel a pravidla umístění domů doplní a potvrdí developer.</p></div>
+    <div class="wrap"><p class="footer__disclaimer">Vizualizace jsou ilustrační. Ceny jsou včetně DPH, konečná cena se určí podle výměry zapsané v katastru. Dostupnost parcel potvrdí prodejce.</p></div>
     <div class="wrap footer__bottom">
       <p>© ${new Date().getFullYear()} ${site.name} · Vizualizace a výkresy: ${site.architect.name}</p>
       <nav aria-label="Právní informace"><a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a><button type="button" class="link" data-cookie-settings>Nastavení cookies</button></nav>

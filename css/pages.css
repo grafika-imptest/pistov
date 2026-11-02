@@ -29,7 +29,7 @@ html.has-menu { overflow: hidden; }
 .sitemenu__logo { display: block; color: #fff; }
 .sitemenu__logo .brand__logo { height: 44px; width: auto; display: block; }
 .sitemenu__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s6); flex-wrap: wrap; padding-top: var(--s5); border-top: 1px solid rgba(255, 255, 255, 0.14); }
-.sitemenu__info { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--s6); max-width: 760px; }
+.sitemenu__info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--s6); max-width: 1000px; }
 .sitemenu__about .sitemenu__logo { margin-bottom: var(--s4); }
 .sitemenu__about p { margin: 0; font-size: 1.05rem; line-height: 1.5; color: rgba(255, 255, 255, 0.78); }
 .sitemenu__contact p { margin: 0 0 6px; line-height: 1.6; }
@@ -525,3 +525,48 @@ a.edchoice__opt:hover { background: rgba(244, 239, 227, 0.08); }
 .place.article { max-width: 1200px; }
 @media (max-width: 860px) { .place__grid { grid-template-columns: 1fr; } .place__map { position: static; height: 320px; } }
 .pagehero__grid--map .pagehero__map { min-height: 360px; }
+
+/* ---------- printable plot sheet (tisk.html → "Uložit jako PDF") ---------- */
+.printpage { padding-top: calc(var(--topbar-h) + 32px); padding-bottom: 64px; }
+.sheet-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; max-width: 210mm; margin: 0 auto 24px; }
+.sheet-tools p { margin: 0; flex: 1 1 280px; }
+.sheet { max-width: 210mm; margin: 0 auto; padding: 14mm 14mm 10mm; background: #fff; color: #111; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); }
+.sheet__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6mm; border-bottom: 1px solid #ddd; }
+.sheet__logo .brand__logo { height: 34px; width: auto; display: block; color: #111; }
+.sheet .sheet__partner { height: 34px; width: auto; max-width: none; }
+.sheet__title { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0 16px; padding: 7mm 0 5mm; }
+.sheet__title .eyebrow { grid-column: 1 / -1; margin: 0 0 6px; color: #b94a28; }
+.sheet__title h1 { margin: 0; font-size: 42px; font-weight: 500; letter-spacing: -0.04em; line-height: 1; }
+.sheet__status { display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 600; }
+.sheet__facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0 0 6mm; border-top: 2px solid #111; }
+.sheet__facts > div { padding: 10px 10px 10px 0; border-right: 1px solid #ddd; }
+.sheet__facts > div + div { padding-left: 10px; }
+.sheet__facts > div:last-child { border-right: 0; }
+.sheet__facts dt { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #666; }
+.sheet__facts dd { margin: 4px 0 2px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.sheet__facts small { font-size: 10px; color: #666; }
+.sheet__crops { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 6mm; }
+.sheet__crop { margin: 0; }
+.sheet__crop svg { display: block; width: 100%; aspect-ratio: 4 / 3; background: #eee; }
+.sheet__crop polygon, .sheet__crop circle { fill: rgba(185, 74, 40, 0.35); stroke: #b94a28; stroke-width: 6; vector-effect: non-scaling-stroke; }
+.sheet__crop figcaption { margin-top: 4px; font-size: 10px; color: #666; }
+.sheet__block { margin-bottom: 5mm; }
+.sheet__block h2 { margin: 0 0 8px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+.plan--print { margin: 0; }
+.plan--print .plan__date { font-size: 22px; margin-bottom: 8px; }
+.plan--print .plan__dot { margin-bottom: 8px; }
+.plan--print .plan__title { font-size: 13px; }
+.plan--print .plan__text { font-size: 11px; }
+.plan--print .plan__now { display: none; }
+.sheet__people { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; }
+.sheet__people h2, .sheet__people .muted { grid-column: 1 / -1; }
+.sheet__people p { margin: 0 0 6px; font-size: 12px; line-height: 1.5; }
+.sheet__foot { padding-top: 4mm; border-top: 1px solid #ddd; font-size: 9.5px; color: #666; }
+@media (max-width: 700px) { .sheet { padding: 20px 16px; } .sheet__facts { grid-template-columns: 1fr 1fr; } .sheet__crops, .sheet__people { grid-template-columns: 1fr; } }
+@page { size: A4; margin: 0; }
+@media print {
+  body[data-page="tisk"] > *:not(main), body[data-page="tisk"] .sheet-tools, body[data-page="tisk"] .skip-link, #sitemenu, .cookiebar, .sitetoast { display: none !important; }
+  body[data-page="tisk"] main, body[data-page="tisk"] .pagebody, body[data-page="tisk"] .printpage { padding: 0 !important; margin: 0 !important; }
+  body[data-page="tisk"] .sheet { box-shadow: none; max-width: none; width: 210mm; min-height: 297mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

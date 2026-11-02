@@ -11,10 +11,10 @@ import { panoramas, PLAN_GEOREF } from "./panoramas.generated.js";
 const IMG = "assets/img/";
 
 // Plot records = traced geometry + business data. Prices are not part of the supplied documents.
-export const PRICE_PER_M2 = 6000; // Kč za m² pozemku (informace developera, 10/2026)
+export const PRICE_PER_M2 = 6500; // Kč za m² pozemku vč. DPH (vzor rezervační smlouvy, 11/2026)
 const plots = plotsSource.map((p) => ({
   ...p,
-  price: p.area * PRICE_PER_M2, // Kč – developer's price per m² (10/2026)
+  price: p.area * PRICE_PER_M2, // Kč – price per m² incl. VAT (11/2026)
   statusSource: "Opravený situační plán, říjen 2026",
 }));
 
@@ -37,7 +37,7 @@ export const project = {
   name: "Pístov",
   claim: "Vaše místo. Váš dům. Vaše budoucnost.",
   source: "Pístov – katalog rodinných domů, TAM architekti s.r.o., duben 2026",
-  developer: "Horák & Vetchý s.r.o.",
+  developer: "START Zelený Pístov s.r.o.", seller: "Horák & Vetchý s.r.o.",
   architect: "TAM architekti s.r.o.",
   currency: "Kč",
   plots,

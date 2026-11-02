@@ -78,14 +78,15 @@ test("content: FAQ facts match the plot data", () => {
   for (const t of project.houseTypes) assert.ok(read("js/projects/pistov/content.js").includes(`${t.builtUpArea} m²`), `area of ${t.id} in content`);
 });
 
-test("content: only the published plot price (6 000 Kč/m²), no house prices or orders", () => {
-  const text = JSON.stringify({ news, faq, steps: financing.steps, site }).replace(/6 000 Kč za m²|3 600 000 Kč/g, "");
+test("content: only the published plot price (6 500 Kč/m²) and reservation fee, no house prices or orders", () => {
+  const text = JSON.stringify({ news, faq, steps: financing.steps, site }).replace(/6 500 Kč za m²|3 900 000 Kč|400 000 Kč/g, "");
   assert.match(JSON.stringify(faq), /prodáváme pouze pozemky/i);
   assert.doesNotMatch(text, /\d[\d\s]*Kč/, "no prices in editorial content");
-  assert.ok(financing.pending && financing.stepsNote);
-  assert.match(read("js/pages/financovani.js"), /6 000 Kč\/m²/);
+  assert.ok(financing.stepsNote && financing.reservationFee === 400000 && financing.docs.length === 2);
+  for (const d of financing.docs) assert.ok(fs.existsSync(path.join(root, d.href)), d.href);
+  assert.match(read("js/pages/financovani.js"), /6 500 Kč\/m²/);
   for (const f of ["js/ui/panel.js", "js/ui/detail.js", "js/ui/enquiry.js", "js/studio/domy.js"]) assert.doesNotMatch(read(f), /Poptat (tuto kombinaci|dům|vybranou kombinaci)/, f);
-  assert.ok(site.salesContact.pending);
+  assert.deepEqual(site.contacts.map((c) => c.email), ["zelena@hvreality.cz", "vetchy@hvreality.cz"]);
 });
 
 test("collections: item keys and descriptions", () => {
@@ -111,13 +112,15 @@ test("items: links reopen the configuration, plot crops stay inside the aerial v
   assert.equal(info.builtUp, d2.builtUpArea !== undefined ? d2.builtUpArea : 156);
 });
 
-test("developer: Horák & Vetchý everywhere, no former client name left", () => {
-  assert.equal(site.developer.name, "Horák & Vetchý s.r.o.");
+test("developer START Zelený and seller Horák & Vetchý (client 11/2026)", () => {
+  assert.equal(site.developer.name, "START Zelený Pístov s.r.o.");
+  assert.equal(site.seller.name, "Horák & Vetchý s.r.o.");
   assert.equal(project.developer, site.developer.name);
+  assert.equal(project.seller, site.seller.name);
   assert.match(site.developer.ico, /^\d{8}$/);
-  const files = ["atelier.html", "index.html", "README.md", ...PAGES.map((p) => `${p}.html`), ...fs.readdirSync(path.join(root, "js"), { recursive: true }).filter((f) => f.endsWith(".js")).map((f) => `js/${f}`)];
-  for (const f of files) assert.doesNotMatch(read(f), /START Zelen|Brtnice|Zadavatel projektu/i, f);
+  assert.match(site.seller.ico, /^\d{8}$/);
   assert.match(read("js/site/chrome.js"), /developer\.html/);
+  assert.match(read("js/site/chrome.js"), /prodejce\.html/);
 });
 
 test("studio edition: every page exists, resolves against the root and loads the studio styles", async () => {

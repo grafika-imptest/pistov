@@ -1,15 +1,14 @@
 // Studio home page. Every number comes from the project data – nothing typed in by hand.
 import { renderChrome } from "../site/chrome.js";
 import { project } from "../projects/pistov/project.js";
-import { site, developer, pois } from "../projects/pistov/content.js";
-import { poiIcon } from "../site/poi-icons.js";
-import { poiList, poiHref, kmLabel } from "../site/pois.js";
+import { site, pois, access } from "../projects/pistov/content.js";
+import { poiList, poiPicto } from "../site/pois.js";
+import { peopleCards, scheduleItems, pictoItem } from "../site/people.js";
 import { PanoTeaser } from "../ui/panoTeaser.js";
-import { plotsForType, typesForPlot } from "../core/compat.js";
 import { renderHomeTeasers } from "../site/teasers.js";
 import { mountLocationMap } from "../site/map.js";
-import { img, srcset, esc } from "../site/ui.js";
-import { STATUS, m2, plural } from "../ui/format.js";
+import { esc } from "../site/ui.js";
+import { m2 } from "../ui/format.js";
 import { reveal, parallax, countUp, lazyLoops } from "./motion.js";
 import { reducedMotion } from "../core/motion.js";
 
@@ -32,8 +31,8 @@ const count = (st) => plots.filter((p) => p.status === st).length;
   $("[data-s-stats]").innerHTML = [
     [free.length, "volných parcel", `z ${plots.length} v lokalitě`],
     [`${Math.min(...areas)}–${nf(Math.max(...areas))}`, "m² výměry", "většina 560–700 m²"],
-    [P.houseTypes.length, "typové domy", "A, B, C a D"],
-    [P.panoramas.length, "panoramat 360°", "dnešní stav z dronu"],
+    [nf(P.pricing.perM2), "Kč za m²", "včetně DPH"],
+    ["06/2029", "předání pozemků", "podle harmonogramu"],
   ].map(([n, l, s]) => `<div><dt>${l}</dt><dd><b ${typeof n === "number" ? `data-s-count="${n}"` : ""}>${n}</b><small>${s}</small></dd></div>`).join("");
 }
 
@@ -43,45 +42,8 @@ if ($("[data-s-specs]")) $("[data-s-specs]").innerHTML = [
   ["Výměry parcel", `${m2(Math.min(...areas))} – ${m2(Math.max(...areas))}`], ["Typové domy", `${P.houseTypes.length} typy · ${P.houseVariants.length} vizualizací`],
 ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
 
-// ---------- house types: list on the left, the picture follows the active type ----------
-{
-  const list = $("[data-s-types]"), stage = $("[data-s-types-stage]");
-  const mainVariant = (t) => P.houseVariants.find((v) => v.type === t.id);
-  list.innerHTML = P.houseTypes.map((t, i) => {
-    const areasT = [...new Set(t.layouts.map((l) => (l.builtUpArea !== undefined ? l.builtUpArea : t.builtUpArea)).filter(Boolean))];
-    const disp = [...new Set(t.layouts.map((l) => l.disposition).filter(Boolean))];
-    const nFree = plotsForType(P, t.id).filter((p) => p.status === "available").length;
-    return `<li class="s-type" data-k="${i}" data-s-in>
-      <span class="s-type__letter">${t.id}</span>
-      <div class="s-type__body">
-        <h3 class="s-type__name">${esc(t.name)} <span>${esc(t.tagline)}</span></h3>
-        <p class="s-type__text">${esc(t.character)}</p>
-        <dl class="s-type__specs">
-          <div><dt>Obestavěná plocha</dt><dd>${areasT.map((a) => `${a} m²`).join(" / ")}</dd></div>
-          <div><dt>Dispozice</dt><dd>${disp.length ? disp.join(", ") : "podle půdorysů"}</dd></div>
-          <div><dt>Střecha</dt><dd>${esc(t.roof)}</dd></div>
-          <div><dt>Vejde se na*</dt><dd>${nFree} ${plural(nFree, "volnou parcelu", "volné parcely", "volných parcel")}</dd></div>
-        </dl>
-        <figure class="s-type__img">${(() => { const v = mainVariant(t); return `<img src="${img(v.images[0], "m")}" srcset="${srcset(v.images[0])}" sizes="100vw" alt="${esc(t.name)} – ${esc(v.name)}, vizualizace" loading="lazy" decoding="async">`; })()}</figure>
-        <p class="s-type__links"><a class="s-btn s-btn--dark s-btn--sm" href="domy.html#dum-${t.id.toLowerCase()}">Detail domu ${t.id}</a><a class="s-link" href="index.html?dum=${t.id}&rezim=domy">Parcely pro dům ${t.id} →</a></p>
-      </div>
-    </li>`;
-  }).join("");
-  stage.innerHTML = P.houseTypes.map((t, i) => { const v = mainVariant(t); return `<img class="${i ? "" : "is-on"}" data-k="${i}" src="${img(v.images[0], "m")}" srcset="${srcset(v.images[0])}" sizes="(min-width: 1000px) 55vw, 100vw" alt="" loading="${i ? "lazy" : "eager"}" decoding="async">`; }).join("")
-    + `<span class="s-types__badge" data-s-types-badge>A</span>`;
-  // the type in the middle of the screen drives the picture
-  const items = [...list.children], badge = stage.querySelector("[data-s-types-badge]");
-  const io = new IntersectionObserver((ents) => {
-    for (const en of ents) if (en.isIntersecting) {
-      const k = en.target.dataset.k;
-      items.forEach((li) => li.classList.toggle("is-active", li === en.target));
-      stage.querySelectorAll("img").forEach((im) => im.classList.toggle("is-on", im.dataset.k === k));
-      badge.textContent = P.houseTypes[k].id;
-    }
-  }, { rootMargin: "-45% 0px -45% 0px" });
-  items.forEach((li) => io.observe(li));
-  items[0]?.classList.add("is-active");
-}
+// ---------- schedule ----------
+$("[data-s-schedule]").innerHTML = scheduleItems();
 
 // ---------- offer: full-bleed plot map, price filter and a live plot card ----------
 {
@@ -116,7 +78,7 @@ if ($("[data-s-specs]")) $("[data-s-specs]").innerHTML = [
   new ResizeObserver(fitBox).observe(fig); fitBox();
 
   // price bands – a click highlights the matching plots on the map
-  const BANDS = [["do 3,5 mil.", (v) => v < 3.5e6], ["3,5–4 mil.", (v) => v >= 3.5e6 && v <= 4e6], ["nad 4 mil.", (v) => v > 4e6]];
+  const BANDS = [["do 3,75 mil.", (v) => v < 3.75e6], ["3,75–4,25 mil.", (v) => v >= 3.75e6 && v <= 4.25e6], ["nad 4,25 mil.", (v) => v > 4.25e6]];
   const bandBox = $("[data-s-pricebands]"); let band = -1;
   bandBox.innerHTML = BANDS.map(([l, f], i) => `<button type="button" class="s-chip" data-band="${i}" aria-pressed="false">${l} Kč<b>${free.filter((p) => f(p.price)).length}</b></button>`).join("");
   bandBox.addEventListener("click", (e) => {
@@ -145,19 +107,18 @@ if ($("[data-s-specs]")) $("[data-s-specs]").innerHTML = [
   fig.addEventListener("focusin", onPlot);
 }
 
-// ---------- developer, contact ----------
-$("[data-s-devfacts]").innerHTML = developer.facts.map(([b, s]) => `<div><dt>${esc(s)}</dt><dd>${esc(b)}</dd></div>`).join("");
-{
-  const d = site.developer;
-  $("[data-s-contact]").innerHTML = `<span>${esc(d.brand)}</span><a href="tel:${d.phone.replace(/\s/g, "")}">${d.phone}</a><a href="mailto:${d.email}">${d.email}</a>`;
-}
+// ---------- developer + seller, contact: the sales people ----------
+$("[data-s-people]").innerHTML = peopleCards("person person--dark");
+$("[data-s-contact]").innerHTML = site.contacts.map((p) => `<span><b>${esc(p.name)}</b> <a href="tel:${p.phone.replace(/\s/g, "")}">${p.phone}</a> <a href="mailto:${p.email}">${p.email}</a></span>`).join("");
 
 // ---------- location: draggable 360° drone panorama + points of interest ----------
 {
   const toNabidka = (q) => (location.href = new URL(`studio/nabidka.html${q}`, document.baseURI).href);
   new PanoTeaser($("[data-pano-teaser]"), { project: P, statusOf: (p) => p.status, scrollToExplorer() {}, openPano: (id) => toNabidka(`?pohled=pano&stanoviste=${id}`) });
   const list = poiList().filter((p) => p.featured);
-  $("[data-s-pois]").innerHTML = list.map((p) => `<li><a href="${poiHref(p)}"><span class="s-pois__ic">${poiIcon(p.icon)}</span><span><b>${esc(p.name)}</b><small>${esc(p.cat)}</small></span><span class="s-pois__km">${kmLabel(p.km)}</span></a></li>`).join("");
+  $("[data-s-access]").innerHTML = access.map(pictoItem).join("");
+  $("[data-s-pois]").innerHTML = list.map(poiPicto).join("");
+  $("[data-s-pois-note]").textContent = pois.note;
   mountLocationMap($("[data-s-map]"), { zoom: 15.5, color: "#b94a28", pois: list });
 }
 renderHomeTeasers();

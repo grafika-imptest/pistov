@@ -1,6 +1,7 @@
 import { renderChrome } from "../site/chrome.js";
 import { financing } from "../projects/pistov/content.js";
 import { esc } from "../site/ui.js";
+import { personCard, personByEmail, scheduleItems } from "../site/people.js";
 
 renderChrome({ page: "financovani", solid: true });
 const ex = financing.calculator.example;
@@ -8,8 +9,19 @@ const fmt = (v) => new Intl.NumberFormat("cs-CZ", { maximumFractionDigits: 0 }).
 
 document.querySelector("[data-financing]").innerHTML = `
   <div class="wrap">
-    <p class="notice">${esc(financing.pending)}</p>
-    <div class="sechead sechead--tight" id="postup"><div><p class="eyebrow">Postup</p><h2 class="h2">Od výběru parcely <em>po stěhování</em></h2></div><p class="lead">${esc(financing.stepsNote)}</p></div>
+    <div class="sechead sechead--tight" id="harmonogram"><div><p class="eyebrow">Harmonogram</p><h2 class="h2">Kdy co <em>zaplatíte</em></h2></div><p class="lead">Rezervační poplatek při rezervaci, doplatek kupní ceny až po kolaudaci.</p></div>
+    <ol class="plan">${scheduleItems()}</ol>
+    <dl class="finterms">${financing.terms.map(([k, v, n]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd><p>${esc(n)}</p></div>`).join("")}</dl>
+    <div class="finhelp">
+      <div class="finhelp__text"><p class="eyebrow">Pomoc s hypotékou</p><h2 class="h2">Ověříme, <em>na co dosáhnete</em></h2>
+        <p class="lead">S hypotékou a ověřením možností financování vám pomůže Monika Zelená z Horák & Vetchý. Zavolejte nebo napište – projde s vámi možnosti ještě před rezervací.</p></div>
+      ${personCard(personByEmail("zelena@hvreality.cz"), "person person--wide")}
+    </div>
+    <div class="findocs" id="smlouvy">
+      <div><p class="eyebrow">Smlouvy</p><h2 class="h3">Vzory smluv ke stažení</h2><p class="muted">${esc(financing.docsNote)}</p></div>
+      <ul>${financing.docs.map((d) => `<li><a class="docfile" href="${d.href}" target="_blank" rel="noopener"><span class="docfile__ic" aria-hidden="true">PDF</span><span><b>${esc(d.title)}</b><small>${esc(d.size)}</small></span><span aria-hidden="true">↓</span></a></li>`).join("")}</ul>
+    </div>
+    <div class="sechead sechead--tight" id="postup"><div><p class="eyebrow">Postup</p><h2 class="h2">Od výběru parcely <em>po předání pozemku</em></h2></div><p class="lead">${esc(financing.stepsNote)}</p></div>
     <ol class="steps steps--six">${financing.steps.map((s, i) => `<li class="step"><span class="step__no">${i + 1}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join("")}</ol>
   </div>
   <div class="calcwrap section--paper">
@@ -18,7 +30,7 @@ document.querySelector("[data-financing]").innerHTML = `
         <p class="eyebrow">Hypoteční kalkulačka</p>
         <h2 class="h2">Kolik budete <em>měsíčně splácet?</em></h2>
         <p class="lead">Zadejte cenu pozemku, vlastní zdroje a úrokovou sazbu. Výpočet je orientační (anuitní splátka) a nezahrnuje poplatky ani pojištění.</p>
-        <p class="hint">Předvyplněno pro parcelu 600 m² za 6 000 Kč/m².</p>
+        <p class="hint">Předvyplněno pro parcelu 600 m² za 6 500 Kč/m² včetně DPH.</p>
       </div>
       <form class="calc__form" data-calc novalidate>
         <div class="field"><label for="c-price">Cena pozemku</label><div class="field__unit"><input id="c-price" name="price" inputmode="numeric" value="${fmt(ex.price)}"><span>Kč</span></div></div>
@@ -32,7 +44,7 @@ document.querySelector("[data-financing]").innerHTML = `
           <dl class="calc__dl"><div><dt>Výše úvěru</dt><dd data-calc-loan>—</dd></div><div><dt>LTV</dt><dd data-calc-ltv>—</dd></div><div><dt>Zaplatíte celkem</dt><dd data-calc-total>—</dd></div></dl>
           <p class="hint" data-calc-warn></p>
         </div>
-        <a class="btn btn--red btn--block" href="kontakty.html#formular">Chci pomoct s financováním <span aria-hidden="true">→</span></a>
+        <a class="btn btn--red btn--block" href="mailto:zelena@hvreality.cz?subject=Financov%C3%A1n%C3%AD%20parcely%20v%20P%C3%ADstov%C4%9B">Napsat Monice Zelené <span aria-hidden="true">→</span></a>
       </form>
     </div>
   </div>`;

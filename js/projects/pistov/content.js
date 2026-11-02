@@ -4,17 +4,39 @@
 
 export const site = {
   name: "Pístov",
-  claim: "Pozemky a rodinné domy",
+  claim: "Stavební parcely",
   realisation: { label: "IMP net", url: "https://www.impnet.cz" },
-  developer: {
-    name: "Horák & Vetchý s.r.o.", brand: "Horák & Vetchý reality", role: "Developer projektu",
+  // Prodejce – Horák & Vetchý zastupuje prodávajícího (vzor rezervační smlouvy, 11/2026)
+  seller: {
+    name: "Horák & Vetchý s.r.o.", brand: "Horák & Vetchý reality", role: "Prodejce – zajišťuje prodej parcel",
     address: "17. listopadu 5904/1a, 586 01 Jihlava", ico: "14443112", dic: "CZ14443112", register: "Krajský soud v Brně, oddíl C, vložka 128347",
     phone: "+420 603 841 123", email: "info@hvreality.cz", web: "https://hvreality.cz",
+    logo: { dark: "assets/img/hv-logo-dark.png", light: "assets/img/hv-logo-light.png", darkTrim: "assets/img/hv-logo-dark-trim.png", lightTrim: "assets/img/hv-logo-light-trim.png" },
+    // company profiles from hvreality.cz (personal profiles not found – TODO ask the client)
+    social: { facebook: "https://www.facebook.com/horakvetchyrealiy", instagram: "https://www.instagram.com/horakvetchyreality/" },
   },
+  // Developer – prodávající je projektová společnost skupiny START Zelený (vzory smluv, 11/2026)
+  developer: {
+    name: "START Zelený Pístov s.r.o.", brand: "START Zelený", role: "Developer projektu",
+    address: "Široká 376, 588 32 Brtnice", ico: "03826546", register: "Krajský soud v Brně, oddíl C, vložka 140204",
+    web: "https://www.zeleny.cz",
+  },
+  // Kontaktní osoby prodeje (zadání klienta 11/2026; tituly podle viladomy-dobrovodska.cz)
+  contacts: [
+    { name: "Monika Zelená", role: "Hlavní makléřka · pomoc s financováním", phone: "+420 731 984 866", email: "zelena@hvreality.cz", photo: "person-zelena" },
+    { name: "Ing. Pavel Vetchý", role: "Makléř · jednatel Horák & Vetchý", phone: "+420 603 841 123", email: "vetchy@hvreality.cz", photo: "person-vetchy" },
+  ],
   architect: { name: "TAM architekti s.r.o.", address: "Fibichova 23, 586 01 Jihlava", role: "Autoři urbanistického návrhu a typových domů" },
-  salesContact: { pending: true, note: "Prodej zajišťuje Horák & Vetchý reality. Jméno makléře pro Pístov doplníme." },
   location: { lat: 49.38015, lon: 15.567753, label: "Pístov u Jihlavy" },
 };
+
+// Harmonogram projektu (zadání klienta 11/2026; odpovídá vzoru rezervační smlouvy)
+export const schedule = [
+  { date: "11/2026", title: "Zahájení prodeje", text: "Rezervace parcel podle orientačního plánu." },
+  { date: "11/2027", title: "Geometrický plán a zaměření", text: "Parcely dostanou konečná čísla a výměry v katastru." },
+  { date: "03/2029", title: "Kolaudace a dokončení", text: "Hotové komunikace, inženýrské sítě a terénní úpravy." },
+  { date: "06/2029", title: "Předání pozemků", text: "Po zaplacení kupní ceny můžete začít stavět." },
+];
 
 // News – real events of the project materials only.
 export const news = [
@@ -25,7 +47,7 @@ export const news = [
     body: [
       "Nová prezentace propojuje situační plán lokality s katalogem typových domů. U každé parcely uvidíte její výměru, cenu a stav a pro inspiraci i typové domy, které se na ni vejdou. Postavit si můžete jakýkoli dům podle svého.",
       "V režimu Můj návrh se pro inspiraci na parcele „postaví“ vybraný typový dům – od obrysu přes hmotu domu až po vizualizaci architektů. Prodáváme pouze pozemky; typové domy ukazují, jak může zástavba vypadat.",
-      "Pozemky stojí 6 000 Kč za m², cenu každé parcely uvidíte přímo v nabídce.",
+      "Pozemky stojí 6 500 Kč za m² včetně DPH, cenu každé parcely uvidíte přímo v nabídce.",
     ],
     image: "aerial", cta: { label: "Prozkoumat lokalitu", href: "index.html#explorer" },
   },
@@ -61,28 +83,39 @@ export const faq = [
   { cat: "Typové domy", q: "Jsou uvedené plochy užitné?", a: "Ne. U domů uvádíme obestavěnou plochu podle katalogu. Plochy jednotlivých místností najdete v půdorysech v detailu domu." },
   { cat: "Typové domy", q: "Musím stavět jeden z typových domů?", a: "Ne. Na parcele si můžete postavit jakýkoli rodinný dům podle svého – vlastní projekt nebo dům od libovolného dodavatele, v souladu s regulativy lokality. Typové domy A–D jsou jen inspirace; u každé parcely ukazujeme, které z nich se na ni vejdou." },
   { cat: "Typové domy", q: "Mohu si vybrat fasádu a střechu?", a: "Katalog ukazuje u každého domu několik materiálových řešení – světlou omítku, režnou nebo světlou cihlu, dřevěný obklad, pálenou tašku nebo plechovou krytinu. Konkrétní možnosti potvrdí dodavatel stavby." },
-  { cat: "Ceny a financování", q: "Kolik stojí parcela?", a: "Pozemky stojí 6 000 Kč za m² – například parcela o výměře 600 m² vyjde na 3 600 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě." },
+  { cat: "Ceny a financování", q: "Kolik stojí parcela?", a: "Pozemky stojí 6 500 Kč za m² včetně DPH – například parcela o výměře 600 m² vyjde na 3 900 000 Kč. Cenu každé parcely najdete v interaktivní lokalitě. Konečná cena se určí podle výměry zapsané v katastru." },
   { cat: "Typové domy", q: "Mohu si u vás objednat i dům?", a: "Ne, prodáváme pouze pozemky. Typové domy slouží jako inspirace – ukazují, jak může dům na konkrétní parcele vypadat." },
-  { cat: "Ceny a financování", q: "Pomůžete mi s financováním?", a: "Podmínky financování a partnery developer teprve připravuje. Orientační splátku si můžete spočítat na stránce Financování." },
-  { cat: "Postup a termíny", q: "Kdy začne výstavba?", a: "Termíny přípravy a výstavby developer zatím nezveřejnil. Nové informace budeme průběžně uvádět v aktualitách." },
+  { cat: "Ceny a financování", q: "Pomůžete mi s financováním?", a: "Ano. S hypotékou a ověřením možností financování vám pomůže Monika Zelená z Horák & Vetchý (+420 731 984 866, zelena@hvreality.cz). Orientační splátku si spočítáte na stránce Financování." },
+  { cat: "Postup a termíny", q: "Jaký je harmonogram?", a: "Prodej začíná v listopadu 2026, geometrický plán a zaměření pozemků je plánované na listopad 2027, kolaudace a dokončení na březen 2029 a předání pozemků na červen 2029. Stavět dům můžete po kolaudaci a předání pozemku." },
+  { cat: "Ceny a financování", q: "Kolik se platí při rezervaci?", a: "Rezervační poplatek je 400 000 Kč. Doplatek kupní ceny se hradí až po kolaudaci, po podpisu kupní smlouvy. Vzory obou smluv najdete na stránce Financování." },
   { cat: "Postup a termíny", q: "Jak pošlu poptávku?", a: "Vyberte parcelu v interaktivní lokalitě a klikněte na „Mám zájem o parcelu“. Číslo parcely doplníme do formuláře za vás. Napsat nám můžete i obecně přes stránku Kontakty." },
-  { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem Pístova je Horák & Vetchý s.r.o. – realitní a developerská společnost z Jihlavy s pobočkami v Jihlavě, Brně, Praze, Olomouci, Ostravě, Znojmě a ve Žďáru nad Sázavou." },
+  { cat: "Postup a termíny", q: "Kdo je developerem projektu?", a: "Developerem a prodávajícím je START Zelený Pístov s.r.o. ze skupiny START Zelený – stavební firmy z Brtnice, která se stavební výrobou zabývá od roku 2002. Prodej parcel zajišťuje Horák & Vetchý reality z Jihlavy." },
   { cat: "Vizualizace", q: "Je vizualizace domu na parcele přesná?", a: "Jde o ilustraci. Hmota domu vychází z rozměrů v katalogu a umístění ze situačního plánu, fotorealistické obrázky jsou vizualizace architektů. Úvodní film na hlavní stránce je ilustrační vizualizace vytvořená pomocí AI." },
 ];
 
 export const financing = {
-  pending: "Konkrétní podmínky prodeje, platební kalendář a partnery financování doplní developer.",
+  reservationFee: 400000,
+  terms: [
+    ["Rezervační poplatek", "400 000 Kč", "do 3 pracovních dní od podpisu rezervační smlouvy"],
+    ["Doplatek kupní ceny", "po kolaudaci", "po podpisu kupní smlouvy, rezervační poplatek se započítá"],
+    ["Cena pozemku", "6 500 Kč/m²", "včetně DPH, podle konečné výměry zapsané v katastru"],
+  ],
+  docs: [
+    { title: "Vzor rezervační smlouvy", href: "assets/docs/pistov-vzor-rezervacni-smlouvy.pdf", size: "PDF · 6 stran" },
+    { title: "Vzor kupní smlouvy", href: "assets/docs/pistov-vzor-kupni-smlouvy.pdf", size: "PDF · 5 stran" },
+  ],
+  docsNote: "Vzory smluv jsou orientační – konečné znění se upraví podle zápisu pozemku do katastru a podmínek konkrétního obchodu.",
   steps: [
     { title: "Výběr parcely", text: "V interaktivní lokalitě si vyberete parcelu, pro inspiraci si na ní můžete prohlédnout typový dům, a pošlete poptávku." },
-    { title: "Rezervace", text: "Rezervaci parcely a její podmínky stanoví developer." },
-    { title: "Financování", text: "Pozemek i stavbu lze obvykle financovat hypotečním úvěrem; peníze na stavbu se čerpají postupně podle jejího průběhu." },
-    { title: "Smlouvy", text: "Kupní smlouva na pozemek a smlouva o dílo s dodavatelem stavby." },
-    { title: "Výstavba", text: "Stavba domu podle zvoleného typu a materiálového řešení." },
-    { title: "Kolaudace a stěhování", text: "Po dokončení a kolaudaci se můžete stěhovat." },
+    { title: "Rezervace", text: "Podepíšete rezervační smlouvu a do 3 pracovních dní zaplatíte rezervační poplatek." },
+    { title: "Financování", text: "S hypotékou a ověřením možností financování vám pomůže Monika Zelená." },
+    { title: "Kupní smlouva", text: "Po kolaudaci dostanete návrh kupní smlouvy s konečnou výměrou a cenou." },
+    { title: "Doplatek", text: "Doplatíte kupní cenu sníženou o rezervační poplatek – z vlastních zdrojů nebo z úvěru." },
+    { title: "Předání pozemku", text: "Pozemek převezmete a můžete začít stavět dům podle svého." },
   ],
-  stepsNote: "Obecný postup při koupi pozemku se stavbou rodinného domu – nejde o podmínky projektu Pístov.",
+  stepsNote: "Postup podle vzorů rezervační a kupní smlouvy. Termíny jsou plánované.",
   // example values for the calculator – explicitly NOT prices of Pístov
-  calculator: { example: { price: 3600000, own: 720000, rate: 4.9, years: 30 } },
+  calculator: { example: { price: 3900000, own: 780000, rate: 4.9, years: 30 } },
 };
 
 // Gallery collections – all images exist in assets/img
@@ -106,10 +139,10 @@ export const gallery = [
   ] },
 ];
 
-// Developer page – Horák & Vetchý. Facts and quotes from hvreality.cz (October 2026); projects listed there are
+// Prodejce page – Horák & Vetchý. Facts and quotes from hvreality.cz (October 2026); projects listed there are
 // developments they represent / sell, not necessarily projects they built – worded accordingly.
-export const developer = {
-  lead: "Za Pístovem stojí Horák & Vetchý reality – realitní a developerská společnost z Jihlavy. Pomůže vám s celou koupí – od výběru parcely přes financování až po dokončení obchodu.",
+export const seller = {
+  lead: "Prodej parcel v Pístově zajišťuje Horák & Vetchý reality – realitní společnost z Jihlavy. Pomůže vám s celou koupí – od výběru parcely přes financování až po podpis smluv.",
   facts: [
     ["20 let", "v manažerských pozicích v bankovnictví a realitách"],
     ["7 poboček", "Jihlava, Brno, Praha, Olomouc, Ostrava, Znojmo, Žďár n. S."],
@@ -143,63 +176,62 @@ export const developer = {
   founders: { image: "hv-founders", caption: "Stanislav Horák a Pavel Vetchý" },
   financingImage: { image: "hv-financing", alt: "Realitní makléř analyzuje možnosti financování nemovitosti" },
   branchPhotos: [["hv-branch-jihlava", "Jihlava"], ["hv-branch-olomouc", "Olomouc"], ["hv-branch-znojmo", "Znojmo"], ["hv-branch-ostrava", "Ostrava"]],
-  people: [["Ing. Pavel Vetchý", "+420 603 841 123"], ["Stanislav Horák", "+420 737 205 131"]],
   source: "Údaje, logo a fotografie z webu hvreality.cz, říjen 2026. Vizualizace projektů patří jejich developerům.",
 };
 
-// Points of interest in Jihlava and around. SAMPLE until the developer sends the final list (TODO).
-// Coordinates from OpenStreetMap; distances are computed as the crow flies from the site.
+// Developer page – START Zelený. Facts from zeleny.cz (listopad 2026) and the contract templates supplied by
+// the client; reference photos from zeleny.cz/realizovane-projekty. Nothing beyond those sources is claimed.
+export const builder = {
+  logo: "assets/img/start-zeleny-logo.png",
+  claim: "Váš partner ve stavebnictví",
+  lead: "Pístov připravuje START Zelený – stavební firma z Brtnice. Lokalitu staví od základu: komunikace, inženýrské sítě i terénní úpravy.",
+  facts: [
+    ["od 2002", "se věnují stavební výrobě"],
+    ["30+ let", "rozvíjí firma své služby"],
+    ["69", "realizovaných staveb na webu zeleny.cz"],
+  ],
+  pistov: [
+    { title: "Asfaltová komunikace", text: "Každý pozemek bude přístupný z asfaltové komunikace." },
+    { title: "Přípojky", text: "Každý pozemek dostane přípojku elektřiny, vody a kanalizace." },
+    { title: "Terénní úpravy", text: "Lokalitu developer připraví tak, abyste po předání mohli začít stavět." },
+  ],
+  focus: [
+    { title: "Generální dodávky staveb", text: "Doménou firmy jsou generální dodávky staveb podle individuálních požadavků klienta." },
+    { title: "Bytová a administrativní výstavba", text: "Hlavní oblastí je pozemní stavitelství – bytové domy, školy, haly i administrativní budovy." },
+    { title: "Rekonstrukce památek", text: "Rekonstrukce památkově chráněných objektů, mimo jiné zámků a klášterů na Vysočině." },
+    { title: "Úspory energie", text: "Snižování energetické náročnosti budov – zateplení, okna, fasády." },
+    { title: "Vodohospodářské stavby", text: "Vodohospodářské projekty, rybníky a související infrastruktura." },
+    { title: "Vlastní technika a betonárka", text: "Vlastní stroje s vyškolenou obsluhou, betonárka a stavebniny v Jihlavě a Brtnici." },
+  ],
+  projects: [
+    { name: "Lokalita Z11 „U robotné louky“", note: "příprava lokality, 2025", image: "sz-z11" },
+    { name: "Bytový dům „U Dubu – H“", note: "Jihlava, 2021–2023", image: "sz-dub-h" },
+    { name: "Základní škola Puklice", note: "Puklice, 2024–2025", image: "sz-puklice" },
+    { name: "Mateřská škola Dlouhá Brtnice", note: "Dlouhá Brtnice, 2021–2022", image: "sz-ms-brtnice" },
+    { name: "Revitalizace dvorního traktu Gymnázia Jihlava", note: "Jihlava, 2023–2024", image: "sz-gymnazium" },
+    { name: "Cyklostezka Hodice – Třešť – Kostelec", note: "Vysočina, 2020–2022", image: "sz-cyklostezka" },
+  ],
+  company: [["Developer a prodávající", "START Zelený Pístov s.r.o."], ["IČO", "038 26 546"], ["Sídlo", "Široká 376, 588 32 Brtnice"], ["Obchodní rejstřík", "Krajský soud v Brně, oddíl C, vložka 140204"]],
+  web: "https://www.zeleny.cz/stavebni-vyroba",
+  source: "Údaje, logo a fotografie referencí z webu zeleny.cz (listopad 2026) a ze vzorů smluv projektu Pístov.",
+};
+
+// Lokalita – piktogramy a stručné informace (zadání klienta 11/2026). Časy jsou údaje klienta; vzdálenosti
+// k místům bez udaného času jsou vzdušnou čarou z OpenStreetMap. Body bez ověřeného údaje mají todo.
+export const access = [
+  { icon: "walk", title: "Pěšky", info: "zastávka Pístov, náves – cca 300 m", todo: false },
+  { icon: "bus", title: "Autobus", info: "odjezd každou hodinu", todo: true },
+  { icon: "car", title: "Autem", info: "silnice I/38, přivaděč k dálnici D1", todo: true },
+  { icon: "bike", title: "Na kole", info: "cyklostezka přímo u pozemků", todo: true },
+];
+
 export const pois = {
-  note: "Výběr míst v Jihlavě a okolí podle OpenStreetMap, finální seznam potvrdí developer. Vzdálenosti vzdušnou čarou, fotografie z Wikimedia Commons.",
+  note: "Časy autem podle údajů prodejce, ostatní vzdálenosti vzdušnou čarou podle OpenStreetMap.",
   items: [
-    { id: "centrum", name: "Centrum Jihlavy – Masarykovo náměstí", cat: "Město", icon: "city", lat: 49.39605, lon: 15.59115, featured: true,
-      perex: "Historické centrum s jedním z největších náměstí v Česku.",
-      text: "Radnice, kostel sv. Ignáce, kavárny, úřady i obchody. Na náměstí a do okolních ulic se dostanete autem i městskou dopravou.",
-      photos: [{"image":"poi-centrum-1","author":"Ladis62","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:Kostel_Sv.Ign%C3%A1ce_a_vedle_radnice_m%C4%9Bsta_Jihlavy_na_Masarykov%C4%9B_n%C3%A1m%C4%9Bst%C3%AD.Foceno_od_ka%C5%A1ny..JPG"},{"image":"poi-centrum-2","author":"Schuminka janička","license":"CC BY 3.0","source":"https://commons.wikimedia.org/wiki/File:Radnice_Jihlava.jpg"},{"image":"poi-centrum-3","author":"pastorius","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:Jihlava_no%C4%8Dn%C3%AD_n%C3%A1m%C4%9Bst%C3%AD_1.jpg"}] },
-    { id: "nemocnice", name: "Nemocnice Jihlava", cat: "Zdraví", icon: "health", lat: 49.39859, lon: 15.5712, featured: true,
-      perex: "Krajská nemocnice s urgentním příjmem.",
-      text: "Nemocnice leží na Horním Kosově, na straně města blíž k Pístovu.",
-      photos: [{"image":"poi-nemocnice-1","author":"Pohled 111","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:Nemocnice_Jihlava_-_budova_01.jpg"},{"image":"poi-nemocnice-2","author":"Jana Lánová","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:Nemocnice_Jihlava_3.JPG"}] },
-    { id: "lekarna", name: "Lékárna Dr. Max, Pelhřimovská", cat: "Zdraví", icon: "health", lat: 49.39378, lon: 15.55404,
-      perex: "Nejbližší lékárna z našeho výběru.",
-      text: "Lékárna v ulici Pelhřimovská, cestou z Pístova do města.",
-      photos: [] },
-    { id: "ms-mozaika", name: "MŠ Mozaika", cat: "Školka", icon: "kids", lat: 49.39198, lon: 15.57547, featured: true,
-      perex: "Mateřská škola v ulici Mahenova.",
-      text: "Nejbližší školka z našeho výběru. Podmínky přijetí a kapacitu ověřte přímo u školky.",
-      photos: [] },
-    { id: "zs-rosickeho", name: "ZŠ Evžena Rošického", cat: "Škola", icon: "school", lat: 49.40114, lon: 15.57393, featured: true,
-      perex: "Základní škola na Horním Kosově.",
-      text: "Škola v ulici Evžena Rošického. Spádovost a přijímání žáků ověřte přímo u školy.",
-      photos: [{"image":"poi-zs-rosickeho-1","author":"Denisa","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:Z%C5%A0_Ev%C5%BEena_Ro%C5%A1ick%C3%A9ho_01.jpg"}] },
-    { id: "terno", name: "Terno, Rantířovská", cat: "Nákupy", icon: "shop", lat: 49.39518, lon: 15.56697,
-      perex: "Supermarket v Rantířovské ulici.",
-      text: "Nejbližší větší nákup cestou z Pístova do města.",
-      photos: [] },
-    { id: "lidl", name: "Lidl, Jiráskova", cat: "Nákupy", icon: "shop", lat: 49.40252, lon: 15.57599,
-      perex: "Supermarket v ulici Jiráskova.",
-      photos: [] },
-    { id: "kaufland", name: "Kaufland, Romana Havelky", cat: "Nákupy", icon: "shop", lat: 49.40652, lon: 15.58261,
-      perex: "Hypermarket v ulici Romana Havelky.",
-      photos: [] },
-    { id: "city-park", name: "City Park Jihlava", cat: "Nákupy", icon: "shop", lat: 49.39247, lon: 15.59366, featured: true,
-      perex: "Nákupní centrum kousek od historického centra.",
-      text: "Obchody, restaurace a kino CineStar pod jednou střechou.",
-      photos: [{"image":"poi-city-park-1","author":"Jiří Sedláček","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:Overview_of_City_Park_in_Jihlava,_Jihlava_District.JPG"},{"image":"poi-city-park-2","author":"Fojsinek","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:CITY_PARK_Jihlava.JPG"}] },
-    { id: "autobusy", name: "Autobusové nádraží Jihlava", cat: "Doprava", icon: "bus", lat: 49.39962, lon: 15.58115,
-      perex: "Hlavní autobusové nádraží v Tyršově ulici.",
-      text: "Regionální i dálkové autobusové spoje.",
-      photos: [{"image":"poi-autobusy-1","author":"Pohled 111","license":"CC0","source":"https://commons.wikimedia.org/wiki/File:Jihlava_autobusov%C3%A9_n%C3%A1dra%C5%BE%C3%AD_02.jpg"},{"image":"poi-autobusy-2","author":"VitVit","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:Jihlava_autobusov%C3%A9_n%C3%A1dra%C5%BE%C3%AD_1.jpg"}] },
-    { id: "vlak", name: "Vlakové nádraží Jihlava", cat: "Doprava", icon: "train", lat: 49.4145, lon: 15.59939,
-      perex: "Jihlava hlavní nádraží.",
-      text: "Vlakové spojení po Vysočině i dál.",
-      photos: [{"image":"poi-vlak-1","author":"Vojtasekd","license":"CC BY 4.0","source":"https://commons.wikimedia.org/wiki/File:Jihlava_hlavn%C3%AD_n%C3%A1dra%C5%BE%C3%AD_(srpen_2024).jpg"}] },
-    { id: "bazen", name: "Bazén Evžena Rošického", cat: "Sport", icon: "swim", lat: 49.4021, lon: 15.5714,
-      perex: "Plavecký bazén v ulici Evžena Rošického.",
-      photos: [] },
-    { id: "zoo", name: "ZOO Jihlava", cat: "Volný čas", icon: "zoo", lat: 49.398, lon: 15.59328, featured: true,
-      perex: "Zoologická zahrada v údolí Jihlávky, kousek od centra.",
-      text: "Oblíbený cíl rodinných výletů – expozice zvířat z celého světa, japonská zahrada i dětské atrakce.",
-      photos: [{"image":"poi-zoo-1","author":"Atillak","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:Primary_entry_ZOO_Jihlava_2.jpg"},{"image":"poi-zoo-2","author":"Palickap","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:ZOO_Jihlava,_japonsk%C3%A1_zahrada.jpg"},{"image":"poi-zoo-3","author":"Aktron","license":"CC BY-SA 4.0","source":"https://commons.wikimedia.org/wiki/File:Jihlava,_ZOO,_Plame%C5%88%C3%A1ci.jpg"},{"image":"poi-zoo-4","author":"Pavel Hrdlička","license":"CC BY-SA 3.0","source":"https://commons.wikimedia.org/wiki/File:Matongo_exposition,_Zoo_Jihlava_2.jpg"}] },
+    { id: "skolka", name: "Mateřská škola, Telečská", cat: "Školka", icon: "kids", lat: 49.39139, lon: 15.58223, featured: true, info: "2 min autem" },
+    { id: "skola", name: "ZŠ Seifertova", cat: "Škola", icon: "school", lat: 49.39376, lon: 15.58415, featured: true, info: "5 min autem" },
+    { id: "centrum", name: "Centrum Jihlavy", cat: "Město", icon: "city", lat: 49.39543, lon: 15.59055, featured: true, info: "10 min autem" },
+    { id: "albert", name: "Albert, U Slunce", cat: "Nákupy", icon: "shop", lat: 49.38932, lon: 15.59458, featured: true },
+    { id: "aventin", name: "Obchodní centrum Aventin", cat: "Nákupy", icon: "mall", lat: 49.39362, lon: 15.552, featured: true },
   ],
 };

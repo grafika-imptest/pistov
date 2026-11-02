@@ -1,7 +1,6 @@
-// Points of interest around Pístov: distances, cards and links shared by the home page, Lokalita and the place pages.
+// Places around Pístov: distances and pictogram tiles shared by the home page and Lokalita.
 import { site, pois } from "../projects/pistov/content.js";
-import { poiIcon } from "./poi-icons.js";
-import { img, srcset, esc } from "./ui.js";
+import { pictoItem } from "./people.js";
 
 const R = 6371, rad = (d) => (d * Math.PI) / 180;
 /** straight-line distance from the plots, km with one decimal */
@@ -13,14 +12,5 @@ export function poiKm(p) {
 export const kmLabel = (km) => `${km.toLocaleString("cs-CZ")} km`;
 /** all places, nearest first */
 export const poiList = () => pois.items.map((p) => ({ ...p, km: poiKm(p) })).sort((a, b) => a.km - b.km);
-export const poiHref = (p) => `misto.html?id=${p.id}`;
-
-/** card: photo (or the category icon when no photo is available yet), category, distance, name, perex */
-export const poiCard = (p) => `<a class="poicard" href="${poiHref(p)}">
-  <span class="poicard__media">${p.photos?.length
-    ? `<img src="${img(p.photos[0].image, "m")}" srcset="${srcset(p.photos[0].image)}" sizes="(min-width: 1000px) 30vw, (min-width: 640px) 45vw, 100vw" alt="" loading="lazy" decoding="async">`
-    : `<span class="poicard__ph">${poiIcon(p.icon)}</span>`}</span>
-  <span class="poicard__meta"><span class="poicard__ic">${poiIcon(p.icon)}</span>${esc(p.cat)}<b>${kmLabel(p.km)}</b></span>
-  <span class="poicard__name">${esc(p.name)}</span>
-  <span class="poicard__perex">${esc(p.perex)}</span>
-</a>`;
+/** pictogram tile of a place: the travel time when known, otherwise the distance */
+export const poiPicto = (p) => pictoItem({ icon: p.icon, title: p.name, info: p.info || `${kmLabel(p.km)} vzdušnou čarou` });
