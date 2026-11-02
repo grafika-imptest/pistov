@@ -628,11 +628,11 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 
 /* social links */
 .social { display: flex; gap: 8px; margin: 12px 0 0; }
-.social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--s-line); color: inherit; transition: background-color 200ms, color 200ms, border-color 200ms; }
+.social a, .social span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--s-line); color: inherit; transition: background-color 200ms, color 200ms, border-color 200ms; }
 .social a:hover { background: var(--s-accent); border-color: var(--s-accent); color: #fff; }
 .social svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.social a[aria-label*="Facebook"] svg { fill: currentColor; stroke: none; }
-.social--light a { border-color: rgba(255, 255, 255, 0.25); }
+.social [aria-label*="Facebook"] svg { fill: currentColor; stroke: none; }
+.social--light a, .social--light span { border-color: rgba(255, 255, 255, 0.25); }
 
 /* people: sales contacts with photos */
 .people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-col-gap, 24px); }

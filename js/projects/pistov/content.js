@@ -12,8 +12,8 @@ export const site = {
     address: "17. listopadu 5904/1a, 586 01 Jihlava", ico: "14443112", dic: "CZ14443112", register: "Krajský soud v Brně, oddíl C, vložka 128347",
     phone: "+420 603 841 123", email: "info@hvreality.cz", web: "https://hvreality.cz",
     logo: { dark: "assets/img/hv-logo-dark.png", light: "assets/img/hv-logo-light.png", darkTrim: "assets/img/hv-logo-dark-trim.png", lightTrim: "assets/img/hv-logo-light-trim.png" },
-    // company profiles from hvreality.cz (personal profiles not found – TODO ask the client)
-    social: { facebook: "https://www.facebook.com/horakvetchyrealiy", instagram: "https://www.instagram.com/horakvetchyreality/" },
+    // icons only – the client fills the profile URLs in the CMS (an empty URL renders the icon without a link)
+    social: { facebook: "", instagram: "" },
   },
   // Developer – prodávající je projektová společnost skupiny START Zelený (vzory smluv, 11/2026)
   developer: {

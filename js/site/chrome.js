@@ -36,7 +36,10 @@ const SOCIAL = {
   instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>',
 };
 /** links to the seller's Facebook / Instagram */
-export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => `<a href="${u}" target="_blank" rel="noopener" aria-label="${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}">${SOCIAL[k]}</a>`).join("")}</p>`;
+export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => {
+  const label = `${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}`;
+  return u ? `<a href="${u}" target="_blank" rel="noopener" aria-label="${label}">${SOCIAL[k]}</a>` : `<span role="img" aria-label="${label}">${SOCIAL[k]}</span>`;
+}).join("")}</p>`;
 /** compact contact lines of the sales people */
 export const peopleLines = () => site.contacts.map((p) => `<p><b>${p.name}</b><br><span class="muted">${p.role}</span><br>${tel(p.phone)}<br><a href="mailto:${p.email}">${p.email}</a></p>`).join("");
 const icon = {
