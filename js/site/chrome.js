@@ -36,7 +36,7 @@ const SOCIAL = {
   instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>',
 };
 /** links to the seller's Facebook / Instagram */
-/** the seller's logo (light, for the dark menu) next to the Pístov logo */
+/** the seller's logo (light, for the dark menu and footer) next to the Pístov logo */
 const partnerLogo = () => `<a class="logopair__partner" href="${site.seller.web}" target="_blank" rel="noopener" aria-label="${site.seller.brand} – web prodejce"><img src="${site.seller.logo.lightTrim}" alt="" width="636" height="267"></a>`;
 export const socialLinks = (cls = "social") => `<p class="${cls}">${Object.entries(site.seller.social).map(([k, u]) => {
   const label = `${site.seller.brand} na ${k === "facebook" ? "Facebooku" : "Instagramu"}`;
@@ -152,6 +152,7 @@ function renderFooter() {
     <div class="wrap footer__top">
       <div class="footer__brand">
         <p class="brand brand--footer">${LOGO}<span class="brand__name">${site.name}</span></p>
+        <p class="footer__partner"><span>Prodej zajišťuje</span>${partnerLogo()}</p>
         <p class="footer__claim">${site.claim} u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.</p>
         <a class="btn btn--paper btn--sm" href="${link("index.html#explorer")}">Prozkoumat lokalitu <span aria-hidden="true">→</span></a>
       </div>
