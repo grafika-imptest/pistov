@@ -616,7 +616,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 
 /* ================= Připomínky klienta 11/2026 ================= */
 /* header: clickable seller logo next to the project logo */
-.topbar__partner { display: flex; align-items: center; margin-left: 18px; padding-left: 18px; border-left: 1px solid currentColor; border-left-color: color-mix(in srgb, currentColor 28%, transparent); height: 34px; }
+.topbar__partner { display: flex; align-items: center; margin-left: -4px; padding-left: 18px; border-left: 1px solid currentColor; border-left-color: color-mix(in srgb, currentColor 28%, transparent); height: 34px; }
 .topbar__partner img { height: 30px; width: auto; display: block; transition: opacity 200ms; }
 .topbar__partner:hover img { opacity: 0.75; }
 .topbar__partner-dark { display: none !important; }
@@ -624,7 +624,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .ed-studio .topbar.is-solid .topbar__partner-dark, .ed-studio .subpage .topbar .topbar__partner-dark { display: block !important; }
 .ed-studio .s-homepage .topbar:not(.is-solid) .topbar__partner-light { display: block !important; }
 .ed-studio .s-homepage .topbar:not(.is-solid) .topbar__partner-dark { display: none !important; }
-@media (max-width: 520px) { .topbar__partner { margin-left: 10px; padding-left: 10px; } .topbar__partner img { height: 26px; } }
+@media (max-width: 520px) { .topbar__partner { margin-left: -6px; padding-left: 12px; } .topbar__partner img { height: 26px; } }
 
 /* social links */
 .social { display: flex; gap: 8px; margin: 12px 0 0; }
