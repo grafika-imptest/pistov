@@ -98,8 +98,15 @@ export const project = {
   // Intro film – off since the bird's-eye visualisation of 11/2026: the film was made from the previous one and its
   // last frame no longer matches the aerial view. Set introVideo to introFilm once a new film exists.
   introVideo: null,
-  // home hero (studio): looping AI film made from the bird's-eye visualisation 11/2026 and two house renders, 720p
-  heroFilm: "assets/video/hero-loop-720.mp4",
+  // home hero (studio): AI clips (Magnific, Seedance 2.5, 720p) from the bird's-eye visualisation 11/2026 and two house
+  // renders, cross-dissolved in a loop by js/studio/hero-reel.js; `from` skips the still opening of a clip
+  heroReel: [
+    { src: "assets/video/hero-1-plots.mp4" }, // drone over the bare plots
+    { src: "assets/video/hero-2-build.mp4" }, // wireframe houses rise and get their materials
+    { src: "assets/video/hero-3-house-a.mp4", from: 0.9 }, // pan along house A
+    { src: "assets/video/hero-4-house-c.mp4" }, // pan to the pergola of house C
+    { src: "assets/video/hero-5-quarter.mp4" }, // drone pulls back over the finished quarter
+  ],
   introFilm: {
     src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
     poster: "assets/video/intro-poster.webp",
