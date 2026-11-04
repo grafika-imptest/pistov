@@ -129,7 +129,7 @@ export const gallery = [
     ["D-garden-white", "Dům D – bílá omítka"], ["D-mat-lightbrick", "Dům D – světlá cihla"], ["D-mat-redbrick", "Dům D – režná cihla"],
   ] },
   { cat: "Lokalita", items: [
-    ["aerial", "Vizualizace budoucí zástavby"], ["drone-ponds", "Rybníky a pole na východ od lokality – dron, 13. 10. 2026"],
+    ["aerial", "Vizualizace budoucí zástavby, 11/2026"], ["aerial-plots", "Rozdělení lokality na 62 parcel – vizualizace s čísly parcel"], ["aerial-wide", "Lokalita v širším okolí – vizualizace, 11/2026"], ["drone-ponds", "Rybníky a pole na východ od lokality – dron, 13. 10. 2026"],
     ["drone-site-south", "Plocha budoucích parcel od jihu – dron, 13. 10. 2026"], ["drone-site-centre", "Střed lokality, stav před výstavbou – dron, 13. 10. 2026"],
     ["drone-village", "Obec a rybník na sever od lokality – dron, 13. 10. 2026"], ["drone-east", "Pohled od východu přes rybníky – dron, 13. 10. 2026"],
   ] },

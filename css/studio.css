@@ -179,7 +179,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-hero__stats { grid-template-columns: 1fr 1fr; }
   .s-hero__stats div:nth-child(3) { padding-left: 0; border-left: 0; }
   .s-hero__stats div:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.16); }
-  .s-hero__media img, .s-hero__media video { object-position: 62% 50%; }
+  .s-hero__media img, .s-hero__media video { object-position: 46% 50%; }
   .s-hero__cap { top: auto; bottom: 8px; left: var(--s-margin); right: auto; }
 }
 

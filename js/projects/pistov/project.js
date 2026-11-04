@@ -24,12 +24,12 @@ const nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
 const biggestFree = plots.filter((p) => p.status === "available").reduce((a, p) => (p.area > a.area ? p : a));
 const heroNotes = [
   { lines: ["z výkresu architekta", "až k budoucí ulici"], at: "centre" },
-  { lines: ["rybníky a pás", "veřejné zeleně"], at: [2520, 470] },
+  { lines: ["rybníky a pás", "veřejné zeleně"], at: [3146, 823] },
   { lines: ["největší volná parcela", `č. ${biggestFree.no} · ${nf(biggestFree.area)} m²`], at: { plot: biggestFree.no } },
   { lines: ["odsud jsme fotili", "panorama 360°"], at: { station: "stred-60" } },
-  { lines: ["stávající", "zástavba obce"], at: [1480, 228] },
+  { lines: ["stávající", "zástavba obce"], at: [968, 290] },
   { lines: ["čtyři typy domů", "pro inspiraci"], at: { plot: 14 } },
-  { lines: ["pole a krajina", "kolem lokality"], at: [2900, 1760] },
+  { lines: ["pole a krajina", "kolem lokality"], at: [3678, 2130] },
 ];
 
 export const project = {
@@ -70,13 +70,13 @@ export const project = {
     {
       id: "aerial", label: "Letecký pohled", kind: "image", interactive: true, geometryKey: "aerial",
       size: AERIAL_SIZE,
-      // empty plots (houses removed from the architects' visualisation with Magnific); the intro keeps the built one
+      // bird's-eye visualisation 11/2026 (tools/build-aerial-v3.mjs): bare plots; the intro keeps the built one
       sources: [[800, IMG + "aerial-empty-800.webp"], [1400, IMG + "aerial-empty-1400.webp"], [2200, IMG + "aerial-empty-2200.webp"], [3400, IMG + "aerial-empty-3400.webp"]],
-      // surroundings outpainted in Adobe Firefly, registered to this view (scene px), shown when zoomed out
-      surround: { src: IMG + "aerial-surround-2000.webp", box: [-853.5, -420.3, 5126, 2876] },
+      // the same render in a wider frame, sky above and fields below outpainted in Magnific (scene px), shown when zoomed out
+      surround: { src: IMG + "aerial-surround-2000.webp", box: [-322, -2833, 5275, 7749] },
       introSources: [[800, IMG + "aerial-800.webp"], [1400, IMG + "aerial-1400.webp"], [2200, IMG + "aerial-2200.webp"], [3400, IMG + "aerial-3400.webp"]],
       menuMeta: "s výběrem parcel · po výběru domu se spustí jeho animace",
-      caption: "Letecký pohled · parcely před výstavbou (upravená vizualizace) · hranice promítnuty orientačně",
+      caption: "Letecký pohled · vizualizace lokality 11/2026 · hranice parcel orientačně",
       homography: AERIAL_HOMOGRAPHY, // plan px → this view px (used for compass + hero overlay)
       overlay: { src: IMG + "plan-cutout-1682.webp", scale: 3364 / 1682 },
     },
@@ -95,10 +95,10 @@ export const project = {
     { id: "street", label: "Pohled z ulice · vizualizace", kind: "image", interactive: true, pending: "Čeká na vizualizace z ulice" },
   ],
   defaultView: "aerial",
-  // Intro film – AI illustration (Higgsfield, Kling 3.0) built from the architects' aerial visualisation:
-  // prepared plots → houses rise → fly-through → back to the overview. Its last frame = the aerial view cropped to
-  // endBox, so the interactive scene takes over seamlessly.
-  introVideo: {
+  // Intro film – off since the bird's-eye visualisation of 11/2026: the film was made from the previous one and its
+  // last frame no longer matches the aerial view. Set introVideo to introFilm once a new film exists.
+  introVideo: null,
+  introFilm: {
     src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
     poster: "assets/video/intro-poster.webp",
     endBox: { x: 0, y: 58, w: 3419, h: 1923 },

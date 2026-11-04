@@ -18,7 +18,8 @@ const P = project, nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
 const plots = P.plots, free = plots.filter((p) => p.status === "available"), areas = plots.map((p) => p.area);
 const count = (st) => plots.filter((p) => p.status === st).length;
 
-// ---------- hero: the intro film once, then it rests on its last frame (= the aerial view) ----------
+// ---------- hero: the built-up visualisation, then the houses fade away and the bare plots stay ----------
+// (with an intro film: the film once, then its last frame = the aerial view)
 {
   const v = $("[data-s-hero-video]"), cfg = P.introVideo;
   if (v && cfg && !reducedMotion() && !navigator.connection?.saveData) {
@@ -27,6 +28,8 @@ const count = (st) => plots.filter((p) => p.status === st).length;
     // the plots are what is for sale – after the film the houses fade away and bare plots stay
     v.addEventListener("ended", () => $("[data-s-hero-empty]")?.classList.add("is-on"), { once: true });
     v.play().catch(() => v.remove());
+  } else if (!cfg && !reducedMotion()) {
+    setTimeout(() => $("[data-s-hero-empty]")?.classList.add("is-on"), 3200);
   }
   $("[data-s-stats]").innerHTML = [
     [free.length, "volných parcel", `z ${plots.length} v lokalitě`],

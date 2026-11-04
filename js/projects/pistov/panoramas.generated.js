@@ -23,8 +23,8 @@ export const panoramas = [
    1981.4
   ],
   "aerial": [
-   2008.9,
-   764.1
+   2031.8,
+   974.5
   ],
   "heading": 133,
   "view": {
@@ -55,8 +55,8 @@ export const panoramas = [
    1978.8
   ],
   "aerial": [
-   2010.7,
-   763.3
+   2034.1,
+   972.8
   ],
   "heading": 126,
   "view": {
@@ -87,8 +87,8 @@ export const panoramas = [
    1602.2
   ],
   "aerial": [
-   2931.1,
-   839.4
+   3704.4,
+   803.5
   ],
   "heading": 70,
   "view": {
@@ -119,8 +119,8 @@ export const panoramas = [
    3110.7
   ],
   "aerial": [
-   1280.2,
-   1644.6
+   1618.5,
+   2320.7
   ],
   "heading": 48,
   "view": {
@@ -151,8 +151,8 @@ export const panoramas = [
    1390.7
   ],
   "aerial": [
-   631,
-   220.4
+   -354.3,
+   554.7
   ],
   "heading": 95,
   "view": {
@@ -183,8 +183,8 @@ export const panoramas = [
    20.6
   ],
   "aerial": [
-   2312.5,
-   374.5
+   2239.8,
+   196.6
   ],
   "heading": 185,
   "view": {

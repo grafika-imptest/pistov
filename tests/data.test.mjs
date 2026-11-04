@@ -146,8 +146,9 @@ test("panoramas: six calibrated stations with existing images", async () => {
   assert.ok(Math.abs(bearingTo(project.panoramas.find((x) => x.id === "stred-60").enu, project.panoramas.find((x) => x.id === "sever").enu) - 355) < 10);
 });
 
-test("intro film: files exist and the hand-over frame lies inside the aerial view", () => {
+test("intro film: off since the 11/2026 visualisation; when on, files exist and the hand-over frame lies inside the aerial view", () => {
   const v = project.introVideo;
+  if (!v) return assert.ok(project.introFilm, "the previous film is kept for a new version");
   for (const src of [v.src.hd, v.src.sd, v.poster]) assert.ok(exists(src), src);
   const aerial = project.views.find((x) => x.id === "aerial");
   assert.ok(v.endBox.x >= 0 && v.endBox.y >= 0 && v.endBox.x + v.endBox.w <= aerial.size[0] && v.endBox.y + v.endBox.h <= aerial.size[1]);
