@@ -159,6 +159,8 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 /* ---------------------------------------------------------------- home: hero */
 .s-hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; color: #fff; overflow: hidden; background: var(--s-dark); }
 .s-hero__media, .s-hero__media img, .s-hero__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* own stacking context: the reel raises z-index of its videos while cross-dissolving, the text must stay above */
+.s-hero__media { isolation: isolate; z-index: 0; }
 .s-hero__video { opacity: 0; transition: opacity 800ms; }
 .s-hero__video.is-on { opacity: 1; }
 /* darker behind the claim (eyebrow, title, lead) on the left, the film stays bright on the right */
