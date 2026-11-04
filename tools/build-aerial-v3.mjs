@@ -29,11 +29,33 @@ await sharp("../podklady/vizualizace-okoli-magnific.png").webp({ quality: 62 }).
 // ---- plots
 const plotsFile = DATA + "plots.generated.js";
 const P = await import(new URL(plotsFile, import.meta.url));
-const plots = P.plotsSource.map((p) => ({
-  ...p,
-  geometry: { ...p.geometry, aerial: p.geometry.plan.map((q) => apply(H, q)) },
-  label: { ...p.label, aerial: apply(H, p.label.plan) },
-}));
+// The visualisation draws the plots with sharp corners: chamfers of the plan trace (edges < 110 px in the view) are
+// removed by extending the neighbouring edges. Where the plan differs more, the outline is read off the white plot
+// lines of MENŠÍ_02 (px of the view).
+const MANUAL = {
+  14: [[2560, 1815], [2800, 1688], [3195, 1925], [2935, 2065]],
+  15: [[2800, 1688], [3020, 1571], [3420, 1792], [3400, 1818], [3195, 1925]],
+  16: [[3020, 1571], [3233, 1459], [3575, 1635], [3420, 1792]],
+  17: [[3233, 1459], [3405, 1368], [3725, 1513], [3630, 1585], [3575, 1635]],
+  30: [[1490.8, 622.6], [1587.6, 696.1], [1440.2, 731.4], [1346.7, 652.3]],
+};
+const cross = (a, b, c, d) => { const r = [b[0] - a[0], b[1] - a[1]], s = [d[0] - c[0], d[1] - c[1]], den = r[0] * s[1] - r[1] * s[0]; if (Math.abs(den) < 1e-6) return null; const t = ((c[0] - a[0]) * s[1] - (c[1] - a[1]) * s[0]) / den; return [a[0] + r[0] * t, a[1] + r[1] * t]; };
+function square(P, min = 110) {
+  P = P.slice();
+  for (let guard = 0; guard < 10 && P.length > 4; guard++) {
+    const len = P.map((a, i) => Math.hypot(P[(i + 1) % P.length][0] - a[0], P[(i + 1) % P.length][1] - a[1]));
+    const i = len.indexOf(Math.min(...len)); if (len[i] > min) break;
+    const n = P.length, a = P[(i + n - 1) % n], b = P[i], c = P[(i + 1) % n], d = P[(i + 2) % n];
+    const q = cross(a, b, d, c); if (!q || Math.hypot(q[0] - b[0], q[1] - b[1]) > 3 * min) break;
+    P.splice(i, 1, q); P.splice((i + 1) % P.length, 1);
+  }
+  return P.map((q) => q.map(r1));
+}
+const centre = (P) => [P.reduce((s, q) => s + q[0], 0) / P.length, P.reduce((s, q) => s + q[1], 0) / P.length].map(r1);
+const plots = P.plotsSource.map((p) => {
+  const aerial = MANUAL[p.no] || square(p.geometry.plan.map((q) => apply(H, q)));
+  return { ...p, geometry: { ...p.geometry, aerial }, label: { ...p.label, aerial: MANUAL[p.no] ? centre(aerial) : apply(H, p.label.plan) } };
+});
 let src = fs.readFileSync(plotsFile, "utf8");
 src = src.replace(/aerial = px of [^\n]*\n/, `aerial = px of the bird's-eye visualisation 11/2026 (${SIZE.join("×")}, tools/build-aerial-v3.mjs).\n`)
   .replace(/export const AERIAL_SIZE = .*;/, `export const AERIAL_SIZE = ${JSON.stringify(SIZE)};`)
