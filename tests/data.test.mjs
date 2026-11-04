@@ -33,7 +33,8 @@ test("geometry: traced polygons agree with the stated plot areas", () => {
     const ratio = m2 / p.area;
     // traced boundary sits ~1 px inside the drawn lines and trees partly cover some edges
     assert.ok(ratio > 0.82 && ratio < 1.15, `plot ${p.no}: traced ${m2.toFixed(0)} m² vs ${p.area} m²`);
-    assert.equal(p.geometry.aerial.length, p.geometry.plan.length);
+    // the aerial outline follows the lines of the visualisation (sharp corners), so it may have fewer vertices
+    assert.ok(p.geometry.aerial.length >= 3 && p.geometry.aerial.length <= p.geometry.plan.length, `plot ${p.no}: aerial outline`);
   }
 });
 
