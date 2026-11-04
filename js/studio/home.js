@@ -11,6 +11,7 @@ import { esc } from "../site/ui.js";
 import { m2 } from "../ui/format.js";
 import { reveal, parallax, countUp, lazyLoops } from "./motion.js";
 import { reducedMotion } from "../core/motion.js";
+import { mountHeroFilm } from "./hero-film.js";
 
 renderChrome({ page: "" });
 const $ = (s) => document.querySelector(s);
@@ -18,19 +19,10 @@ const P = project, nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
 const plots = P.plots, free = plots.filter((p) => p.status === "available"), areas = plots.map((p) => p.area);
 const count = (st) => plots.filter((p) => p.status === st).length;
 
-// ---------- hero: the built-up visualisation, then the houses fade away and the bare plots stay ----------
-// (with an intro film: the film once, then its last frame = the aerial view)
+// ---------- hero: looping film – drone over the bare plots, houses rise as wireframes, two house types in detail ----------
+// (reduced motion / data saver: the built-up visualisation as a still)
 {
-  const v = $("[data-s-hero-video]"), cfg = P.introVideo;
-  if (v && cfg && !reducedMotion() && !navigator.connection?.saveData) {
-    v.src = innerWidth >= 900 ? cfg.src.hd : cfg.src.sd;
-    v.addEventListener("playing", () => v.classList.add("is-on"), { once: true });
-    // the plots are what is for sale – after the film the houses fade away and bare plots stay
-    v.addEventListener("ended", () => $("[data-s-hero-empty]")?.classList.add("is-on"), { once: true });
-    v.play().catch(() => v.remove());
-  } else if (!cfg && !reducedMotion()) {
-    setTimeout(() => $("[data-s-hero-empty]")?.classList.add("is-on"), 3200);
-  }
+  if (!reducedMotion() && !navigator.connection?.saveData) mountHeroFilm({ root: $("[data-s-hero-media]"), still: $("[data-s-hero-still]"), caption: $("[data-s-hero-cap]") });
   $("[data-s-stats]").innerHTML = [
     [free.length, "volných parcel", `z ${plots.length} v lokalitě`],
     [`${Math.min(...areas)}–${nf(Math.max(...areas))}`, "m² výměry", "většina 560–700 m²"],

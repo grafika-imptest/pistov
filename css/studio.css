@@ -158,9 +158,9 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 
 /* ---------------------------------------------------------------- home: hero */
 .s-hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; color: #fff; overflow: hidden; background: var(--s-dark); }
-.s-hero__media, .s-hero__media img, .s-hero__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.s-hero__video { opacity: 0; transition: opacity 800ms; }
-.s-hero__video.is-on { opacity: 1; }
+.s-hero__media, .s-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-hero__film { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 900ms; }
+.s-hero__film.is-on { opacity: 1; }
 .s-hero__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 14, 13, 0.45) 0%, rgba(13, 14, 13, 0) 26%, rgba(13, 14, 13, 0) 44%, rgba(13, 14, 13, 0.72) 100%); }
 .s-hero__content { position: relative; align-self: end; padding-top: calc(var(--topbar-h) + 40px); padding-bottom: clamp(28px, 4vw, 48px); }
 .s-hero__title { margin: 0 0 clamp(24px, 3vw, 40px); font-family: var(--s-display); font-weight: 500; font-size: clamp(2.6rem, 1rem + 5vw, 6.5rem); line-height: 0.95; letter-spacing: -0.05em; white-space: nowrap; }
@@ -179,7 +179,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-hero__stats { grid-template-columns: 1fr 1fr; }
   .s-hero__stats div:nth-child(3) { padding-left: 0; border-left: 0; }
   .s-hero__stats div:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.16); }
-  .s-hero__media img, .s-hero__media video { object-position: 46% 50%; }
+  .s-hero__media img { object-position: 46% 50%; }
   .s-hero__cap { top: auto; bottom: 8px; left: var(--s-margin); right: auto; }
 }
 
@@ -464,8 +464,6 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 .s-loc__pano .pano-teaser__gl { aspect-ratio: auto; height: 100%; width: 100%; }
 .s-loc__pano .s-loc__cap > span:nth-child(2) { padding: 6px 12px; border-radius: 999px; background: rgba(13, 14, 13, 0.55); color: #fff; font-family: var(--s-mono); font-size: 0.625rem; letter-spacing: 0.06em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 
-.s-hero__empty { opacity: 0; transition: opacity 1800ms var(--s-ease); }
-.s-hero__empty.is-on { opacity: 1; }
 
 /* offer: the plot map runs to the right edge and the full height of the section */
 .s-offer.s-section { padding: 0; }
