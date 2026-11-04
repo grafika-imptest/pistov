@@ -158,10 +158,17 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
 
 /* ---------------------------------------------------------------- home: hero */
 .s-hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; color: #fff; overflow: hidden; background: var(--s-dark); }
-.s-hero__media, .s-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.s-hero__film { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 900ms; }
-.s-hero__film.is-on { opacity: 1; }
-.s-hero__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 14, 13, 0.45) 0%, rgba(13, 14, 13, 0) 26%, rgba(13, 14, 13, 0) 44%, rgba(13, 14, 13, 0.72) 100%); }
+.s-hero__media, .s-hero__media img, .s-hero__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-hero__video { opacity: 0; transition: opacity 800ms; }
+.s-hero__video.is-on { opacity: 1; }
+/* darker behind the claim (eyebrow, title, lead) on the left, the film stays bright on the right */
+.s-hero__shade { position: absolute; inset: 0; background:
+  linear-gradient(180deg, rgba(13, 14, 13, 0.45) 0%, rgba(13, 14, 13, 0) 22%, rgba(13, 14, 13, 0.12) 42%, rgba(13, 14, 13, 0.8) 100%),
+  linear-gradient(90deg, rgba(13, 14, 13, 0.72) 0%, rgba(13, 14, 13, 0.5) 38%, rgba(13, 14, 13, 0) 68%); }
+.s-hero__content .s-label, .s-hero__title, .s-hero__lead { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45); }
+@media (max-width: 760px) {
+  .s-hero__shade { background: linear-gradient(180deg, rgba(13, 14, 13, 0.45) 0%, rgba(13, 14, 13, 0.1) 18%, rgba(13, 14, 13, 0.55) 40%, rgba(13, 14, 13, 0.85) 100%); }
+}
 .s-hero__content { position: relative; align-self: end; padding-top: calc(var(--topbar-h) + 40px); padding-bottom: clamp(28px, 4vw, 48px); }
 .s-hero__title { margin: 0 0 clamp(24px, 3vw, 40px); font-family: var(--s-display); font-weight: 500; font-size: clamp(2.6rem, 1rem + 5vw, 6.5rem); line-height: 0.95; letter-spacing: -0.05em; white-space: nowrap; }
 .s-hero__row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; }
@@ -179,7 +186,7 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--s-text);
   .s-hero__stats { grid-template-columns: 1fr 1fr; }
   .s-hero__stats div:nth-child(3) { padding-left: 0; border-left: 0; }
   .s-hero__stats div:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.16); }
-  .s-hero__media img { object-position: 46% 50%; }
+  .s-hero__media img, .s-hero__media video { object-position: 46% 50%; }
   .s-hero__cap { top: auto; bottom: 8px; left: var(--s-margin); right: auto; }
 }
 

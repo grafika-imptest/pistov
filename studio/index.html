@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/img/aerial-2200.webp" imagesrcset="assets/img/aerial-1400.webp 1400w, assets/img/aerial-2200.webp 2200w, assets/img/aerial-3400.webp 3400w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/video/hero-poster.webp" fetchpriority="high">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/pages.css">
@@ -23,8 +23,9 @@
   <main id="obsah">
     <!-- ============ HERO: the site in one film, the offer one click away ============ -->
     <section class="s-hero" aria-labelledby="s-hero-title" data-s-hero>
-      <div class="s-hero__media" data-s-hero-media>
-        <img class="s-hero__still" data-s-hero-still src="assets/img/aerial-2200.webp" srcset="assets/img/aerial-1400.webp 1400w, assets/img/aerial-2200.webp 2200w, assets/img/aerial-3400.webp 3400w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
+      <div class="s-hero__media">
+        <img class="s-hero__still" src="assets/video/hero-poster.webp" alt="" fetchpriority="high" decoding="async">
+        <video class="s-hero__video" muted autoplay loop playsinline preload="auto" poster="assets/video/hero-poster.webp" aria-hidden="true" data-s-hero-video></video>
       </div>
       <div class="s-hero__shade" aria-hidden="true"></div>
       <div class="s-wrap s-hero__content">
@@ -39,7 +40,7 @@
         </div>
       </div>
       <dl class="s-wrap s-hero__stats" data-s-stats></dl>
-      <p class="s-hero__cap" data-s-hero-cap>Vizualizace lokality · 11/2026</p>
+      <p class="s-hero__cap">Ilustrační AI animace z vizualizace lokality</p>
     </section>
 
     <!-- ============ 01 OFFER: the map is the stage – filter by price, pick a plot ============ -->

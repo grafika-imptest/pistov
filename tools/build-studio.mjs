@@ -67,7 +67,7 @@ ${p.heroImage ? `      <div class="pagehero__media pagehero__media--${p.heroImag
 write("index.html", page({
   id: "home", title: "Pístov — parcely a rodinné domy u Jihlavy", bodyClass: "s-homepage",
   desc: "62 parcel pro rodinné domy v Pístově u Jihlavy. Vyberte si parcelu a postavte na ní dům podle svých představ.",
-  preload: `  <link rel="preload" as="image" href="assets/img/aerial-2200.webp" imagesrcset="assets/img/aerial-1400.webp 1400w, assets/img/aerial-2200.webp 2200w, assets/img/aerial-3400.webp 3400w" imagesizes="100vw" fetchpriority="high">\n`,
+  preload: `  <link rel="preload" as="image" href="assets/video/hero-poster.webp" fetchpriority="high">\n`,
   main: fs.readFileSync("studio/home.html", "utf8"), script: "js/studio/home.js",
 }));
 

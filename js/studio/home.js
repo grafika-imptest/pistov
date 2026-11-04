@@ -11,7 +11,6 @@ import { esc } from "../site/ui.js";
 import { m2 } from "../ui/format.js";
 import { reveal, parallax, countUp, lazyLoops } from "./motion.js";
 import { reducedMotion } from "../core/motion.js";
-import { mountHeroFilm } from "./hero-film.js";
 
 renderChrome({ page: "" });
 const $ = (s) => document.querySelector(s);
@@ -19,10 +18,16 @@ const P = project, nf = (v) => new Intl.NumberFormat("cs-CZ").format(v);
 const plots = P.plots, free = plots.filter((p) => p.status === "available"), areas = plots.map((p) => p.area);
 const count = (st) => plots.filter((p) => p.status === st).length;
 
-// ---------- hero: looping film – drone over the bare plots, houses rise as wireframes, two house types in detail ----------
-// (reduced motion / data saver: the built-up visualisation as a still)
+// ---------- hero: looping film (Magnific, Seedance 2.5) – drone over the bare plots, houses rise as wireframes and get
+// their materials, two house types in detail, the finished quarter. Reduced motion / data saver: the poster only.
 {
-  if (!reducedMotion() && !navigator.connection?.saveData) mountHeroFilm({ root: $("[data-s-hero-media]"), still: $("[data-s-hero-still]"), caption: $("[data-s-hero-cap]") });
+  const v = $("[data-s-hero-video]");
+  if (v && !reducedMotion() && !navigator.connection?.saveData) {
+    v.muted = true; v.src = P.heroFilm;
+    v.addEventListener("playing", () => v.classList.add("is-on"), { once: true });
+    // play only while the hero is on screen
+    new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause())).observe(v);
+  }
   $("[data-s-stats]").innerHTML = [
     [free.length, "volných parcel", `z ${plots.length} v lokalitě`],
     [`${Math.min(...areas)}–${nf(Math.max(...areas))}`, "m² výměry", "většina 560–700 m²"],

@@ -98,6 +98,8 @@ export const project = {
   // Intro film – off since the bird's-eye visualisation of 11/2026: the film was made from the previous one and its
   // last frame no longer matches the aerial view. Set introVideo to introFilm once a new film exists.
   introVideo: null,
+  // home hero (studio): looping AI film made from the bird's-eye visualisation 11/2026 and two house renders, 720p
+  heroFilm: "assets/video/hero-loop-720.mp4",
   introFilm: {
     src: { hd: "assets/video/intro-1080.mp4", sd: "assets/video/intro-720.mp4" },
     poster: "assets/video/intro-poster.webp",
